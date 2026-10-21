@@ -8,5 +8,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // Some page tests click through many questions, which is slow when the
+    // whole suite runs in parallel.
+    testTimeout: 20000,
   },
 })

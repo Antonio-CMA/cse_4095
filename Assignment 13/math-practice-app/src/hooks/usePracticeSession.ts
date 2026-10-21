@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useReducer } from 'react'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
+import { saveAttempt, saveSession } from '../services/practiceHistory'
 import {
   createSessionState,
   getTotalQuestions,
@@ -27,6 +28,18 @@ export function usePracticeSession(config: PracticeConfig) {
   )
   const { session, attempts, currentQuestion } = state
   const { operations, difficulty } = config
+
+  // Keep the session and every answer saved as the student goes. A session
+  // with no answers yet is not worth keeping. If the browser cannot save
+  // (blocked or full), practice simply carries on.
+  useEffect(() => {
+    if (session.attempted > 0) saveSession(session)
+  }, [session])
+
+  useEffect(() => {
+    const latest = attempts[attempts.length - 1]
+    if (latest) saveAttempt(latest)
+  }, [attempts])
 
   const recordResult = useCallback(
     (result: ReportedResult) => {
