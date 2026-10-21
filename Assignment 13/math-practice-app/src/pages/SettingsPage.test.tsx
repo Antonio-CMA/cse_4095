@@ -46,6 +46,9 @@ describe('SettingsPage contents', () => {
       screen.getByRole('checkbox', { name: 'Show explanations' }),
     ).toBeInTheDocument()
     expect(
+      screen.getByRole('checkbox', { name: 'Encouraging messages' }),
+    ).toBeChecked()
+    expect(
       screen.getByRole('group', { name: 'Default session length' }),
     ).toBeInTheDocument()
     expect(
@@ -118,6 +121,11 @@ describe('changing settings', () => {
 
     await user.click(screen.getByRole('checkbox', { name: 'Sound effects' }))
     expect(saved().soundEnabled).toBe(false)
+
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Encouraging messages' }),
+    )
+    expect(saved().feedbackEnabled).toBe(false)
 
     // ...and each can be turned back on.
     await user.click(screen.getByRole('checkbox', { name: 'Card animation' }))

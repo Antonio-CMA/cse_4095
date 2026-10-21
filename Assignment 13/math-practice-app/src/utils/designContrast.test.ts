@@ -102,7 +102,8 @@ describe('the layout stays inside a small screen (WCAG reflow)', () => {
     expect(minimums.length).toBeGreaterThan(0)
     for (const minimum of minimums) {
       // e.g. "min(13rem, 100%)": a column never needs more than the page has.
-      expect(minimum).toMatch(/^min\(.+,\s*100%\)$/)
+      // A minimum of 0 is fine too: that column can always shrink to fit.
+      expect(minimum).toMatch(/^(0|min\(.+,\s*100%\))$/)
     }
   })
 

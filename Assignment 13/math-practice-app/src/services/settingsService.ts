@@ -21,6 +21,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   soundEnabled: true,
   cardAnimationEnabled: true,
   showExplanations: true,
+  feedbackEnabled: true,
   defaultSessionLength: DEFAULT_SESSION_LENGTH,
   defaultDifficulty: DEFAULT_DIFFICULTY,
   defaultOperations: [...DEFAULT_OPERATIONS],
@@ -69,6 +70,7 @@ export function sanitizeSettings(value: unknown): AppSettings {
       d.cardAnimationEnabled,
     ),
     showExplanations: flag(saved.showExplanations, d.showExplanations),
+    feedbackEnabled: flag(saved.feedbackEnabled, d.feedbackEnabled),
     defaultSessionLength: isSessionLength(saved.defaultSessionLength)
       ? saved.defaultSessionLength
       : d.defaultSessionLength,

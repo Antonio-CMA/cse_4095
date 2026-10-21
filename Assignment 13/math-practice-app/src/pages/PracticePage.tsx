@@ -5,10 +5,14 @@ import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { ProgressBar } from '../components/practice/ProgressBar'
 import { QuestionCard } from '../components/practice/QuestionCard'
 import { useActiveMistakeCount } from '../hooks/useActiveMistakeCount'
-import { usePracticeSession } from '../hooks/usePracticeSession'
+import {
+  usePracticeSession,
+  type ReportedResult,
+} from '../hooks/usePracticeSession'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
+import { pickFeedback } from '../utils/feedback'
 import { speakQuestion } from '../utils/speech'
 import { parsePracticeConfig } from '../utils/validation'
 
@@ -51,6 +55,23 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
     masteryThreshold: settings.masteryThreshold,
   })
   const [confirmingEnd, setConfirmingEnd] = useState(false)
+  // A friendly note about the answer just given, if messages are turned on.
+  const [feedback, setFeedback] = useState<{
+    text: string
+    correct: boolean
+  } | null>(null)
+
+  const handleResult = (answer: ReportedResult) => {
+    recordResult(answer)
+    setFeedback(
+      settings.feedbackEnabled
+        ? {
+            text: pickFeedback(answer.correct, feedback?.text ?? null),
+            correct: answer.correct,
+          }
+        : null,
+    )
+  }
 
   // Once the session is over, hand the results to the summary page.
   useEffect(() => {
@@ -64,7 +85,7 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
   const isContinuous = totalQuestions === null
 
   // Read aloud by screen readers whenever the question changes.
-  const progressAnnouncement = `Question ${questionNumber}${
+  const progressAnnouncement = `${feedback ? `${feedback.text} ` : ''}Question ${questionNumber}${
     isContinuous ? '' : ` of ${totalQuestions}`
   }. ${speakQuestion(currentQuestion)} ${
     isContinuous
@@ -73,7 +94,7 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
   }`
 
   return (
-    <section>
+    <section className="practice-session">
       <h1>Practice</h1>
       <div
         className="visually-hidden"
@@ -110,6 +131,16 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         )}
       </div>
 
+      {feedback && (
+        // Screen readers hear this through the announcement above.
+        <p
+          className={`feedback feedback--${feedback.correct ? 'right' : 'wrong'}`}
+          aria-hidden="true"
+        >
+          <span className="feedback__star">★</span> {feedback.text}
+        </p>
+      )}
+
       {confirmingEnd && (
         <ConfirmDialog
           title="End this session?"
@@ -136,7 +167,7 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         }
         shortcutsEnabled={!confirmingEnd}
         showExplanation={settings.showExplanations}
-        onResult={recordResult}
+        onResult={handleResult}
       />
     </section>
   )
