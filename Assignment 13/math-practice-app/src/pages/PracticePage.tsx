@@ -6,8 +6,10 @@ import { ProgressBar } from '../components/practice/ProgressBar'
 import { QuestionCard } from '../components/practice/QuestionCard'
 import { useActiveMistakeCount } from '../hooks/useActiveMistakeCount'
 import { usePracticeSession } from '../hooks/usePracticeSession'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
+import { speakQuestion } from '../utils/speech'
 import { parsePracticeConfig } from '../utils/validation'
 
 export function PracticePage() {
@@ -35,6 +37,7 @@ export function PracticePage() {
 function ActiveSession({ config }: { config: PracticeConfig }) {
   const navigate = useNavigate()
   const { settings } = useSettings()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const {
     session,
     currentQuestion,
@@ -60,9 +63,26 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
 
   const isContinuous = totalQuestions === null
 
+  // Read aloud by screen readers whenever the question changes.
+  const progressAnnouncement = `Question ${questionNumber}${
+    isContinuous ? '' : ` of ${totalQuestions}`
+  }. ${speakQuestion(currentQuestion)} ${
+    isContinuous
+      ? `${session.attempted} answered.`
+      : `${session.attempted} of ${totalQuestions} answered.`
+  }`
+
   return (
     <section>
       <h1>Practice</h1>
+      <div
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {progressAnnouncement}
+      </div>
 
       <div className="session-bar">
         {isContinuous ? (
@@ -111,7 +131,10 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         question={currentQuestion}
         questionNumber={questionNumber}
         totalQuestions={totalQuestions}
-        animationEnabled={settings.cardAnimationEnabled}
+        animationEnabled={
+          settings.cardAnimationEnabled && !prefersReducedMotion
+        }
+        shortcutsEnabled={!confirmingEnd}
         showExplanation={settings.showExplanations}
         onResult={recordResult}
       />

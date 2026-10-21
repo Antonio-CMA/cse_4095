@@ -7,7 +7,11 @@
   --color-primary: #3b5bdb;
   --color-primary-dark: #2f49b0;
   --color-primary-soft: #e7ecff;
-  --color-border: #c9d2f5;
+  --color-border: #c9d2f5; /* decorative panel edges */
+  /* Edges of things you press or fill in: at least 3:1 against every background. */
+  --color-border-strong: #6f7db8;
+  /* The focus ring: at least 3:1 against every background it sits on. */
+  --color-focus: #a13f00;
   --radius: 14px;
   --font-size-base: 1.125rem;
 
@@ -25,6 +29,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  /* A long word may break rather than push the page wider than the screen. */
+  overflow-wrap: anywhere;
 }
 
 h1 {
@@ -38,7 +44,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid #f08c00;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 
@@ -113,6 +119,11 @@ a {
 }
 
 .page-container:focus {
+  outline: none;
+}
+
+/* The heading is only focused by the app, after a page change. */
+h1[tabindex='-1']:focus {
   outline: none;
 }
 
@@ -294,7 +305,7 @@ a {
   font-variant-numeric: tabular-nums;
   color: var(--color-text);
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius);
   cursor: pointer;
 }
@@ -307,6 +318,25 @@ a {
   background: var(--color-primary-soft);
   border-color: var(--color-primary);
   box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+/* The number key that also chooses this answer. */
+.answer-choice__key {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
 }
 
 .answer-choice__check {
@@ -380,7 +410,7 @@ a {
   flex: 1 1 12rem;
   height: 1rem;
   appearance: none;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border-strong);
   border-radius: 999px;
   background: var(--color-surface);
   overflow: hidden;
@@ -432,7 +462,7 @@ a {
 /* ---- Session summary ---- */
 .summary-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
   gap: 0.75rem;
   margin: 1.5rem 0;
 }
@@ -516,6 +546,20 @@ a {
   border: 0;
 }
 
+/*
+ * Children of a grid refuse to shrink below their content by default, so one
+ * wide child makes the whole page scroll sideways on a small screen or with
+ * enlarged text. Letting them shrink keeps everything inside the screen.
+ */
+.setup-form > *,
+.settings-sections > *,
+.settings-group > *,
+.stats-sections > *,
+.mistake-list > *,
+.recent-sessions > * {
+  min-width: 0;
+}
+
 /* ---- Settings ---- */
 .settings-status {
   min-height: 1.5rem;
@@ -564,7 +608,7 @@ a {
   font-weight: 700;
   color: var(--color-text);
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius);
 }
 
@@ -604,7 +648,7 @@ a {
 
 .stat-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   gap: 0.75rem;
 }
 
@@ -690,7 +734,7 @@ a {
 
 .missed-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: 0.75rem;
 }
 
@@ -869,7 +913,7 @@ a {
 
 .choice-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   gap: 0.75rem;
 }
 
@@ -896,7 +940,7 @@ a {
   min-height: 52px;
   padding: 0.75rem 1rem;
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius);
 }
 
@@ -926,7 +970,7 @@ a {
 }
 
 .choice__input:focus-visible + .choice__body {
-  outline: 3px solid #f08c00;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 

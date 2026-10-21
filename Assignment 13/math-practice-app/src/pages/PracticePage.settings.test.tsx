@@ -33,7 +33,9 @@ function renderSession() {
 async function flipFirstChoice(user: ReturnType<typeof userEvent.setup>) {
   const front = screen.getByRole('region', { name: 'Question' })
   const choice = within(front).getAllByRole('button', { pressed: false })[0]
-  const chosen = Number(choice.textContent?.replace('✓', ''))
+  const chosen = Number(
+    choice.querySelector('.answer-choice__value')?.textContent,
+  )
   await user.click(choice)
   await user.click(screen.getByRole('button', { name: 'Flip Card' }))
   return chosen

@@ -6,6 +6,7 @@ import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { DifficultySelector } from '../components/practice/DifficultySelector'
 import { OperationSelector } from '../components/practice/OperationSelector'
 import { SessionLengthSelector } from '../components/practice/SessionLengthSelector'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useSettings } from '../hooks/useSettings'
 import { MAX_MASTERY_THRESHOLD } from '../services/settingsService'
 import type { AppSettings } from '../types/settings'
@@ -21,6 +22,7 @@ export function SettingsPage() {
   const navigate = useNavigate()
   const { settings, updateSettings, resetSettings, clearAllData } =
     useSettings()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const masteryId = useId()
   const masteryHintId = useId()
 
@@ -118,6 +120,12 @@ export function SettingsPage() {
               onChange={() => change({ soundEnabled: !settings.soundEnabled })}
             />
           </div>
+          {prefersReducedMotion && (
+            <p className="settings-field__hint">
+              Your device is set to reduce motion, so cards always switch
+              instantly, whatever you choose for card animation.
+            </p>
+          )}
         </section>
 
         <section aria-labelledby="settings-mastery-heading">
