@@ -1,18 +1,15 @@
 import { getAccuracy } from '../../services/statisticsService'
 import type { PracticeSession } from '../../types/session'
-import { formatDifficulty, formatOperations } from '../../utils/format'
+import {
+  formatDateTime,
+  formatDifficulty,
+  formatOperations,
+} from '../../utils/format'
 import { AccuracyValue } from '../common/AccuracyValue'
 
 interface RecentSessionsProps {
   /** Newest first. */
   sessions: PracticeSession[]
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  })
 }
 
 /** The latest practice sessions, newest at the top. */
@@ -30,7 +27,7 @@ export function RecentSessions({ sessions }: RecentSessionsProps) {
             <li key={session.id} className="recent-session">
               <p className="recent-session__when">
                 <time dateTime={session.startedAt}>
-                  {formatDate(session.startedAt)}
+                  {formatDateTime(session.startedAt)}
                 </time>
               </p>
               <p className="recent-session__what">

@@ -37,6 +37,7 @@ export function createEmptyStatistics(): AppStatistics {
       3: emptyBucket(),
       4: emptyBucket(),
     },
+    review: emptyBucket(),
   }
 }
 
@@ -56,12 +57,16 @@ export function addAttemptToStatistics(
   stats: AppStatistics,
   attempt: Pick<
     PracticeAttempt,
-    'operation' | 'difficulty' | 'selfReportedCorrect'
+    'operation' | 'difficulty' | 'selfReportedCorrect' | 'source'
   >,
 ): AppStatistics {
   const correct = attempt.selfReportedCorrect
   return {
     ...addToBucket(stats, correct),
+    review:
+      attempt.source === 'mistake-review'
+        ? addToBucket(stats.review, correct)
+        : stats.review,
     byOperation: {
       ...stats.byOperation,
       [attempt.operation]: addToBucket(
@@ -127,7 +132,13 @@ export function parseStoredStatistics(value: unknown): AppStatistics | null {
     return null
   }
 
+  // Totals saved before review statistics existed have no "review" part, so
+  // they are rejected and counted again from the saved answers.
+  const review = parseBucket(saved.review)
+  if (!review || review.attempted > total.attempted) return null
+
   const result = createEmptyStatistics()
+  result.review = review
   result.attempted = total.attempted
   result.correct = total.correct
   result.incorrect = total.incorrect

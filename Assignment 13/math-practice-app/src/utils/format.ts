@@ -21,3 +21,16 @@ export function formatDifficulty(level: DifficultyLevel): string {
   const option = DIFFICULTY_OPTIONS.find((o) => o.value === level)
   return option ? `Level ${level}: ${option.label}` : `Level ${level}`
 }
+
+/** A date and time in the student's own language and format. */
+export function formatDateTime(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+}
+
+/** Just the date, e.g. "Mar 1, 2026". */
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString(undefined, { dateStyle: 'medium' })
+}

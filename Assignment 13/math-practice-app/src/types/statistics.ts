@@ -12,4 +12,6 @@ export interface AppStatistics {
   incorrect: number
   byOperation: Record<MathOperation, OperationStatistics>
   byDifficulty: Record<DifficultyLevel, OperationStatistics>
+  /** Just the review questions (similar questions made from mistakes). */
+  review: OperationStatistics
 }

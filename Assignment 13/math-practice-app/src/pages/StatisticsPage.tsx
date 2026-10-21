@@ -4,13 +4,19 @@ import { ButtonLink } from '../components/common/ButtonLink'
 import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { EmptyState } from '../components/common/EmptyState'
 import { DifficultyBreakdown } from '../components/statistics/DifficultyBreakdown'
+import { FrequentlyMissed } from '../components/statistics/FrequentlyMissed'
+import { MistakeDetails } from '../components/statistics/MistakeDetails'
+import { MistakeStatistics } from '../components/statistics/MistakeStatistics'
 import { OperationBreakdown } from '../components/statistics/OperationBreakdown'
 import { RecentSessions } from '../components/statistics/RecentSessions'
 import { StatisticsOverview } from '../components/statistics/StatisticsOverview'
+import { useSettings } from '../hooks/useSettings'
 import { useStatistics } from '../hooks/useStatistics'
 
 export function StatisticsPage() {
-  const { statistics, recentSessions, reset } = useStatistics()
+  const { statistics, recentSessions, mistakePatterns, reset } = useStatistics()
+  const { settings } = useSettings()
+  const masteryThreshold = settings.masteryThreshold
   const [confirmingReset, setConfirmingReset] = useState(false)
   const [resetMessage, setResetMessage] = useState<string | null>(null)
 
@@ -48,6 +54,19 @@ export function StatisticsPage() {
           <StatisticsOverview statistics={statistics} />
           <OperationBreakdown statistics={statistics} />
           <DifficultyBreakdown statistics={statistics} />
+          <MistakeStatistics
+            statistics={statistics}
+            patterns={mistakePatterns}
+            masteryThreshold={masteryThreshold}
+          />
+          <FrequentlyMissed
+            statistics={statistics}
+            patterns={mistakePatterns}
+          />
+          <MistakeDetails
+            patterns={mistakePatterns}
+            masteryThreshold={masteryThreshold}
+          />
           <RecentSessions sessions={recentSessions} />
 
           <section aria-labelledby="reset-heading" className="stats-reset">
