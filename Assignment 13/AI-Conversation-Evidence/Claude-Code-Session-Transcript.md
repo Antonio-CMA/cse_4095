@@ -1,16 +1,16 @@
-# Claude Code session transcript: building the Math Practice app
+﻿# Claude Code session transcript: building the Math Practice app
 
 This is a readable export of the AI-assisted development session that built the app in `Assignment 13/math-practice-app`, from the first phase to release preparation.
 
 | | |
 |---|---|
 | Tool | Claude Code (desktop app) |
-| Session span | 2026-10-20T22:44:14.744Z to 2026-10-21T23:03:57.486Z (UTC) |
-| Messages typed by the student | 28 |
-| Replies written by Claude | 252 |
-| Tool actions between replies (files read and edited, commands run, browser checks) | 1621 |
+| Session span | 2026-10-20T22:44:14.744Z to 2026-10-21T23:20:24.105Z (UTC) |
+| Messages typed by the student | 29 |
+| Replies written by Claude | 262 |
+| Tool actions between replies (files read and edited, commands run, browser checks) | 1683 |
 
-**What this file contains.** Every message the student typed and every reply Claude wrote in the chat, in order. Between replies, a line such as *Used tools: Edit ×3, PowerShell ×2* records the work done (editing files, running tests and builds, checking pages in a browser). **What it leaves out:** the raw output of those tools (very long), Claude's hidden reasoning, and reminders the app inserts automatically. Email addresses, tokens and the local user name are redacted. The session was continued twice after it grew too long; the automatic summaries that carried the work forward are included in collapsed sections.
+**What this file contains.** Every message the student typed and every reply Claude wrote in the chat, in order. Between replies, a line such as *Used tools: Edit Ã—3, PowerShell Ã—2* records the work done (editing files, running tests and builds, checking pages in a browser). **What it leaves out:** the raw output of those tools (very long), Claude's hidden reasoning, and reminders the app inserts automatically. Email addresses, tokens and the local user name are redacted. The session was continued twice after it grew too long; the automatic summaries that carried the work forward are included in collapsed sections.
 
 ---
 
@@ -20,7 +20,7 @@ This is a readable export of the AI-assisted development session that built the 
 
 Please check to see if this is linked to my GitHub
 
-> *Used tools: PowerShell ×2*
+> *Used tools: PowerShell Ã—2*
 
 ### Claude
 
@@ -44,7 +44,7 @@ I can do either once you tell me which, and the repo name or URL if it's option 
 
 Link the repo https://github.com/Antonio-CMA/cse_4095 to the folder C:\Users\<user>\UCONN\CSE 4095
 
-> *Used tools: PowerShell ×3*
+> *Used tools: PowerShell Ã—3*
 
 ### Claude
 
@@ -70,7 +70,7 @@ When you're ready to publish, I can add the assignments, commit them and push to
 
 Create a markdown file that encapsulates the chat  https://chatgpt.com/share/6acc2af2-7d74-83ea-ac67-198b9a8e2f92
 
-> *Used tools: navigate ×1, get_page_text ×1, Read ×1, Write ×1*
+> *Used tools: navigate Ã—1, get_page_text Ã—1, Read Ã—1, Write Ã—1*
 
 ### Claude
 
@@ -89,7 +89,7 @@ It's a condensed summary, not a word-for-word copy of ChatGPT's replies. The ori
 
 Please redo with a full transcript and put it in the assignment 13 - math game folder
 
-> *Used tools: Write ×1*
+> *Used tools: Write Ã—1*
 
 ### Claude
 
@@ -106,7 +106,7 @@ I saved the full transcript as [ChatGPT-Full-Transcript.md](ChatGPT-Full-Transcr
 
 In GitHub move the current contents of "C:\Users\<user>\UCONN\CSE 4095\Assignment 13 - Math Game" into the Project Docs folder on GitHub under Assignment 13
 
-> *Used tools: PowerShell ×4*
+> *Used tools: PowerShell Ã—4*
 
 ### Claude
 
@@ -127,19 +127,19 @@ Both files are now on GitHub under `Assignment 13/Project Docs/`, pushed to `mai
 
 Let's start implementing the project in the phases from the markdown. Read through the specifications and create a branch to work on for the phases. We'll be merging into main for each phase we go through. We're gonna go phase by phase, and after each phase is completed I want to know what was changed and added. Before the next phase is started, merge the phase branch into main.
 
-> *Used tools: PowerShell ×10, Write ×10, Read ×5, AskUserQuestion ×1*
+> *Used tools: PowerShell Ã—10, Write Ã—10, Read Ã—5, AskUserQuestion Ã—1*
 
 ### Claude
 
 Now the shared types (task 3).
 
-> *Used tools: Write ×5*
+> *Used tools: Write Ã—5*
 
 ### Claude
 
 Next I'm running the formatter, then lint, tests, and a production build to confirm everything works.
 
-> *Used tools: PowerShell ×4, Read ×1, Write ×1*
+> *Used tools: PowerShell Ã—4, Read Ã—1, Write Ã—1*
 
 ### Claude
 
@@ -187,31 +187,31 @@ Tell me to go ahead and I'll merge Phase 1 into `main`, then start Phase 2 (page
 
 Push main after each merge and start phase 2
 
-> *Used tools: PowerShell ×3*
+> *Used tools: PowerShell Ã—3*
 
 ### Claude
 
 Router exports are as expected. Writing the layout, shared button, pages, and routes.
 
-> *Used tools: Write ×20, PowerShell ×2, Read ×1, Edit ×1, navigate ×1, computer ×1*
+> *Used tools: Write Ã—20, PowerShell Ã—2, Read Ã—1, Edit Ã—1, navigate Ã—1, computer Ã—1*
 
 ### Claude
 
 Home page renders well at narrow width. Quickly checking a route click and an unknown URL, then I'll stop the dev server.
 
-> *Used tools: find ×1, navigate ×1, get_page_text ×1, PowerShell ×1*
+> *Used tools: find Ã—1, navigate Ã—1, get_page_text Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Both checks pass and the dev server is stopped. Next I'm committing Phase 2 on its branch.
 
-> *Used tools: PowerShell ×2*
+> *Used tools: PowerShell Ã—2*
 
 ### Claude
 
-Phase 1 is merged into `main` and pushed (`5bbde76` → `d208346`). Phase 2 is done and committed on `phase-2-basic-interface` (`291a22e`). It isn't merged yet; that happens before Phase 3 starts, as agreed.
+Phase 1 is merged into `main` and pushed (`5bbde76` â†’ `d208346`). Phase 2 is done and committed on `phase-2-basic-interface` (`291a22e`). It isn't merged yet; that happens before Phase 3 starts, as agreed.
 
-## What changed in Phase 2 (tasks 4–6)
+## What changed in Phase 2 (tasks 4â€“6)
 
 **Task 4: Shared page layout** (`src/components/layout/`)
 - `PageContainer.tsx`: a `<main id="main-content">` wrapper with responsive padding and a max width.
@@ -253,35 +253,35 @@ Tell me to go ahead and I'll merge Phase 2 into `main`, push it, and start Phase
 
 You can delete the placeholder file. Going forward, keep an eye on the reformatting to make sure things aren't messed up to view. Start the next phase
 
-> *Used tools: Write ×10, Read ×3, PowerShell ×2, Edit ×2*
+> *Used tools: Write Ã—10, Read Ã—3, PowerShell Ã—2, Edit Ã—2*
 
 ### Claude
 
 Phase 3 code and tests are written. Now I'm running format, lint, tests and the build, and I'll check what the formatter changed.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 Format only re-wrapped my two new files, and the only modified tracked files are the ones I meant to change. Now a visual check in the browser.
 
-> *Used tools: computer ×4, PowerShell ×1, navigate ×1*
+> *Used tools: computer Ã—4, PowerShell Ã—1, navigate Ã—1*
 
 ### Claude
 
-Selected state (✓ and highlight) looks right. Checking the bottom of the form and the Start button state.
+Selected state (âœ“ and highlight) looks right. Checking the bottom of the form and the Start button state.
 
-> *Used tools: computer ×3, javascript_tool ×1*
+> *Used tools: computer Ã—3, javascript_tool Ã—1*
 
 ### Claude
 
 The configuration reaches the session route correctly. Stopping the dev server and committing Phase 3.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 2 is merged into `main` and pushed (`d208346` → `e868166`), and the placeholder is deleted. Phase 3 is done and committed on `phase-3-practice-configuration` (`8914110`). It isn't merged yet.
+Phase 2 is merged into `main` and pushed (`d208346` â†’ `e868166`), and the placeholder is deleted. Phase 3 is done and committed on `phase-3-practice-configuration` (`8914110`). It isn't merged yet.
 
 ## Housekeeping
 - **Placeholder:** I deleted `Assignment 13/Project Docs/.placeholder`, in a commit on the Phase 2 branch just before the merge. I left `Assignment 13/README.md` alone, since you only named the placeholder.
@@ -291,12 +291,12 @@ Phase 2 is merged into `main` and pushed (`d208346` → `e868166`), and the plac
   - This phase, Prettier only re-wrapped two of my new files, `OperationSelector.tsx` and its test. I confirmed the only modified tracked files are the ones I meant to change.
   - I also checked the pages in the browser pane, and they look right.
 
-## What changed in Phase 3 (tasks 7–10)
+## What changed in Phase 3 (tasks 7â€“10)
 
 **Task 7: Operation selector** (`components/practice/OperationSelector.tsx`)
 - It has four checkbox tiles: Addition, Subtraction, Multiplication and Division.
 - You can pick more than one. A "Select all (mixed)" button toggles to "Clear all".
-- Selected tiles show a ✓ and a highlight, so the state isn't colour-only.
+- Selected tiles show a âœ“ and a highlight, so the state isn't colour-only.
 - The checkboxes are real, so they work with the keyboard (Tab and Space) and screen readers.
 - Selections come back in a fixed order no matter what order they were clicked.
 
@@ -333,70 +333,70 @@ Tell me to go ahead and I'll merge Phase 3 into `main`, push it, and start Phase
 
 For the review mode and default operations, you can start the framework for them if it's easier to do so now. You can start phase 4.
 
-> *Used tools: Edit ×8, Write ×5, Read ×4, PowerShell ×1*
+> *Used tools: Edit Ã—8, Write Ã—5, Read Ã—4, PowerShell Ã—1*
 
 ### Claude
 
 The setup framework is written. Verifying it, then committing it as its own commit before starting the generators.
 
-> *Used tools: PowerShell ×2*
+> *Used tools: PowerShell Ã—2*
 
 ### Claude
 
 Now Phase 4 itself. First the utilities (task 11) and the types they depend on.
 
-> *Used tools: Write ×14, Read ×1, Edit ×1*
+> *Used tools: Write Ã—14, Read Ã—1, Edit Ã—1*
 
 ### Claude
 
 Generators, validation and tests are written. Running format, lint, tests and the build.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 All 101 tests pass, and the formatter only re-wrapped lines. Committing Phase 4.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 3 is merged into `main` and pushed (`e868166` → `4088c99`). Phase 4 is done and committed on `phase-4-question-generation` in two commits, `3cbb3f8` and `8a63d1b`. It isn't merged yet.
+Phase 3 is merged into `main` and pushed (`e868166` â†’ `4088c99`). Phase 4 is done and committed on `phase-4-question-generation` in two commits, `3cbb3f8` and `8a63d1b`. It isn't merged yet.
 
 ## Setup framework (commit `3cbb3f8`)
 I put the review-mode and default-operations framework in its own commit, ahead of the Phase 4 work.
 - **Review mode:**
   - There's a new `ReviewMode` type, and `reviewMode` is now part of the config passed to the practice session.
   - `ReviewModeSelector` shows "Regular practice" and "Practice my mistakes" on the setup page.
-  - Mistake review stays disabled, with the explanation "Nothing to review yet…", until there are mistakes. It shows "Review N questions you missed" once there are.
+  - Mistake review stays disabled, with the explanation "Nothing to review yetâ€¦", until there are mistakes. It shows "Review N questions you missed" once there are.
   - `ChoiceOption` gained a `disabled` state with a dashed, greyed look.
 - **Default operations:**
   - `DEFAULT_OPERATIONS` (currently none selected) and the other defaults live in `practiceOptions.ts`.
   - The new hook `usePracticeDefaults` feeds them to the setup page. Phase 11 will swap in saved settings.
-  - The new hook `useActiveMistakeCount` is a stub that returns 0 until mistakes are tracked (Phases 12–14).
+  - The new hook `useActiveMistakeCount` is a stub that returns 0 until mistakes are tracked (Phases 12â€“14).
 - **Still to come:** In Phase 14, review mode should make the operation picker optional, because the questions will come from your mistakes.
 
-## Phase 4 (tasks 11–16, commit `8a63d1b`)
+## Phase 4 (tasks 11â€“16, commit `8a63d1b`)
 
 **Task 11: Utilities** (`src/utils/`)
 - `math.ts`:
   - `randomInt` and `randomInRange` pick a whole number in a range, ends included.
   - `calculateAnswer` does the arithmetic for each operation.
-  - `OPERATION_SYMBOLS` holds the + − × ÷ signs.
+  - `OPERATION_SYMBOLS` holds the + âˆ’ Ã— Ã· signs.
 - `shuffle.ts` makes a shuffled copy and leaves the original alone.
 - `ids.ts` has `createId()`, which falls back if `crypto.randomUUID` isn't available.
 - All three take a random-number source you can inject, so tests are repeatable. `src/test/rng.ts` has a seeded generator and a fixed-sequence generator for tests.
 
-**Tasks 12–15: The four generators** (`services/operationGenerators.ts`)
-- The number ranges for each level are in one table, `services/difficultyRules.ts`, taken from spec §7.
+**Tasks 12â€“15: The four generators** (`services/operationGenerators.ts`)
+- The number ranges for each level are in one table, `services/difficultyRules.ts`, taken from spec Â§7.
 - **Addition:** operands in range, and results never exceed the level's cap (20, 100, 200, 2,000).
 - **Subtraction:** the larger number always comes first, so answers are never negative, and 0 is possible.
 - **Multiplication:**
-  - Levels 1–2 use factors 0–5 and 0–10.
-  - Level 3 randomly picks one digit × one digit or one digit × two digits.
-  - Level 4 randomly picks two digit × one digit or two digit × two digits.
+  - Levels 1â€“2 use factors 0â€“5 and 0â€“10.
+  - Level 3 randomly picks one digit Ã— one digit or one digit Ã— two digits.
+  - Level 4 randomly picks two digit Ã— one digit or two digit Ã— two digits.
 - **Division:** it picks the divisor and the answer first, then builds the dividend from them. Answers are always whole numbers and the divisor is never zero. Dividends stay within 25, 100, 144 and 1,000 for the four levels.
-- Questions read like `7 × 8 = ?` and have `source: 'regular'`.
+- Questions read like `7 Ã— 8 = ?` and have `source: 'regular'`.
 
 **Task 16: Main generator** (`services/questionGenerator.ts`)
 - `generateQuestionDraft(operation, difficulty)` generates a question, checks it, and retries up to 5 times. If every try fails it throws a `QuestionGenerationError`.
@@ -419,25 +419,25 @@ Tell me to go ahead and I'll merge Phase 4 into `main`, push it, and start Phase
 
 Move on to the next phase
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 4 is merged and pushed (`4088c99` → `752ba79`). Starting Phase 5 with the distractor generator.
+Phase 4 is merged and pushed (`4088c99` â†’ `752ba79`). Starting Phase 5 with the distractor generator.
 
-> *Used tools: Write ×5, Edit ×5, Read ×4*
+> *Used tools: Write Ã—5, Edit Ã—5, Read Ã—4*
 
 ### Claude
 
 Distractors, choice shuffling and the full-question generator are written. Adding the choice-validation tests, then running everything.
 
-> *Used tools: PowerShell ×2, Write ×1, Edit ×1*
+> *Used tools: PowerShell Ã—2, Write Ã—1, Edit Ã—1*
 
 ### Claude
 
-Phase 4 is merged into `main` and pushed (`4088c99` → `752ba79`). Phase 5 is done and committed on `phase-5-multiple-choice` (`f185a91`). It isn't merged yet.
+Phase 4 is merged into `main` and pushed (`4088c99` â†’ `752ba79`). Phase 5 is done and committed on `phase-5-multiple-choice` (`f185a91`). It isn't merged yet.
 
-## What changed in Phase 5 (tasks 17–19)
+## What changed in Phase 5 (tasks 17â€“19)
 
 **Task 17: Wrong answer choices** (`services/distractors.ts`)
 - `generateDistractors(question)` returns exactly three wrong answers.
@@ -448,10 +448,10 @@ Phase 4 is merged into `main` and pushed (`4088c99` → `752ba79`). Phase 5 is d
 **Task 18: Operation-specific wrong answers** (same file)
 - It mixes a couple of typical slips with nearby numbers, picked at random.
 - **Nearby numbers:** the right answer plus or minus 1, 2, 3, 5 and 10, and 100 for large answers.
-- **Addition:** carrying slips (answer ±10), or subtracting instead of adding.
-- **Subtraction:** borrowing slips (answer ±10), or adding instead of subtracting.
-- **Multiplication:** neighbouring times-table facts, so 8 × 7 can give 48, 49, 63 or 64, plus adding the factors by mistake.
-- **Division:** other answers in the same fact family (answer ±1 or ±2), the divisor itself, or subtracting instead.
+- **Addition:** carrying slips (answer Â±10), or subtracting instead of adding.
+- **Subtraction:** borrowing slips (answer Â±10), or adding instead of subtracting.
+- **Multiplication:** neighbouring times-table facts, so 8 Ã— 7 can give 48, 49, 63 or 64, plus adding the factors by mistake.
+- **Division:** other answers in the same fact family (answer Â±1 or Â±2), the divisor itself, or subtracting instead.
 
 **Task 19: Shuffling** (`services/answerChoices.ts`)
 - `buildChoices` combines the right answer with the three wrong ones and shuffles all four. A test checks that over 2,000 questions the right answer lands in each of the four positions between 400 and 600 times.
@@ -466,10 +466,10 @@ Phase 4 is merged into `main` and pushed (`4088c99` → `752ba79`). Phase 5 is d
 - `generateQuestion` runs this check and throws a `QuestionGenerationError` if anything is wrong.
 
 **Checks:** 152 tests pass across 17 files, with 51 new ones. They cover:
-- every operation at every level, 200–300 samples each
+- every operation at every level, 200â€“300 samples each
 - the edge cases: an answer of 0, the smallest division answer, and 9,801 as a large answer
 - repeatability with the same seed
-- the spec's 8 × 7 example
+- the spec's 8 Ã— 7 example
 - the validation rules
 
 Lint, Prettier and the build pass. Prettier only re-wrapped lines in new files.
@@ -486,97 +486,97 @@ Tell me to go ahead and I'll merge Phase 5 into `main`, push it, and start Phase
 
 You can move on to the next phase
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 5 is merged and pushed (`752ba79` → `885e2d6`). Starting Phase 6 with the card components.
+Phase 5 is merged and pushed (`752ba79` â†’ `885e2d6`). Starting Phase 6 with the card components.
 
-> *Used tools: Write ×5, Edit ×2, Read ×1*
+> *Used tools: Write Ã—5, Edit Ã—2, Read Ã—1*
 
 ### Claude
 
 Styles are in, including the reduced-motion fallback. Writing the tests.
 
-> *Used tools: Write ×3, Edit ×3, PowerShell ×1*
+> *Used tools: Write Ã—3, Edit Ã—3, PowerShell Ã—1*
 
 ### Claude
 
 All 171 tests pass. The card isn't on any page yet, so for a visual check I'm adding a temporary preview route, which I'll remove before committing.
 
-> *Used tools: Edit ×2, Write ×1, Read ×1, PowerShell ×1, navigate ×1, computer ×1*
+> *Used tools: Edit Ã—2, Write Ã—1, Read Ã—1, PowerShell Ã—1, navigate Ã—1, computer Ã—1*
 
 ### Claude
 
 The earlier tab is gone; the navigation opened a new one. Using that.
 
-> *Used tools: computer ×1*
+> *Used tools: computer Ã—1*
 
 ### Claude
 
 Front looks right. Selecting an answer and flipping.
 
-> *Used tools: computer ×4*
+> *Used tools: computer Ã—4*
 
 ### Claude
 
-Caught mid-flip — the 3D rotation is running. Waiting for it to finish.
+Caught mid-flip â€” the 3D rotation is running. Waiting for it to finish.
 
-> *Used tools: computer ×2*
+> *Used tools: computer Ã—2*
 
 ### Claude
 
 The back is readable and not mirrored. Recording a result to confirm the next card starts fresh.
 
-> *Used tools: computer ×3*
+> *Used tools: computer Ã—3*
 
 ### Claude
 
 Fresh card with Flip disabled (the pale tile is just mouse hover). One more check: narrow phone width.
 
-> *Used tools: resize_window ×1, computer ×1*
+> *Used tools: resize_window Ã—1, computer Ã—1*
 
 ### Claude
 
 Mobile layout is fine. Last check: the no-animation mode swaps sides correctly.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 All three modes behave correctly. Cleaning up: resetting the viewport, stopping the server, and removing the temporary preview route and page.
 
-> *Used tools: Edit ×2, resize_window ×1, PowerShell ×1, Read ×1*
+> *Used tools: Edit Ã—2, resize_window Ã—1, PowerShell Ã—1, Read Ã—1*
 
 ### Claude
 
 Preview route is gone. Final full check and commit.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 5 is merged into `main` and pushed (`752ba79` → `885e2d6`). Phase 6 is done and committed on `phase-6-question-card` (`45d9e1b`). It isn't merged yet.
+Phase 5 is merged into `main` and pushed (`752ba79` â†’ `885e2d6`). Phase 6 is done and committed on `phase-6-question-card` (`45d9e1b`). It isn't merged yet.
 
-## What changed in Phase 6 (tasks 20–25)
+## What changed in Phase 6 (tasks 20â€“25)
 
 **Task 20: Answer choice** (`components/practice/AnswerChoice.tsx`)
 - Each answer is a large button, at least 72px tall, with hover and focus states.
-- The selected one shows a ✓ and a highlight, and reports `aria-pressed`.
+- The selected one shows a âœ“ and a highlight, and reports `aria-pressed`.
 - It can be disabled, so answers lock after the card is flipped.
 
-**Tasks 21–22: Front of the card and answer selection** (`CardFront.tsx`)
+**Tasks 21â€“22: Front of the card and answer selection** (`CardFront.tsx`)
 - It shows "Question 3 of 10", or just "Question 3" for continuous practice. The sum is in large text, with the four choices below.
 - You can change your pick any number of times before flipping.
 - **Flip Card** stays disabled until an answer is chosen, with a hint: "Pick an answer, then flip the card."
-- The choices form a 2×2 grid, and a single column on phones.
+- The choices form a 2Ã—2 grid, and a single column on phones.
 
 **Task 23: Back of the card** (`CardBack.tsx`)
-- It shows the solved sum (e.g. `10 × 4 = 40`), the correct answer, and your answer.
+- It shows the solved sum (e.g. `10 Ã— 4 = 40`), the correct answer, and your answer.
 - There are two buttons, **I Got It Right** (primary) and **I Got It Wrong** (plain).
 - Once one is pressed, both are disabled and the result is reported only once.
 
-**Tasks 24–25: Flip behaviour and animation** (`QuestionCard.tsx` plus CSS)
+**Tasks 24â€“25: Flip behaviour and animation** (`QuestionCard.tsx` plus CSS)
 - `QuestionCard` ties the two sides together. It reports `{ selectedAnswer, correct }` through `onResult`.
 - A new question always starts fresh: unflipped, with nothing selected.
 - **Flip animation:** a 3D rotation of about 0.6 seconds. The front and back sit in the same spot, so the card doesn't jump in height, and the back isn't mirrored.
@@ -613,79 +613,79 @@ Make the animated box look more in line with the rest of the site. After that, y
 
 Restyling the flip card to match the rest of the site. It's Phase 6 work that isn't merged yet, so I'll commit it on the Phase 6 branch before merging. First, a look at how the card's CSS differs from the site's other components.
 
-> *Used tools: Edit ×5, Grep ×1*
+> *Used tools: Edit Ã—5, Grep Ã—1*
 
 ### Claude
 
 To judge it fairly I'll re-create the temporary preview and compare it to the Setup page.
 
-> *Used tools: Edit ×2, Write ×1, PowerShell ×1, navigate ×1, computer ×1*
+> *Used tools: Edit Ã—2, Write Ã—1, PowerShell Ã—1, navigate Ã—1, computer Ã—1*
 
 ### Claude
 
 The card now has the same border, corners and width as the Setup panel. Checking the flipped side too.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Both sides match the site now. Removing the temporary preview, then verifying and committing the restyle on the Phase 6 branch.
 
-> *Used tools: Edit ×6, Read ×4, PowerShell ×2, Write ×2*
+> *Used tools: Edit Ã—6, Read Ã—4, PowerShell Ã—2, Write Ã—2*
 
 ### Claude
 
 Now the UI pieces: progress bar, confirmation panel, and the practice page.
 
-> *Used tools: Write ×2*
+> *Used tools: Write Ã—2*
 
 ### Claude
 
 `Button` needs to accept a `ref` for the focus behaviour (React 19 passes it as a normal prop). Updating its type.
 
-> *Used tools: Edit ×4, Write ×2, Read ×1*
+> *Used tools: Edit Ã—4, Write Ã—2, Read Ã—1*
 
 ### Claude
 
 Now the tests.
 
-> *Used tools: Write ×5*
+> *Used tools: Write Ã—5*
 
 ### Claude
 
 Now the practice page tests, and updating the route test that assumed `/practice/session` shows a placeholder.
 
-> *Used tools: Edit ×2, Write ×1, Read ×1, PowerShell ×1*
+> *Used tools: Edit Ã—2, Write Ã—1, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 223 tests pass, and lint and type-check are clean. Now a real-browser run of the whole flow: setup, session, finish.
 
-> *Used tools: PowerShell ×1, navigate ×1, javascript_tool ×1, computer ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1, javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Direct visits bounce back to setup, and the session starts correctly. Answering two questions to check the progress bar, then finishing the rest.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Progress bar is advancing. Finishing the last three questions to confirm the hand-off to the summary route.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 The fixed-length flow works end to end: 5 attempted, 3 right, 2 wrong, and the results went to the summary route. Now continuous practice and the End Session confirmation.
 
-> *Used tools: navigate ×1, javascript_tool ×1, computer ×1*
+> *Used tools: navigate Ã—1, javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The confirmation panel looks right and focus starts on the safe button. Confirming the end, then cleaning up.
 
-> *Used tools: PowerShell ×2, javascript_tool ×1*
+> *Used tools: PowerShell Ã—2, javascript_tool Ã—1*
 
 ### Claude
 
@@ -693,10 +693,10 @@ The flip card now matches the rest of the site, and Phase 7 is finished and comm
 
 ## Card restyle
 - **What I changed:** The card used 3px borders and a larger corner radius than the other panels. It now uses the same 2px border, 14px corners, padding and full width as the Setup panel, and the answer tiles match the setup tiles.
-- **Where it went:** It's a separate commit (`19599f7`) on the Phase 6 branch. Phase 6 is merged and pushed (`885e2d6` → `ba2034c`).
+- **Where it went:** It's a separate commit (`19599f7`) on the Phase 6 branch. Phase 6 is merged and pushed (`885e2d6` â†’ `ba2034c`).
 - **Checked in the browser:** Both sides look consistent next to the page heading. I removed the temporary preview page afterwards.
 
-## What changed in Phase 7 (tasks 26–31)
+## What changed in Phase 7 (tasks 26â€“31)
 
 **Task 26: Session state** (`services/practiceSession.ts`, `hooks/usePracticeSession.ts`)
 - A session holds an id, start time, operations, difficulty, length, running counts of attempted, correct and incorrect, an optional completion time, the list of attempts, and the current question.
@@ -707,7 +707,7 @@ The flip card now matches the rest of the site, and Phase 7 is finished and comm
 - **Bad or missing setup:** If it's missing, empty or invalid, it redirects back to Setup. I added `parsePracticeConfig` for this, and visiting `/practice/session` directly now lands on Setup.
 - **Fresh session per start:** Each fresh start gets a fresh session.
 
-**Tasks 28–29: Results and the next question**
+**Tasks 28â€“29: Results and the next question**
 - Each verdict becomes a `PracticeAttempt` with the operands, your selected answer, your verdict, the level and a timestamp.
 - Each question is counted exactly once. A repeat click, a stale click, or a click after the session ends is ignored.
 - The next question avoids repeating the same problem back to back (`generateNextQuestion`), and the card resets each time.
@@ -740,19 +740,19 @@ Tell me to go ahead and I'll merge Phase 7 into `main`, push it, and start Phase
 
 Move on to the next phase
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 7 is merged and pushed (`ba2034c` → `6f43be2`). Starting Phase 8 with the helpers and the summary data validation.
+Phase 7 is merged and pushed (`ba2034c` â†’ `6f43be2`). Starting Phase 8 with the helpers and the summary data validation.
 
-> *Used tools: Read ×3, Edit ×3, Write ×1*
+> *Used tools: Read Ã—3, Edit Ã—3, Write Ã—1*
 
 ### Claude
 
 Now the summary components and page.
 
-> *Used tools: Edit ×5, Write ×3, Read ×1*
+> *Used tools: Edit Ã—5, Write Ã—3, Read Ã—1*
 
 ### Claude
 
@@ -762,61 +762,61 @@ API Error: The response stopped arriving. The response above may be incomplete.
 
 The classifier had a transient failure on those three edits. Retrying them once, as the message says.
 
-> *Used tools: Edit ×3*
+> *Used tools: Edit Ã—3*
 
 ### Claude
 
 Edits applied. Now the summary styles.
 
-> *Used tools: Edit ×1*
+> *Used tools: Edit Ã—1*
 
 ### Claude
 
 Now the tests.
 
-> *Used tools: Write ×7, Edit ×5, Read ×2, PowerShell ×1*
+> *Used tools: Write Ã—7, Edit Ã—5, Read Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 All 263 tests pass. Now the real-browser check of the summary page.
 
-> *Used tools: PowerShell ×1, navigate ×1, javascript_tool ×1, computer ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1, javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 That's the previous continuous session's results, which survived the reload (history state keeps them), so it's a useful look at the page. Scrolling down to see the rest, including the actions.
 
-> *Used tools: computer ×2*
+> *Used tools: computer Ã—2*
 
 ### Claude
 
 The capture looks cut off, probably a screenshot artifact from scrolling. Taking it again.
 
-> *Used tools: computer ×1*
+> *Used tools: computer Ã—1*
 
 ### Claude
 
 All five actions are there, and Practice Mistakes is disabled with its explanation. Checking that Change Settings pre-fills the setup page, then Practice Again.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 Pre-fill works. Now a fresh 5-question run through to the summary, including the mixed-operations and wrong-answer counts.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The summary numbers are right (5 attempted, 3 correct, 2 incorrect, 60%, Addition and Subtraction, Level 2: Easy). Last check, Practice Again, then cleanup.
 
-> *Used tools: PowerShell ×2, javascript_tool ×1*
+> *Used tools: PowerShell Ã—2, javascript_tool Ã—1*
 
 ### Claude
 
-Phase 7 is merged into `main` and pushed (`ba2034c` → `6f43be2`). Phase 8 is done and committed on `phase-8-session-summary` (`e4a7623`). It isn't merged yet.
+Phase 7 is merged into `main` and pushed (`ba2034c` â†’ `6f43be2`). Phase 8 is done and committed on `phase-8-session-summary` (`e4a7623`). It isn't merged yet.
 
-## What changed in Phase 8 (tasks 32–34)
+## What changed in Phase 8 (tasks 32â€“34)
 
 **Task 32: Detect completion**
 - This was already built in Phase 7. A fixed-length session compares answered questions to its length, stops after the last one, saves a completion time, and moves to the summary. Ending a continuous session does the same.
@@ -858,7 +858,7 @@ Tell me to go ahead and I'll merge Phase 8 into `main`, push it, and start Phase
 
 Show me the wording for change settings in the specs
 
-> *Used tools: Grep ×1*
+> *Used tools: Grep Ã—1*
 
 ### Claude
 
@@ -866,7 +866,7 @@ The spec gives only a label for "Change Settings" and doesn't say where the butt
 
 ## Where "Change Settings" appears
 
-**Spec §6.5 Session Completion** (line 378), in the list of summary actions:
+**Spec Â§6.5 Session Completion** (line 378), in the list of summary actions:
 ```
 **Summary Actions**
 
@@ -884,8 +884,8 @@ The spec gives only a label for "Change Settings" and doesn't say where the butt
 
 ## How the spec describes the two "settings" things
 
-- **§6.2 Practice Setup Page** (line 168): "The practice setup page allows the student to configure a practice session." It covers operation, difficulty, session length and review mode.
-- **§6.7 Settings Page** (line 468): "The settings page should provide application-wide preferences." It covers sound, card animation, explanations, default session length, default difficulty, default operations, the mastery threshold, and clearing all data.
+- **Â§6.2 Practice Setup Page** (line 168): "The practice setup page allows the student to configure a practice session." It covers operation, difficulty, session length and review mode.
+- **Â§6.7 Settings Page** (line 468): "The settings page should provide application-wide preferences." It covers sound, card animation, explanations, default session length, default difficulty, default operations, the mastery threshold, and clearing all data.
 
 ## Why it's ambiguous
 
@@ -908,97 +908,97 @@ Which do you want? The Settings page isn't built until Phase 11 either way, so o
 
 Keep the change settings button, but when you open it it gives you the option for both (only the practice setup is functional for now but add buttons for both). Make a note that when we get to the settings page design, it'll be added to the button that's there. Start the next phase
 
-> *Used tools: Edit ×2, Write ×1*
+> *Used tools: Edit Ã—2, Write Ã—1*
 
 ### Claude
 
 Now updating the tests for the new behaviour.
 
-> *Used tools: Edit ×4, Grep ×1, Read ×1*
+> *Used tools: Edit Ã—4, Grep Ã—1, Read Ã—1*
 
 ### Claude
 
 Adding the note to the README so it travels with the project, and verifying the change.
 
-> *Used tools: Edit ×1, PowerShell ×1*
+> *Used tools: Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 265 tests pass. A quick look at the new panel in the browser.
 
-> *Used tools: PowerShell ×1, navigate ×1, javascript_tool ×1, computer ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1, javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The panel looks right: Practice Setup is active and App Settings is disabled with "Coming soon." Committing this to Phase 8, then merging, pushing and branching for Phase 9.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 8 is merged and pushed (`6f43be2` → `f96f1de`). Saving your workflow preferences to memory so they carry across sessions.
+Phase 8 is merged and pushed (`6f43be2` â†’ `f96f1de`). Saving your workflow preferences to memory so they carry across sessions.
 
-> *Used tools: Write ×2*
+> *Used tools: Write Ã—2*
 
 ### Claude
 
 Memory saved. Now Phase 9: local data storage. I'm starting with the storage service and schema versioning.
 
-> *Used tools: Write ×5, Edit ×1*
+> *Used tools: Write Ã—5, Edit Ã—1*
 
 ### Claude
 
 Now the app provider (loads settings at startup), startup wiring, and saving sessions and attempts from the practice hook.
 
-> *Used tools: Write ×5, Read ×3, Edit ×2*
+> *Used tools: Write Ã—5, Read Ã—3, Edit Ã—2*
 
 ### Claude
 
 Now the tests, starting with the storage service and migrations.
 
-> *Used tools: Write ×7, Edit ×3, PowerShell ×2*
+> *Used tools: Write Ã—7, Edit Ã—3, PowerShell Ã—2*
 
 ### Claude
 
 Same shared-array problem in the `loadSettings` fallback and `resetSettings`. I'll add one `createDefaultSettings()` helper and use it everywhere.
 
-> *Used tools: Edit ×4, Read ×1, Grep ×1*
+> *Used tools: Edit Ã—4, Read Ã—1, Grep Ã—1*
 
 ### Claude
 
 Adding a test for the new helper, and raising Vitest's default per-test timeout. The 25-answer test passed on its own but timed out under full-suite load.
 
-> *Used tools: Edit ×3, Read ×1, PowerShell ×1*
+> *Used tools: Edit Ã—3, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 403 tests pass. Now confirming it in a real browser: version recorded at startup, data written during a session, and survival across a reload.
 
-> *Used tools: PowerShell ×1, navigate ×1, javascript_tool ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 The reload cut the script off, as expected. Reading the state after the reload.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 Startup recorded `{"version":1}` and left the unrelated key alone. Now a session, then checking what was saved.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 Everything saved correctly. One more real-browser check: persistence across a reload, and the app starting normally with a deliberately corrupted settings entry.
 
-> *Used tools: javascript_tool ×2, read_console_messages ×1*
+> *Used tools: javascript_tool Ã—2, read_console_messages Ã—1*
 
 ### Claude
 
 Persistence and recovery both work, with no console errors. Cleaning up the test data from the browser pane, stopping the server, and adding notes to the README.
 
-> *Used tools: PowerShell ×2, javascript_tool ×1, Edit ×1*
+> *Used tools: PowerShell Ã—2, javascript_tool Ã—1, Edit Ã—1*
 
 ### Claude
 
@@ -1007,11 +1007,11 @@ The summary's **Change Settings** button now opens a panel with both options, an
 ## Change Settings
 - **How it works:** The button stays. Clicking it opens a panel with two options: **Practice Setup** (works, and keeps your previous choices) and **App Settings** (disabled, with "Coming soon.").
 - **The note:** There's a comment in `SummaryActions.tsx` and a "Notes for later phases" entry in the app README. When the Settings page is designed in Phase 11, App Settings becomes a link to `/settings` inside the same panel, behind the same button.
-- **Where it went:** It's a commit on the Phase 8 branch (`d1ab3e3`). Phase 8 is merged and pushed (`6f43be2` → `f96f1de`), so it's on `main`.
+- **Where it went:** It's a commit on the Phase 8 branch (`d1ab3e3`). Phase 8 is merged and pushed (`6f43be2` â†’ `f96f1de`), so it's on `main`.
 
 I also saved your workflow preferences to memory (branch per phase, merge and push `main`, check formatting) so they carry across sessions.
 
-## What changed in Phase 9 (tasks 35–39)
+## What changed in Phase 9 (tasks 35â€“39)
 
 **Task 35: Storage service** (`services/storageService.ts`)
 - It wraps `localStorage` and never throws. Reads return `ok`, `empty`, `invalid` (bad JSON or fails the checks) or `unavailable`. Writes return `ok` or a reason: `unavailable`, `quota` (full), or `error`.
@@ -1020,7 +1020,7 @@ I also saved your workflow preferences to memory (branch per phase, merge and pu
 
 **Task 36: Schema versioning** (`services/storageMigrations.ts`)
 - The version is stored as `{"version":1}`, as in the spec, and checked at startup.
-- **Older or unversioned data:** It's migrated step by step. The first step, 0→1, only writes the version number. Progress is saved after each step, and a missing or failing step leaves the data as it was.
+- **Older or unversioned data:** It's migrated step by step. The first step, 0â†’1, only writes the version number. Progress is saved after each step, and a missing or failing step leaves the data as it was.
 - **Newer data:** Data from a newer version of the app is left alone. A damaged version number is treated as the oldest version.
 - **Unrelated data:** It never touches keys that aren't the app's.
 
@@ -1028,7 +1028,7 @@ I also saved your workflow preferences to memory (branch per phase, merge and pu
 - Defaults and per-field recovery. Saved settings with a few bad values keep the good ones, and each bad one reverts to its default.
 - `AppProvider` loads the settings when the app starts and saves every change through `useSettings().updateSettings`. If saving fails, the change still applies for that visit.
 
-**Tasks 38–39: Sessions and attempts** (`services/practiceHistory.ts`, plus `storageSchemas.ts` for checking saved records)
+**Tasks 38â€“39: Sessions and attempts** (`services/practiceHistory.ts`, plus `storageSchemas.ts` for checking saved records)
 - **During practice:** The practice hook saves each answer and the session as you go. A session with no answers isn't saved.
 - **Records kept:** Each attempt keeps every field the spec lists, and each session keeps its completion time.
 - **Loading:** Records load back after a restart. Damaged records are skipped, and the next save rewrites the list clean. The recent-sessions list is newest first.
@@ -1059,7 +1059,7 @@ Tell me to go ahead and I'll merge Phase 9 into `main`, push it, and start Phase
 
 For the README deletion, what does this entail?
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
@@ -1088,105 +1088,105 @@ I'd go with option 1, since an empty README isn't doing anything but isn't hurti
 
 Restore the file locally. Start on the next phase
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 The README is restored and the working tree is clean. Merging Phase 9, pushing, and branching for Phase 10.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
-Phase 9 is merged and pushed (`0b7d4f2` → `97d43e2`). Starting Phase 10, beginning with the statistics logic and storage.
+Phase 9 is merged and pushed (`0b7d4f2` â†’ `97d43e2`). Starting Phase 10, beginning with the statistics logic and storage.
 
-> *Used tools: Write ×1*
+> *Used tools: Write Ã—1*
 
 ### Claude
 
 That last helper isn't needed. Removing it.
 
-> *Used tools: Edit ×7, Read ×2, Write ×1*
+> *Used tools: Edit Ã—7, Read Ã—2, Write Ã—1*
 
 ### Claude
 
 Now the statistics components and page.
 
-> *Used tools: Write ×8, Edit ×3, Read ×1*
+> *Used tools: Write Ã—8, Edit Ã—3, Read Ã—1*
 
 ### Claude
 
 Adding an accessible name to the stat cards so tests (and screen readers) can find each one, then the tests.
 
-> *Used tools: Write ×4*
+> *Used tools: Write Ã—4*
 
 ### Claude
 
 Now the page tests, including the reset flow.
 
-> *Used tools: Edit ×3, Read ×2, Write ×1, PowerShell ×1*
+> *Used tools: Edit Ã—3, Read Ã—2, Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 475 tests pass. Now the real-browser check: playing a couple of sessions and looking at the Statistics page.
 
-> *Used tools: PowerShell ×1, navigate ×1, computer ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1, computer Ã—1*
 
 ### Claude
 
 Empty state looks right. Playing two sessions with different settings to populate it.
 
-> *Used tools: javascript_tool ×2, navigate ×1, computer ×1*
+> *Used tools: javascript_tool Ã—2, navigate Ã—1, computer Ã—1*
 
 ### Claude
 
 The screenshot looks stale, since the page path was already `/statistics`. Retaking it.
 
-> *Used tools: computer ×1*
+> *Used tools: computer Ã—1*
 
 ### Claude
 
 Overall totals are right (10 attempted, 7 correct, 3 incorrect, 70%). Scrolling through the breakdowns and recent sessions.
 
-> *Used tools: computer ×2*
+> *Used tools: computer Ã—2*
 
 ### Claude
 
 Another partial capture from scrolling. I'll read the page content directly, then take a settled screenshot of the lower sections.
 
-> *Used tools: computer ×2, javascript_tool ×1*
+> *Used tools: computer Ã—2, javascript_tool Ã—1*
 
 ### Claude
 
 Numbers reconcile (operations and levels each add up to 10; sessions are newest first). Testing the reset flow in the browser.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The confirmation shows the exact spec wording, focus is on the safe button, and nothing has been erased yet. Confirming the erase.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The page data confirms the reset worked (the screenshot lagged again). Settings and the version were kept. One more capture to see the final screen.
 
-> *Used tools: computer ×1*
+> *Used tools: computer Ã—1*
 
 ### Claude
 
 The reset works end to end. Cleaning up the browser data and server, then updating the README notes and committing.
 
-> *Used tools: PowerShell ×2, javascript_tool ×1, Edit ×1*
+> *Used tools: PowerShell Ã—2, javascript_tool Ã—1, Edit Ã—1*
 
 ### Claude
 
-The README is restored locally and the working tree is clean. Phase 9 is merged and pushed (`f96f1de` → `97d43e2`), and Phase 10 is finished and committed on `phase-10-statistics` (`6c94f2a`). Phase 10 isn't merged yet.
+The README is restored locally and the working tree is clean. Phase 9 is merged and pushed (`f96f1de` â†’ `97d43e2`), and Phase 10 is finished and committed on `phase-10-statistics` (`6c94f2a`). Phase 10 isn't merged yet.
 
-## What changed in Phase 10 (tasks 40–47)
+## What changed in Phase 10 (tasks 40â€“47)
 
-**Tasks 40–42: Calculations** (`services/statisticsService.ts`)
+**Tasks 40â€“42: Calculations** (`services/statisticsService.ts`)
 - **Running totals:** There's one set of totals for attempted, correct, incorrect, per operation and per level.
 - **Zero attempts:** Accuracy is null rather than NaN when nothing has been attempted.
 - **Recording answers:** `recordAttempt` saves an answer and adds it to the totals exactly once. A repeated call for the same answer isn't double-counted.
@@ -1194,9 +1194,9 @@ The README is restored locally and the working tree is clean. Phase 9 is merged 
 - **Recovery:** If the saved totals are missing or damaged, they're rebuilt from the saved answers. That also covers answers saved in Phase 9, before totals existed. Totals are only trusted if every number adds up.
 - The practice hook now records answers this way.
 
-**Tasks 43–46: The Statistics page** (`pages/StatisticsPage.tsx`, `components/statistics/`)
+**Tasks 43â€“46: The Statistics page** (`pages/StatisticsPage.tsx`, `components/statistics/`)
 - **Overall:** Questions attempted, correct, incorrect and accuracy.
-- **By operation and by level:** One card each for addition, subtraction, multiplication and division, and for Levels 1–4 (e.g. "Level 2: Easy"). Groups with no answers show zeros and "—", not NaN.
+- **By operation and by level:** One card each for addition, subtraction, multiplication and division, and for Levels 1â€“4 (e.g. "Level 2: Easy"). Groups with no answers show zeros and "â€”", not NaN.
 - **Recent sessions:** The ten latest, newest first, each with date and time, operations, level, counts and accuracy.
 - **Empty state:** "No practice yet" with a Start Practice button, and no Reset button because there's nothing to reset.
 - **Shared pieces:** I added `EmptyState` and `AccuracyValue`, and the session summary now uses `AccuracyValue` too. The statistics hook is `hooks/useStatistics.ts`.
@@ -1230,85 +1230,85 @@ Tell me to go ahead and I'll merge Phase 10 into `main`, push it, and start Phas
 
 Start on the next phase
 
-> *Used tools: PowerShell ×1, Grep ×1*
+> *Used tools: PowerShell Ã—1, Grep Ã—1*
 
 ### Claude
 
-Phase 10 is merged and pushed (`97d43e2` → `a5b222b`). Starting Phase 11 with the provider, which now needs to report save results and support "clear all data".
+Phase 10 is merged and pushed (`97d43e2` â†’ `a5b222b`). Starting Phase 11 with the provider, which now needs to report save results and support "clear all data".
 
-> *Used tools: Edit ×16, Read ×7, Write ×4*
+> *Used tools: Edit Ã—16, Read Ã—7, Write Ã—4*
 
 ### Claude
 
 The practice page now reads the card-animation and explanation settings. Next is the Settings page itself.
 
-> *Used tools: Write ×1, Edit ×1, Read ×1*
+> *Used tools: Write Ã—1, Edit Ã—1, Read Ã—1*
 
 ### Claude
 
 Now wiring up the "App Settings" link, as noted in the README and code comment.
 
-> *Used tools: Edit ×2, PowerShell ×1*
+> *Used tools: Edit Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Type-check and lint are clean. Running the existing suite to see what the provider requirement and the App Settings change broke.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 As expected, pages that use settings now need `AppProvider` in tests. Updating each test helper.
 
-> *Used tools: Edit ×17, Grep ×1, Read ×1*
+> *Used tools: Edit Ã—17, Grep Ã—1, Read Ã—1*
 
 ### Claude
 
 Updating the old tests is done. Now new tests for the Settings page, the saved defaults, the explanations and the provider changes.
 
-> *Used tools: Edit ×5, Write ×3, PowerShell ×2, Read ×1, navigate ×1*
+> *Used tools: Edit Ã—5, Write Ã—3, PowerShell Ã—2, Read Ã—1, navigate Ã—1*
 
 ### Claude
 
 Now the Settings page in a real browser.
 
-> *Used tools: computer ×1*
+> *Used tools: computer Ã—1*
 
 ### Claude
 
 The layout works. Now using it for real: changing defaults, then checking they carry through to setup and a session.
 
-> *Used tools: javascript_tool ×1, navigate ×1*
+> *Used tools: javascript_tool Ã—1, navigate Ã—1*
 
 ### Claude
 
 Settings saved. After a full reload, checking that the setup page starts from them, then starting a session.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Defaults pre-filled the setup, the card swapped without animation, and the explanation appeared after a missed answer. Now the clear-all-data flow.
 
-> *Used tools: javascript_tool ×2, computer ×2, navigate ×1*
+> *Used tools: javascript_tool Ã—2, computer Ã—2, navigate Ã—1*
 
 ### Claude
 
 Back on the home page, with only the version key and the unrelated key left. One more check that the defaults are really back in use (navigating within the app, without a reload).
 
-> *Used tools: javascript_tool ×1, PowerShell ×1*
+> *Used tools: javascript_tool Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Defaults are back in use. Updating the README notes (the Settings TODOs are now done) and committing.
 
-> *Used tools: Edit ×2, Read ×1, PowerShell ×1*
+> *Used tools: Edit Ã—2, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
-Phase 10 is merged into `main` and pushed (`97d43e2` → `a5b222b`). Phase 11 is finished and committed on `phase-11-settings` (`c5b3d07`). Phase 11 isn't merged yet.
+Phase 10 is merged into `main` and pushed (`97d43e2` â†’ `a5b222b`). Phase 11 is finished and committed on `phase-11-settings` (`c5b3d07`). Phase 11 isn't merged yet.
 
-## What changed in Phase 11 (tasks 48–50)
+## What changed in Phase 11 (tasks 48â€“50)
 
 **Task 48: Settings page** (`pages/SettingsPage.tsx`)
 - **Practice defaults:** The default operations (none selected means "choose each time"), level and session length. It reuses the setup selectors, which gained an optional `legend` setting.
@@ -1323,7 +1323,7 @@ Phase 10 is merged into `main` and pushed (`97d43e2` → `a5b222b`). Phase 11 is
 
 **Settings that now take effect**
 - **Card animation:** Off means the card swaps sides instantly.
-- **Explanations:** I added a short explanation to the back of the card, shown only after a wrong choice. For example, "Sharing 650 into groups of 25 makes 26 groups… 25 × 26 = 650." Each operation has its own wording, with a way to check.
+- **Explanations:** I added a short explanation to the back of the card, shown only after a wrong choice. For example, "Sharing 650 into groups of 25 makes 26 groupsâ€¦ 25 Ã— 26 = 650." Each operation has its own wording, with a way to check.
 - **Sound effects:** This is saved, but nothing plays yet. The tile says "Sounds aren't added yet, but your choice is saved." The spec lists audio as future work, and no phase covers it.
 
 **Task 50: Clear All Application Data**
@@ -1360,43 +1360,43 @@ Tell me to go ahead and I'll merge Phase 11 into `main`, push it, and start Phas
 
 Start phase 12
 
-> *Used tools: Read ×2, PowerShell ×1*
+> *Used tools: Read Ã—2, PowerShell Ã—1*
 
 ### Claude
 
-Phase 11 is merged and pushed (`a5b222b` → `4ec5f00`). Starting Phase 12 with the pure mistake-pattern logic.
+Phase 11 is merged and pushed (`a5b222b` â†’ `4ec5f00`). Starting Phase 12 with the pure mistake-pattern logic.
 
-> *Used tools: Edit ×8, Write ×5, Read ×2*
+> *Used tools: Edit Ã—8, Write Ã—5, Read Ã—2*
 
 ### Claude
 
 Now the tests for Phase 12.
 
-> *Used tools: Write ×5, Edit ×2, Read ×1, PowerShell ×1*
+> *Used tools: Write Ã—5, Edit Ã—2, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 583 tests pass. Now confirming in the real browser that wrong answers create patterns and right ones don't.
 
-> *Used tools: PowerShell ×1, navigate ×1*
+> *Used tools: PowerShell Ã—1, navigate Ã—1*
 
 ### Claude
 
 Using Level 1 division, which has a small pool of questions, so repeated mistakes actually happen.
 
-> *Used tools: javascript_tool ×4*
+> *Used tools: javascript_tool Ã—4*
 
 ### Claude
 
 The three junk records were dropped on the next save, the 15 good patterns survived, and the new mistake was added (16 patterns, 21 misses). Cleaning up and updating the README.
 
-> *Used tools: Edit ×3, PowerShell ×2, javascript_tool ×1, Read ×1*
+> *Used tools: Edit Ã—3, PowerShell Ã—2, javascript_tool Ã—1, Read Ã—1*
 
 ### Claude
 
-Phase 11 is merged and pushed (`a5b222b` → `4ec5f00`). Phase 12 is finished and committed on `phase-12-mistake-tracking` (`e755c6d`). It isn't merged yet.
+Phase 11 is merged and pushed (`a5b222b` â†’ `4ec5f00`). Phase 12 is finished and committed on `phase-12-mistake-tracking` (`e755c6d`). It isn't merged yet.
 
-## What changed in Phase 12 (tasks 51–53)
+## What changed in Phase 12 (tasks 51â€“53)
 
 **Task 51: Creating mistake patterns** (`utils/mistakes.ts`, `services/mistakeService.ts`)
 - When a student marks an answer wrong, a pattern is created with the operation, both operands, the correct answer, the level and `lastIncorrectAt` (the time of that answer).
@@ -1404,7 +1404,7 @@ Phase 11 is merged and pushed (`a5b222b` → `4ec5f00`). Phase 12 is finished an
 - A right answer never creates one.
 
 **Task 52: Updating existing patterns**
-- **Identity:** A pattern's id is built from the question itself, e.g. `multiplication:8:7:L2`. So the same mistake can never be stored twice. 7 × 8, 8 × 7, and the same fact at another level are different patterns.
+- **Identity:** A pattern's id is built from the question itself, e.g. `multiplication:8:7:L2`. So the same mistake can never be stored twice. 7 Ã— 8, 8 Ã— 7, and the same fact at another level are different patterns.
 - **A repeat miss:** It adds one to the miss count and updates the time. Mastery progress starts over: `similarCorrectCount` goes back to 0 and a mastered pattern becomes active again. That's my reading of "reset or reduce"; tell me if you'd rather it only reduce.
 - **Counted once:** The new `recordPracticeAttempt` (`services/attemptRecorder.ts`) saves the answer, counts it in the statistics and remembers the mistake, once per answer. The practice hook now uses it, so a repeated update can't inflate any count. If the answer itself can't be saved, no mistake is recorded.
 
@@ -1434,97 +1434,97 @@ Start on phase 14
 
 Merging Phase 12 first, since you're moving on.
 
-> *Used tools: PowerShell ×1, AskUserQuestion ×1*
+> *Used tools: PowerShell Ã—1, AskUserQuestion Ã—1*
 
 ### Claude
 
-Phase 12 is merged and pushed (`4ec5f00` → `4f7bc90`). As you chose, I'm doing Phase 13 first, then Phase 14 straight after. Branching for Phase 13.
+Phase 12 is merged and pushed (`4ec5f00` â†’ `4f7bc90`). As you chose, I'm doing Phase 13 first, then Phase 14 straight after. Branching for Phase 13.
 
-> *Used tools: PowerShell ×1, Read ×1, Edit ×1, Write ×1*
+> *Used tools: PowerShell Ã—1, Read Ã—1, Edit Ã—1, Write Ã—1*
 
 ### Claude
 
 Now the tests for the similar-question generator.
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 51 new tests pass. Running the full suite and build, then committing Phase 13.
 
-> *Used tools: Edit ×12, Read ×4, Write ×3, PowerShell ×2*
+> *Used tools: Edit Ã—12, Read Ã—4, Write Ã—3, PowerShell Ã—2*
 
 ### Claude
 
 The review logic and the session planner are in. Now rewiring the practice hook to use them.
 
-> *Used tools: Edit ×9, Read ×4, Write ×2, PowerShell ×1*
+> *Used tools: Edit Ã—9, Read Ã—4, Write Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Only the renamed function breaks tests, as expected. Updating those references.
 
-> *Used tools: Edit ×2*
+> *Used tools: Edit Ã—2*
 
 ### Claude
 
 Now the tests, starting with a helper for building mistake patterns and the review logic tests.
 
-> *Used tools: Write ×7, Read ×1*
+> *Used tools: Write Ã—7, Read Ã—1*
 
 ### Claude
 
 Now the UI-level tests: the active-count hook, the setup page's review UI, review sessions, and the summary page.
 
-> *Used tools: Write ×2, Edit ×2, PowerShell ×1*
+> *Used tools: Write Ã—2, Edit Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 All 749 tests pass, but the type-check found one issue in a test (a self-referencing variable). Fixing that.
 
-> *Used tools: Edit ×2, PowerShell ×2, Read ×1*
+> *Used tools: Edit Ã—2, PowerShell Ã—2, Read Ã—1*
 
 ### Claude
 
 Type-check and lint are clean. Adding the summary-page and end-to-end tests for review.
 
-> *Used tools: Edit ×4, PowerShell ×2*
+> *Used tools: Edit Ã—4, PowerShell Ã—2*
 
 ### Claude
 
 Prettier reformatted that block, so my edit's text no longer matched. Reading the current version.
 
-> *Used tools: Grep ×1, Edit ×1, PowerShell ×1*
+> *Used tools: Grep Ã—1, Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 756 tests pass. Now the real-browser check of the whole mistake-review flow.
 
-> *Used tools: javascript_tool ×2, PowerShell ×1, navigate ×1*
+> *Used tools: javascript_tool Ã—2, PowerShell Ã—1, navigate Ã—1*
 
 ### Claude
 
 Review was disabled with its explanation at first. After five wrong answers there are 5 patterns and the summary now offers a working "Practice Mistakes" link. Starting a review session.
 
-> *Used tools: javascript_tool ×2, computer ×1*
+> *Used tools: javascript_tool Ã—2, computer Ã—1*
 
 ### Claude
 
 All five mistakes are mastered after three review sessions, and Practice Mistakes is disabled again. For a screenshot of the review setup, I'll re-activate one mistake and look at the page.
 
-> *Used tools: javascript_tool ×2, computer ×2*
+> *Used tools: javascript_tool Ã—2, computer Ã—2*
 
 ### Claude
 
 The review setup looks right. Cleaning up the pane's test data and stopping the server, then updating the README and committing.
 
-> *Used tools: PowerShell ×2, Edit ×2, javascript_tool ×1, Read ×1*
+> *Used tools: PowerShell Ã—2, Edit Ã—2, javascript_tool Ã—1, Read Ã—1*
 
 ### Claude
 
-Phase 14 is finished and committed on `phase-14-mistake-review` (`42e19ed`). It isn't merged yet. Phase 13 was done first, as you chose, and is merged and pushed (`4f7bc90` → `e36096a`). Its summary was above.
+Phase 14 is finished and committed on `phase-14-mistake-review` (`42e19ed`). It isn't merged yet. Phase 13 was done first, as you chose, and is merged and pushed (`4f7bc90` â†’ `e36096a`). Its summary was above.
 
-## What changed in Phase 14 (tasks 58–62)
+## What changed in Phase 14 (tasks 58â€“62)
 
 **Task 58: Review mode on the setup page**
 - **Availability:** "Practice my mistakes" is now real. It's available while at least one mistake still needs practice, shows "Review N questions you missed", and is disabled with "Nothing to review yet" otherwise. `useActiveMistakeCount` now counts real patterns that aren't mastered, using your mastery setting.
@@ -1542,7 +1542,7 @@ Phase 14 is finished and committed on `phase-14-mistake-review` (`42e19ed`). It 
 - **Summary details:** The summary shows the operations of the mistakes used and the most common level among them, and its existing "Mistake-review questions" count is now real.
 - **Early finish:** A review session ends early if every mistake gets mastered.
 
-**Tasks 61–62: Success tracking and mastery**
+**Tasks 61â€“62: Success tracking and mastery**
 - **A right review answer:** It adds one to that pattern's `similarCorrectCount`. The pattern is mastered at your mastery setting (default 3).
 - **Lowering the setting:** The count is also checked against the current setting, so lowering it applies straight away.
 - **A wrong review answer:** This was the open question from Phase 12. I chose that it counts as another miss on the same pattern. Its progress resets, and the similar question doesn't start a new pattern. Tell me if you'd rather it did.
@@ -1559,13 +1559,13 @@ Lint, type-check, Prettier and the build pass.
 
 **Browser check:** I did this in the browser pane, then cleaned up its test data.
 - Review started disabled with its hint. After 5 wrong answers there were 5 patterns and the summary offered the link.
-- Review questions were variations (5 ÷ 1 from 5 × 1, and 2 × 3, the reverse of 3 × 2). Right answers credited the right pattern without adding new ones.
+- Review questions were variations (5 Ã· 1 from 5 Ã— 1, and 2 Ã— 3, the reverse of 3 Ã— 2). Right answers credited the right pattern without adding new ones.
 - Three review sessions mastered all five (progress 3 each), and Practice Mistakes became disabled again.
 - With two mistakes re-activated, the setup page showed "Review 2 questions you missed", the pickers hidden, and the explanation.
 
 ## Open items
 - **Review length:** A review session inherits the length from the setup or previous session, so mastering several mistakes can take more than one session. Setup offers 5, 10, 20 or continuous.
-- **README notes:** Updated for Phases 13–14. Phase 15 only needs to read the saved data.
+- **README notes:** Updated for Phases 13â€“14. Phase 15 only needs to read the saved data.
 
 Tell me to go ahead and I'll merge Phase 14 into `main`, push it, and start Phase 15 (advanced statistics: mistake statistics, frequently missed areas, and mistake details).
 
@@ -1579,241 +1579,241 @@ Before we start on the next phase, let's do a quick review of each previous phas
 
 Starting the review. First, the repo and quality-gate state, then a scan for leftovers: TODOs, console statements, unused exports and duplicated constants.
 
-> *Used tools: PowerShell ×1, Grep ×1*
+> *Used tools: PowerShell Ã—1, Grep Ã—1*
 
 ### Claude
 
 History is clean and in sync, with no TODOs or debug statements. Now a scan for exports nothing uses, and for duplicated constants.
 
-> *Used tools: Grep ×2, PowerShell ×1*
+> *Used tools: Grep Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Fixing the stale comments and consolidating the duplicated operation and level lists into one place.
 
-> *Used tools: Edit ×21, Read ×4, Write ×1, Grep ×1, PowerShell ×1*
+> *Used tools: Edit Ã—21, Read Ã—4, Write Ã—1, Grep Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Consolidation is type-checked and lint-clean. Running the full test suite, format check and build to confirm the review changes broke nothing.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 Everything passes (756 tests, build, lint, formatting). Last part of the review: comparing the actual file layout against the structure the spec asked for.
 
-> *Used tools: PowerShell ×2*
+> *Used tools: PowerShell Ã—2*
 
 ### Claude
 
 Review cleanup is committed. Now the first "summary" merge commit for Phase 14, covering everything done so far. Writing the message to a scratch file so it can be multi-line.
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Phase 14 is merged and pushed with the summary commit (`977bcec`). Recording your new merge-commit convention in memory so it persists.
 
-> *Used tools: Edit ×4, Read ×2, Write ×1, PowerShell ×1*
+> *Used tools: Edit Ã—4, Read Ã—2, Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Now the pure calculations for mistake statistics, plus date formatting helpers.
 
-> *Used tools: Read ×3, Edit ×3, Write ×2, PowerShell ×1*
+> *Used tools: Read Ã—3, Edit Ã—3, Write Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Now the three new statistics components.
 
-> *Used tools: Edit ×4, Write ×3, Read ×1, PowerShell ×1*
+> *Used tools: Edit Ã—4, Write Ã—3, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 The only failures are `StatisticsPage` tests that now need `AppProvider` for the mastery setting. Fixing that, then adding the new tests.
 
-> *Used tools: Edit ×5, Write ×3, Read ×1, PowerShell ×1*
+> *Used tools: Edit Ã—5, Write Ã—3, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 824 tests pass. Now the real-browser check: playing wrong answers, doing some review, and viewing the new statistics sections.
 
-> *Used tools: navigate ×2, javascript_tool ×2, PowerShell ×1*
+> *Used tools: navigate Ã—2, javascript_tool Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Review mastered all six. To see active mistakes with progress, I'll set two of them back to in-progress, then reload the page.
 
-> *Used tools: javascript_tool ×2, computer ×2*
+> *Used tools: javascript_tool Ã—2, computer Ã—2*
 
 ### Claude
 
 Real data matches expectations, including the tie ("Multiplication and Division, 4 times each"). Now the mistake list and the mastered section.
 
-> *Used tools: computer ×4, javascript_tool ×3, Edit ×1*
+> *Used tools: computer Ã—4, javascript_tool Ã—3, Edit Ã—1*
 
 ### Claude
 
 The script ran mid-reload. Re-running it now that the page has settled.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
 Old-format statistics were rebuilt correctly (18 review questions). The saved copy is upgraded the next time an answer is recorded. Cleaning up, then updating the README and committing Phase 15.
 
-> *Used tools: PowerShell ×2, javascript_tool ×1, Grep ×1, Edit ×1*
+> *Used tools: PowerShell Ã—2, javascript_tool Ã—1, Grep Ã—1, Edit Ã—1*
 
 ### Claude
 
 Phase 15 is finished and committed. Merging it into `main` now, with a message describing what it updated, then starting Phase 16.
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
-Phase 15 is merged and pushed (`977bcec` → `85eb97b`). Starting Phase 16 (accessibility). First I'll measure the site's colour contrast against WCAG, so I fix real problems.
+Phase 15 is merged and pushed (`977bcec` â†’ `85eb97b`). Starting Phase 16 (accessibility). First I'll measure the site's colour contrast against WCAG, so I fix real problems.
 
-> *Used tools: Edit ×7, Write ×1, Read ×1, PowerShell ×1, Grep ×1*
+> *Used tools: Edit Ã—7, Write Ã—1, Read Ã—1, PowerShell Ã—1, Grep Ã—1*
 
 ### Claude
 
 Now a test that guards these contrast ratios against future regressions, along with tests for the colour maths itself.
 
-> *Used tools: Write ×2, PowerShell ×1*
+> *Used tools: Write Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Under jsdom `import.meta.url` isn't a file URL. Resolving the stylesheet from the project root instead.
 
-> *Used tools: Edit ×2, PowerShell ×1*
+> *Used tools: Edit Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 The contrast checks pass. Next: keyboard shortcuts, screen-reader announcements, motion detection and page focus/titles. First checking which existing tests mention the hint text I'm about to extend.
 
-> *Used tools: Read ×2, Grep ×1*
+> *Used tools: Read Ã—2, Grep Ã—1*
 
 ### Claude
 
 Good, no tests depend on the hint text. Writing the speech helper, shortcut hook, and motion hook.
 
-> *Used tools: Write ×4*
+> *Used tools: Write Ã—4*
 
 ### Claude
 
 Now updating the card components. Re-reading the current versions first so I keep everything intact.
 
-> *Used tools: Write ×3, Read ×2*
+> *Used tools: Write Ã—3, Read Ã—2*
 
 ### Claude
 
 Now the practice page: progress announcements, reduced-motion detection, and turning shortcuts off while the End Session dialog is open.
 
-> *Used tools: Edit ×16, Write ×8, Grep ×3, PowerShell ×2*
+> *Used tools: Edit Ã—16, Write Ã—8, Grep Ã—3, PowerShell Ã—2*
 
 ### Claude
 
 Three failures to look at: the number-pad test, an over-specific tab-order test (the skip link isn't part of that page), and the CSS guard. Checking the CSS one in detail.
 
-> *Used tools: PowerShell ×1*
+> *Used tools: PowerShell Ã—1*
 
 ### Claude
 
 The CSS comment above the rule was being captured as part of the selector. Making the test ignore comments, and fixing the other two tests.
 
-> *Used tools: Edit ×4, Grep ×1, PowerShell ×1*
+> *Used tools: Edit Ã—4, Grep Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 jsdom doesn't implement the `inert` attribute, so this last assertion can't be tested there (real browsers do honour it, and I'll confirm that in the real browser later). Removing it.
 
-> *Used tools: Edit ×1, PowerShell ×1*
+> *Used tools: Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 934 tests pass. Now the real-browser checks: keyboard behaviour, the hidden-side `inert` behaviour that jsdom couldn't test, announcements, page titles, and narrow-screen reflow.
 
-> *Used tools: navigate ×1, javascript_tool ×1*
+> *Used tools: navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Page title updated, focus moved to the new heading, and the announcement reads naturally ("5 times 1 equals what?"). Now real key presses.
 
-> *Used tools: computer ×2, javascript_tool ×1*
+> *Used tools: computer Ã—2, javascript_tool Ã—1*
 
 ### Claude
 
 Key hints and stronger borders look right. Now flipping with a real Enter press, then tabbing, to confirm the hidden side can't be reached in a real browser.
 
-> *Used tools: javascript_tool ×3, computer ×2*
+> *Used tools: javascript_tool Ã—3, computer Ã—2*
 
 ### Claude
 
 After the flip, focus lands on the answer side and Tab goes straight to "I Got It Right"; the front is inert. Checking that tabbing further never lands on the hidden front.
 
-> *Used tools: computer ×1, javascript_tool ×1*
+> *Used tools: computer Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Tabbing wraps back to the page header and never reaches the hidden front. Now reflow at the narrowest common size (320px wide) across every page, plus an emulated large-text setting.
 
-> *Used tools: resize_window ×1, javascript_tool ×1*
+> *Used tools: resize_window Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 The Statistics page reports a 331px layout at a 320px viewport, so something there is slightly too wide. Finding what.
 
-> *Used tools: javascript_tool ×1*
+> *Used tools: javascript_tool Ã—1*
 
 ### Claude
 
-The cause: the "missed" and stat-card grids need at least 14–16rem per column, which is wider than the content area on a 320px screen. Capping those minimums at 100% of the available width.
+The cause: the "missed" and stat-card grids need at least 14â€“16rem per column, which is wider than the content area on a 320px screen. Capping those minimums at 100% of the available width.
 
-> *Used tools: Edit ×4, Grep ×1, javascript_tool ×1*
+> *Used tools: Edit Ã—4, Grep Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Fixed: no horizontal scroll at 320px. Now the same pages with text enlarged to 200% (as a user's larger-font setting would), still at 320px.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 At 320px wide with text at 200%, the layout is wider than the screen. That combination is stricter than WCAG requires, but let me see what forces it.
 
-> *Used tools: javascript_tool ×4, Edit ×1*
+> *Used tools: javascript_tool Ã—4, Edit Ã—1*
 
 ### Claude
 
 Still slightly too wide: long headings and buttons can't wrap mid-word at 200% text. Allowing words to break only when they otherwise wouldn't fit.
 
-> *Used tools: Edit ×1, javascript_tool ×1*
+> *Used tools: Edit Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 All four pages now fit at 320px with 200% text. Checking the practice card, back of the card and summary the same way.
 
-> *Used tools: javascript_tool ×2, computer ×2, resize_window ×1*
+> *Used tools: javascript_tool Ã—2, computer Ã—2, resize_window Ã—1*
 
 ### Claude
 
 At 200% text on a 640px-wide screen, every page and both sides of the card fit and read well. Final reflow check at 320px with normal text, covering the card and the summary page.
 
-> *Used tools: resize_window ×1, javascript_tool ×1, computer ×1*
+> *Used tools: resize_window Ã—1, javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Every page, including the card and summary, reflows at 320px. Cleaning up the browser, adding a guard test for the responsive grid rules, then finalising Phase 16.
 
-> *Used tools: Edit ×3, PowerShell ×2, resize_window ×1, javascript_tool ×1, Read ×1*
+> *Used tools: Edit Ã—3, PowerShell Ã—2, resize_window Ã—1, javascript_tool Ã—1, Read Ã—1*
 
 ### Claude
 
 I committed too early: my new guard test's pattern splits `min(10rem, 100%)` at its inner comma, so one test fails (the app itself is fine). Fixing the test and committing that as a follow-up.
 
-> *Used tools: Edit ×1, PowerShell ×1*
+> *Used tools: Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
@@ -1824,10 +1824,10 @@ Phase 15's merge commit (`85eb97b`) has a message describing what it added, per 
 ## Phase 15 (merged)
 It added the mistake sections to the Statistics page: mistake counts, review totals, where you miss most (the operation and the five most-missed facts), and each mistake with its review progress, plus a collapsed list of mastered ones. The review totals now live in the running statistics, so trimming old attempts doesn't change them.
 
-## Phase 16: Accessibility (tasks 66–69)
+## Phase 16: Accessibility (tasks 66â€“69)
 
 **Task 66: Keyboard**
-- **Number keys:** Keys 1–4 choose an answer. Each answer shows its key and has `aria-keyshortcuts`.
+- **Number keys:** Keys 1â€“4 choose an answer. Each answer shows its key and has `aria-keyshortcuts`.
 - **Safeguards:** The keys are ignored in text fields, with Ctrl/Alt/Meta held, and while the End Session dialog is open.
 - **Focus on page change:** After moving to a new page, focus goes to its heading.
 - **Tab order and focus ring:** Everything is reachable in order, and the focus ring is now visible against every background.
@@ -1836,7 +1836,7 @@ It added the mistake sections to the Statistics page: mistake counts, review tot
 **Task 67: Screen readers**
 - **Announcements:** Polite announcements say the question and progress ("Question 2 of 5. 5 times 1 equals what? 1 of 5 answered."), the chosen answer, and the revealed answer in words ("Answer revealed. 5 times 1 equals 5. You chose 5.").
 - **Spoken text:** The announcements spell the problem out ("times", "divided by") rather than using symbols.
-- **Page titles:** Each page has its own tab title, e.g. "Statistics – Math Practice".
+- **Page titles:** Each page has its own tab title, e.g. "Statistics â€“ Math Practice".
 
 **Task 68: Reduced motion**
 - The card switches instantly if the device asks for less motion or the animation setting is off.
@@ -1845,7 +1845,7 @@ It added the mistake sections to the Statistics page: mistake counts, review tot
 
 **Task 69: Visual**
 - **Colours:** I measured every colour pair against WCAG. Text was fine, but two things failed: the borders on tiles and answer buttons (1.5:1, needs 3:1) and the orange focus ring (2.5:1). I fixed both with stronger border and focus colours. A test reads the real stylesheet so the colours can't quietly regress.
-- **Not colour alone:** Selected states already use ✓ plus colour, and results always have text.
+- **Not colour alone:** Selected states already use âœ“ plus colour, and results always have text.
 - **Reflow:** Checked in the browser at 320px wide, 320px at 200% text, and 640px at 200% text (equivalent to 200% zoom), across the pages and both sides of the card.
 - **Reflow fixes:** Several grids forced the page to scroll sideways, because their minimum column width was wider than the screen. I fixed that and added a guard test. The practice card itself still scrolls slightly sideways in the harshest combination (320px with 200% text).
 
@@ -1867,19 +1867,19 @@ You can move onto the next phase
 
 Merging Phase 16 into `main` with a message describing it, then starting Phase 17.
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
-Phase 16 is merged and pushed (`85eb97b` → `e6a240f`). Starting Phase 17 with child-friendly feedback and its on/off setting.
+Phase 16 is merged and pushed (`85eb97b` â†’ `e6a240f`). Starting Phase 17 with child-friendly feedback and its on/off setting.
 
-> *Used tools: Read ×1, Grep ×1*
+> *Used tools: Read Ã—1, Grep Ã—1*
 
 ### Claude
 
 Adding the setting through the type, defaults, validation, and the Settings page.
 
-> *Used tools: Edit ×15, Read ×3, Write ×1, PowerShell ×1*
+> *Used tools: Edit Ã—15, Read Ã—3, Write Ã—1, PowerShell Ã—1*
 
 <details><summary>Automatic summary that carried the work into a new context window</summary>
 
@@ -1888,7 +1888,7 @@ This session is being continued from a previous conversation that ran out of con
 <tools-used-before-summary>AskUserQuestion, Edit, Grep, PowerShell, Read, Write, mcp__Claude_Browser__computer, mcp__Claude_Browser__find, mcp__Claude_Browser__get_page_text, mcp__Claude_Browser__javascript_tool, mcp__Claude_Browser__navigate, mcp__Claude_Browser__read_console_messages, mcp__Claude_Browser__resize_window</tools-used-before-summary>
 Summary:
 ## 1. Primary Request and Intent
-The user is building a React/TypeScript "Math Practice" app for children aged 7–12 (flip-card multiple choice, statistics, mistake review). The plan is the 22-phase, 89-task todo list from a ChatGPT transcript stored in `Assignment 13/Project Docs/ChatGPT-Full-Transcript.md`. The app lives in the GitHub repo `https://github.com/Antonio-CMA/cse_4095` at `Assignment 13/math-practice-app`; the local repo root is `C:\Users\<user>\UCONN\CSE 4095`. The working directory is `C:\Users\<user>\UCONN\CSE 4095\Assignment 13 - Math Game`, which is untracked and unrelated to the app code.
+The user is building a React/TypeScript "Math Practice" app for children aged 7â€“12 (flip-card multiple choice, statistics, mistake review). The plan is the 22-phase, 89-task todo list from a ChatGPT transcript stored in `Assignment 13/Project Docs/ChatGPT-Full-Transcript.md`. The app lives in the GitHub repo `https://github.com/Antonio-CMA/cse_4095` at `Assignment 13/math-practice-app`; the local repo root is `C:\Users\<user>\UCONN\CSE 4095`. The working directory is `C:\Users\<user>\UCONN\CSE 4095\Assignment 13 - Math Game`, which is untracked and unrelated to the app code.
 
 **Workflow the user set:**
 - Work phase by phase, one branch per phase named `phase-N-topic`.
@@ -1900,7 +1900,7 @@ The user is building a React/TypeScript "Math Practice" app for children aged 7�
 - Fold small follow-ups into the phase branch before merging.
 - Occasionally do cross-phase reviews.
 
-The user's **latest request** (message 21): "You can move onto the next phase", meaning Phase 17 (responsive design and polish, tasks 70–73). Phase 16 was already merged and pushed, and I had started Phase 17.
+The user's **latest request** (message 21): "You can move onto the next phase", meaning Phase 17 (responsive design and polish, tasks 70â€“73). Phase 16 was already merged and pushed, and I had started Phase 17.
 
 ## 2. Key Technical Concepts
 - **Stack:** Vite 8, React 19 (context provider as `<Context value>`, `ref` as a prop), TypeScript 6, React Router 8 (`react-router` package), Vitest 5 with jsdom, React Testing Library, user-event, ESLint flat config, Prettier (no semicolons, single quotes).
@@ -1923,7 +1923,7 @@ The user's **latest request** (message 21): "You can move onto the next phase", 
   - A wrong review answer counts as a miss on the same pattern.
   - Review priority is weighted random by misses, recency and progress.
 - **Accessibility (Phase 16, done):**
-  - Keys 1–4 choose an answer.
+  - Keys 1â€“4 choose an answer.
   - Polite live regions announce questions, selection and the revealed answer, spoken in words.
   - Page titles update and focus moves to the h1 after navigation.
   - Reduced-motion hook plus the card-animation setting.
@@ -1942,7 +1942,7 @@ The user's **latest request** (message 21): "You can move onto the next phase", 
 export const RIGHT_MESSAGES = ['Great job!','Nice work!','You got it!','Awesome!','Way to go!','Super thinking!']
 export const WRONG_MESSAGES = ['Keep practicing!','You are improving!','Good try! Every question helps you learn.',"Nice effort! You'll get it next time.","That's okay. Mistakes help us learn!",'You are getting better with every try!']
 export function pickFeedback(correct: boolean, previous: string | null = null, rng: Rng = Math.random): string  // never repeats previous
-export function getSessionEncouragement(accuracy: number | null): string | null  // null→null, 100/≥80/≥60/>0/0 tiers
+export function getSessionEncouragement(accuracy: number | null): string | null  // nullâ†’null, 100/â‰¥80/â‰¥60/>0/0 tiers
 ```
 - `src/pages/PracticePage.tsx`:
   - Imports `usePracticeSession, type ReportedResult`, and `pickFeedback`.
@@ -1955,7 +1955,7 @@ const handleResult = (answer: ReportedResult) => {
 }
 ```
   - `progressAnnouncement` is prefixed with `${feedback ? `${feedback.text} ` : ''}`.
-  - After the session bar: `<p className={`feedback feedback--${right|wrong}`} aria-hidden="true"><span className="feedback__star">★</span> {feedback.text}</p>`.
+  - After the session bar: `<p className={`feedback feedback--${right|wrong}`} aria-hidden="true"><span className="feedback__star">â˜…</span> {feedback.text}</p>`.
   - `<QuestionCard ... onResult={handleResult} />`.
 - `src/pages/SessionSummaryPage.tsx` was read but not edited. Current structure: `<section className="page-section"><h1>Session Summary</h1><p>{attempted===0 ? 'You ended before answering any questions.' : "Here's how you did."}</p><SessionSummary result={result} /><SummaryActions .../></section>`.
 
@@ -1980,15 +1980,15 @@ const handleResult = (answer: ReportedResult) => {
 - `PracticePage` tests that parsed the answer button's text broke once key badges were added; fixed by reading `.answer-choice__value`.
 
 ## 5. Problem Solving
-- Phases 1–16 are complete, merged to `main` and pushed. `main` is at `e6a240f`.
+- Phases 1â€“16 are complete, merged to `main` and pushed. `main` is at `e6a240f`.
 - Phase 17 has been started; the feedback implementation is partway through and unverified.
 - Known extreme case: the practice card at 320px with 200% text still scrolls slightly sideways. This is documented as not required by WCAG; it may be improved.
 
 ## 6. All user messages
-(Listed in the analysis above, items 1–21. Latest: "You can move onto the next phase".)
+(Listed in the analysis above, items 1â€“21. Latest: "You can move onto the next phase".)
 
 ## 7. Pending Tasks
-Phase 17 (tasks 70–73) remains:
+Phase 17 (tasks 70â€“73) remains:
 1. **Finish the feedback work (task 73):**
    - Add the end-of-session encouragement to `SessionSummaryPage`, using `getSessionEncouragement(calculateAccuracy(correct, attempted))`, shown only when `feedbackEnabled`.
    - Add CSS for `.feedback`, `.feedback--right`, `.feedback--wrong` and `.feedback__star`, with contrast-safe colours and no distracting motion.
@@ -2005,7 +2005,7 @@ Phase 17 (tasks 70–73) remains:
    - Closes on route change and on Escape.
    - Shown only on small screens via CSS; always available on wider screens.
    - Tests for it.
-3. **Tablet and layout (tasks 70–72):**
+3. **Tablet and layout (tasks 70â€“72):**
    - Center the practice card in a max-width wrapper, with larger touch targets for coarse pointers and tablet sizes.
    - Add a CSS guard test that interactive elements have min-height of at least 44px.
    - Verify statistics and recent sessions on small screens.
@@ -2023,89 +2023,89 @@ Immediately before this summary I was implementing Phase 17's child-friendly fee
 Continue the Phase 17 work. The most recent request was "You can move onto the next phase", and I was in the middle of task 73. The next concrete step: edit `src/pages/SessionSummaryPage.tsx` to render an encouragement paragraph under the "Here's how you did." line when `settings.feedbackEnabled` is true (via `useSettings`, `calculateAccuracy` and `getSessionEncouragement`). Then add the `.feedback` CSS, update and add tests, run `npm run format`, `lint`, `npx tsc -b` and `npm test`, and continue with the mobile menu and tablet layout items.
 
 If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: C:\Users\<user>\.claude\projects\C--Users-<user>-UCONN-CSE-4095-Assignment-13---Math-Game\4f6491f4-30e8-4d7e-89cb-dc9057ebe843.jsonl
-Continue the conversation from where it left off without asking the user any further questions. Resume directly — do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
+Continue the conversation from where it left off without asking the user any further questions. Resume directly â€” do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
 
 The messages after this summary are the most recent messages from before compaction, kept verbatim. The summary was written without seeing them, so something it says has not happened yet may already have happened in them.
 
 </details>
 
-> *Used tools: Edit ×4, Grep ×2, Read ×2*
+> *Used tools: Edit Ã—4, Grep Ã—2, Read Ã—2*
 
 ### Claude
 
 Now new tests. Let me look at the existing settings-page and practice-page settings tests for style.
 
-> *Used tools: Read ×6, Edit ×4, Write ×2, Glob ×1, PowerShell ×1, Grep ×1*
+> *Used tools: Read Ã—6, Edit Ã—4, Write Ã—2, Glob Ã—1, PowerShell Ã—1, Grep Ã—1*
 
 ### Claude
 
 All 961 tests pass. Now the layout CSS for the header and nav.
 
-> *Used tools: Edit ×5, Read ×4, Write ×3, Grep ×2, Glob ×2, PowerShell ×2, computer ×2, resize_window ×1, navigate ×1, javascript_tool ×1*
+> *Used tools: Edit Ã—5, Read Ã—4, Write Ã—3, Grep Ã—2, Glob Ã—2, PowerShell Ã—2, computer Ã—2, resize_window Ã—1, navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 I'm checking the open Menu in the browser at phone width, and next I'll audit every page at each phone and tablet size.
 
-> *Used tools: Read ×3, Grep ×3, computer ×1, resize_window ×1, javascript_tool ×1*
+> *Used tools: Read Ã—3, Grep Ã—3, computer Ã—1, resize_window Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Seeding data through the real services (dev-server modules) so stats, recent sessions and mistakes all render with realistic content.
 
-> *Used tools: javascript_tool ×2, Read ×2, navigate ×1, computer ×1, Grep ×1*
+> *Used tools: javascript_tool Ã—2, Read Ã—2, navigate Ã—1, computer Ã—1, Grep Ã—1*
 
 ### Claude
 
 I'm tightening the phone layout now: shrinking the header title so Menu sits beside it, and putting the summary tiles in two columns on small screens. Then I'll recheck.
 
-> *Used tools: Edit ×4, computer ×3, navigate ×2, Read ×1, javascript_tool ×1*
+> *Used tools: Edit Ã—4, computer Ã—3, navigate Ã—2, Read Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 The tile overrides sit above the base rules, so the base rules win the cascade. Moving them below, and trimming the Menu button padding so the header fits on one line at 320px.
 
-> *Used tools: Edit ×5, navigate ×1, computer ×1, javascript_tool ×1*
+> *Used tools: Edit Ã—5, navigate Ã—1, computer Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Clean at 320px. Now the other sizes, in a batch.
 
-> *Used tools: resize_window ×5, javascript_tool ×5, computer ×2, navigate ×1, Grep ×1, Read ×1*
+> *Used tools: resize_window Ã—5, javascript_tool Ã—5, computer Ã—2, navigate Ã—1, Grep Ã—1, Read Ã—1*
 
 ### Claude
 
 Next is the tablet layout. I'm centring the practice session in a readable width, enlarging the question and answer buttons on tablets, and adding larger touch targets for touch screens.
 
-> *Used tools: Edit ×3, javascript_tool ×3, computer ×2, Grep ×1, navigate ×1*
+> *Used tools: Edit Ã—3, javascript_tool Ã—3, computer Ã—2, Grep Ã—1, navigate Ã—1*
 
 ### Claude
 
 Feedback and the live-region announcement work in the real app. Now the summary page, then audits of it at phone sizes.
 
-> *Used tools: javascript_tool ×4, resize_window ×3, computer ×2, Grep ×2, Read ×1, Write ×1, PowerShell ×1*
+> *Used tools: javascript_tool Ã—4, resize_window Ã—3, computer Ã—2, Grep Ã—2, Read Ã—1, Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 My new touch-target tests pass, but the earlier grid-width guard now fails on my `repeat(2, minmax(0, 1fr))` rule, so I'm looking at what it checks.
 
-> *Used tools: Grep ×1*
+> *Used tools: Grep Ã—1*
 
 ### Claude
 
-A `minmax(0, 1fr)` column can never be wider than its space, so the guard should accept a minimum of 0 as well as `min(…, 100%)`.
+A `minmax(0, 1fr)` column can never be wider than its space, so the guard should accept a minimum of 0 as well as `min(â€¦, 100%)`.
 
-> *Used tools: PowerShell ×3, Edit ×2, Read ×1, resize_window ×1*
+> *Used tools: PowerShell Ã—3, Edit Ã—2, Read Ã—1, resize_window Ã—1*
 
 ### Claude
 
 The commit went through, but PowerShell's UTF-8 file added a BOM to the subject line. Amending my own unpushed commit with a clean message.
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
-Phase 17 (responsive design and polish, tasks 70–73) is finished and committed as `2587d59` on `phase-17-responsive-polish`. It is not merged yet. Format, lint, `tsc` and the build are clean, and all 983 tests pass, 45 of them new. Only the app folder was committed.
+Phase 17 (responsive design and polish, tasks 70â€“73) is finished and committed as `2587d59` on `phase-17-responsive-polish`. It is not merged yet. Format, lint, `tsc` and the build are clean, and all 983 tests pass, 45 of them new. Only the app folder was committed.
 
 ## What changed
 
@@ -2127,7 +2127,7 @@ Phase 17 (responsive design and polish, tasks 70–73) is finished and committed
 
 ## How it was checked
 
-I checked 320, 360, 375, 390 and 414px phones plus 768×1024 and 1024×768 tablets in the browser. The pages were Home, Setup, Statistics (with seeded data), Settings, a practice session and the summary. I found no sideways scrolling and no tap target under 44px, though the 375×667 and 390×844 sizes were only spot-checked. The in-app browser pane only rendered part of the tablet width, so the tablet checks were numeric measurements rather than a visual look.
+I checked 320, 360, 375, 390 and 414px phones plus 768Ã—1024 and 1024Ã—768 tablets in the browser. The pages were Home, Setup, Statistics (with seeded data), Settings, a practice session and the summary. I found no sideways scrolling and no tap target under 44px, though the 375Ã—667 and 390Ã—844 sizes were only spot-checked. The in-app browser pane only rendered part of the tablet width, so the tablet checks were numeric measurements rather than a visual look.
 
 - **New tests:** `touchTargets.test.ts` reads `index.css` and fails if a control drops under 44px or the menu rules change.
 - **Changed guard:** the grid guard in `designContrast.test.ts` now also accepts `minmax(0, 1fr)`, since a column with a zero minimum cannot overflow.
@@ -2193,20 +2193,20 @@ This test reads `index.css` as text, the same approach as `designContrast.test.t
 - **Touch screens:** the `(pointer: coarse)` block must still give buttons at least 56px and nav links 48px.
 - **Tablets:** from 700px the answer tiles must be taller than the base size.
 - **Menu rules:**
-  - The Menu button is `display: none` by default and only appears inside the ≤600px media query.
+  - The Menu button is `display: none` by default and only appears inside the â‰¤600px media query.
   - The nav is hidden only in that query, and `.main-nav--open` shows it.
 - **Practice card:** `.practice-session` keeps a `max-width` and `margin: 0 auto`.
 
 ## The changed guard
 
-The existing test in `designContrast.test.ts`, "caps every grid column minimum at the width available", was added in Phase 16. It collects every `minmax(<minimum>, …)` in the stylesheet and requires the minimum to look like `min(13rem, 100%)`. The reason is that a fixed minimum wider than a 320px screen causes sideways scrolling.
+The existing test in `designContrast.test.ts`, "caps every grid column minimum at the width available", was added in Phase 16. It collects every `minmax(<minimum>, â€¦)` in the stylesheet and requires the minimum to look like `min(13rem, 100%)`. The reason is that a fixed minimum wider than a 320px screen causes sideways scrolling.
 
 My new two-column summary tiles use `repeat(2, minmax(0, 1fr))`. The minimum there is `0`, so the guard failed on it. A column with a zero minimum can always shrink, so it can't overflow. I changed the pattern from `/^min\(.+,\s*100%\)$/` to `/^(0|min\(.+,\s*100%\))$/`. Fixed minimums such as `minmax(14rem, 1fr)` are still rejected.
 
 ## Other tests I edited
 
 - `settingsService.test.ts` and `SettingsPage.test.tsx` now include the new `feedbackEnabled` setting.
-- Two tests in `PracticePage.a11y.test.tsx` anchored the announcement at "Question…". Feedback can now come first, so I dropped the leading `^` and kept the check on the end. The new feedback tests cover the beginning.
+- Two tests in `PracticePage.a11y.test.tsx` anchored the announcement at "Questionâ€¦". Feedback can now come first, so I dropped the leading `^` and kept the check on the end. The new feedback tests cover the beginning.
 
 ## Limits
 
@@ -2220,53 +2220,53 @@ My new two-column summary tiles use `repeat(2, minmax(0, 1fr))`. The minimum the
 
 move on to the next phase
 
-> *Used tools: PowerShell ×1, Write ×1*
+> *Used tools: PowerShell Ã—1, Write Ã—1*
 
 ### Claude
 
 The tree is clean and `main` matches `origin/main`. Merging, pushing, and branching for Phase 18.
 
-> *Used tools: Read ×10, Grep ×4, PowerShell ×1, Glob ×1, Bash ×1*
+> *Used tools: Read Ã—10, Grep Ã—4, PowerShell Ã—1, Glob Ã—1, Bash Ã—1*
 
 ### Claude
 
 Checking how `useBlocker` works in React Router 8.5, since it decides how I guard navigation without breaking the many tests that use `MemoryRouter`.
 
-> *Used tools: Edit ×14, Read ×8, Grep ×4, Bash ×1, Write ×1*
+> *Used tools: Edit Ã—14, Read Ã—8, Grep Ã—4, Bash Ã—1, Write Ã—1*
 
 ### Claude
 
 Still on Phase 18. The storage layer, the resume logic in the session hook and the card's saved state are written. Now the practice page itself: the leave-confirmation, then the data-router switch.
 
-> *Used tools: Edit ×6, Write ×2, Grep ×1, Bash ×1, PowerShell ×1*
+> *Used tools: Edit Ã—6, Write Ã—2, Grep Ã—1, Bash Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 My comment-removal edit glued two lines together in `QuestionCard.tsx`. I'm fixing that, then the two storage tests that need to know about the new key.
 
-> *Used tools: Edit ×7, Read ×6, Write ×5, PowerShell ×4, Grep ×2, Glob ×2, Bash ×2*
+> *Used tools: Edit Ã—7, Read Ã—6, Write Ã—5, PowerShell Ã—4, Grep Ã—2, Glob Ã—2, Bash Ã—2*
 
 ### Claude
 
 That's a test bug, not a code bug: `makeAttempt` hands out a fresh counter id each call, so two separate `makeActive()` calls never match. Building the active session once.
 
-> *Used tools: Edit ×1, PowerShell ×1*
+> *Used tools: Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 1,076 tests pass, and the build is clean. Now checking in the real browser: a genuine page reload, the Back button, and the header links, which jsdom can't fully prove.
 
-> *Used tools: navigate ×1, javascript_tool ×1*
+> *Used tools: navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 Now a genuine page reload, with the card flipped and an answer chosen.
 
-> *Used tools: javascript_tool ×4, computer ×2, Edit ×2, PowerShell ×2, Grep ×1, Write ×1, resize_window ×1*
+> *Used tools: javascript_tool Ã—4, computer Ã—2, Edit Ã—2, PowerShell Ã—2, Grep Ã—1, Write Ã—1, resize_window Ã—1*
 
 ### Claude
 
-Phase 17 is merged and Phase 18 (session recovery and navigation safety, tasks 74–75) is done and committed as `e307a67` on `phase-18-session-recovery`. It is not merged yet.
+Phase 17 is merged and Phase 18 (session recovery and navigation safety, tasks 74â€“75) is done and committed as `e307a67` on `phase-18-session-recovery`. It is not merged yet.
 
 All 1,076 tests pass (93 new), and lint, `tsc`, format and the build are clean. I also checked it in a real browser.
 
@@ -2278,7 +2278,7 @@ Phase 17 went into `main` with a descriptive merge commit (`51c9700`) and `main`
 
 **Persist an active session (task 74)**
 - While a session runs, the app keeps a bookmark under `mathPractice.activeSession`. It holds the session, its answers, the question on screen, a review session's notes, and the card's progress (answer picked, card turned).
-- Refreshing the page restores all of that and shows "Welcome back! We saved your place…" until the next answer.
+- Refreshing the page restores all of that and shows "Welcome back! We saved your placeâ€¦" until the next answer.
 - The bookmark belongs to one page visit. Refreshing resumes it, but "Practice Again" or a fresh start never does.
 - It is re-validated on load. A damaged or inconsistent bookmark is ignored and a new session starts.
 - It is cleared when the session ends, and by Reset Statistics and Clear All Data.
@@ -2319,89 +2319,89 @@ Say "move on" and I'll merge Phase 18 into `main` with a descriptive message, pu
 
 Move on
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Phase 18 is merged and `main` is pushed (`0c3e962`). I'm on `phase-19-error-handling`. Let me read the Phase 19 tasks.
 
-> *Used tools: Read ×17, Grep ×6*
+> *Used tools: Read Ã—17, Grep Ã—6*
 
 ### Claude
 
 Starting with the small foundations: the dev logger, fallback questions, and the storage-failure store.
 
-> *Used tools: Edit ×6, Write ×3, Read ×1*
+> *Used tools: Edit Ã—6, Write Ã—3, Read Ã—1*
 
 ### Claude
 
 Now the question-generation hardening: a retry around the whole question, plus safe versions that fall back and log.
 
-> *Used tools: Edit ×7, PowerShell ×1*
+> *Used tools: Edit Ã—7, PowerShell Ã—1*
 
 ### Claude
 
 Still green. Now the startup repair service for damaged saved data.
 
-> *Used tools: Edit ×17, Write ×13, Read ×4, PowerShell ×2, Grep ×1*
+> *Used tools: Edit Ã—17, Write Ã—13, Read Ã—4, PowerShell Ã—2, Grep Ã—1*
 
 ### Claude
 
 Everything is green. Now the tests for all the new Phase 19 code. Checking the existing generator tests' mocking style first.
 
-> *Used tools: Read ×2, Grep ×1*
+> *Used tools: Read Ã—2, Grep Ã—1*
 
 ### Claude
 
 Writing the service-level tests: logger, fallbacks, generation safety, storage failures and data repair.
 
-> *Used tools: Write ×5, PowerShell ×1*
+> *Used tools: Write Ã—5, PowerShell Ã—1*
 
 ### Claude
 
 The service and utility tests all pass. Now the UI tests: error screens, boundary, warnings, notices, and the missing-session redirects.
 
-> *Used tools: Write ×4*
+> *Used tools: Write Ã—4*
 
 ### Claude
 
 The "inherited name" test case is a real catch: `'toString' in {...}` is true, so my `in` check would accept it. Fixing the code to check own properties.
 
-> *Used tools: Write ×2, Edit ×1, Read ×1, PowerShell ×1*
+> *Used tools: Write Ã—2, Edit Ã—1, Read Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 The failures are only my test queries: the setup page already has its own "pick an operation" status message, so two `status` regions exist. Targeting the notice by its class instead.
 
-> *Used tools: Bash ×1, PowerShell ×1*
+> *Used tools: Bash Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All 1,229 tests pass and the build is clean. Now a real-browser check: I'll corrupt saved data on purpose and reload, then open the session URL with no session.
 
-> *Used tools: navigate ×3, javascript_tool ×2, computer ×2*
+> *Used tools: navigate Ã—3, javascript_tool Ã—2, computer Ã—2*
 
 ### Claude
 
 The page below the header looks empty; checking whether that's just a mid-render screenshot or a real problem.
 
-> *Used tools: javascript_tool ×3, read_console_messages ×2, computer ×1, navigate ×1*
+> *Used tools: javascript_tool Ã—3, read_console_messages Ã—2, computer Ã—1, navigate Ã—1*
 
 ### Claude
 
 A fresh load has no errors. One more real-browser check: make saving fail mid-session and confirm the warning appears while practice carries on.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 The warning appeared and practice carried on, "1 of 10 done" and the next question included. Reloading to drop my test override, then the README notes and commit.
 
-> *Used tools: PowerShell ×2, navigate ×1, Grep ×1, Edit ×1, Write ×1*
+> *Used tools: PowerShell Ã—2, navigate Ã—1, Grep Ã—1, Edit Ã—1, Write Ã—1*
 
 ### Claude
 
-Phase 18 is merged and Phase 19 (error handling, tasks 76–78) is committed as `8d170b0` on `phase-19-error-handling`. It is not merged yet.
+Phase 18 is merged and Phase 19 (error handling, tasks 76â€“78) is committed as `8d170b0` on `phase-19-error-handling`. It is not merged yet.
 
 All 1,229 tests pass (153 new), and lint, `tsc`, format and the build are clean. I also checked the main paths in a real browser.
 
@@ -2418,7 +2418,7 @@ Phase 18 went into `main` with a descriptive merge commit (`0c3e962`) and `main`
 - **Settings:** valid fields stay and only damaged ones go back to defaults. A setting that is simply missing, saved by an older version, is not treated as damage.
 - **Rebuilt quietly:** damaged totals are rebuilt from the saved answers, and an unusable session bookmark is removed.
 - **Newer data:** nothing is touched if the data came from a newer app version or a migration failed.
-- **Notice:** the student sees a dismissible "We fixed some saved data…" notice.
+- **Notice:** the student sees a dismissible "We fixed some saved dataâ€¦" notice.
 - **In the browser:** I corrupted three kinds on purpose and reloaded.
   - Answers were cleared.
   - Two junk sessions were dropped and the 9 good ones kept.
@@ -2454,101 +2454,101 @@ Say "move on" and I'll merge Phase 19 into `main` with a descriptive message, pu
 
 Move on
 
-> *Used tools: PowerShell ×3, Edit ×3, Read ×2, Bash ×2, Write ×1*
+> *Used tools: PowerShell Ã—3, Edit Ã—3, Read Ã—2, Bash Ã—2, Write Ã—1*
 
 ### Claude
 
 The edits were refused because I'd only read those files before the branch switch. Reading them again, then re-applying.
 
-> *Used tools: Read ×3, Edit ×3, PowerShell ×1, navigate ×1, javascript_tool ×1*
+> *Used tools: Read Ã—3, Edit Ã—3, PowerShell Ã—1, navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 axe 4.14 is served by the dev server. Running it against each page in the real browser (this includes color contrast, which jsdom can't check).
 
-> *Used tools: javascript_tool ×4, resize_window ×1*
+> *Used tools: javascript_tool Ã—4, resize_window Ã—1*
 
 ### Claude
 
 Now at 320px wide (the same layout as 400% browser zoom), with the menu open and closed, and with the stricter rule sets switched on (WCAG 2.2 AA target size plus best-practice rules).
 
-> *Used tools: Edit ×5, javascript_tool ×4, navigate ×1*
+> *Used tools: Edit Ã—5, javascript_tool Ã—4, navigate Ã—1*
 
 ### Claude
 
 Fixed: no sideways scrolling at 320px with 200% text, on every card state. A quick visual check that it's actually legible, not just fitting.
 
-> *Used tools: javascript_tool ×1, computer ×1*
+> *Used tools: javascript_tool Ã—1, computer Ã—1*
 
 ### Claude
 
 Readable, but the page heading breaks mid-word ("Practic/e") at 200% text, the same rem-floor problem. Applying the same viewport cap to `h1`, then looking at the card itself.
 
-> *Used tools: Write ×2, Edit ×1, javascript_tool ×1, computer ×1, PowerShell ×1, Bash ×1*
+> *Used tools: Write Ã—2, Edit Ã—1, javascript_tool Ã—1, computer Ã—1, PowerShell Ã—1, Bash Ã—1*
 
 ### Claude
 
 The skip wasn't needed, so I'm leaving it out along with its comment, rather than carrying an unnecessary exception.
 
-> *Used tools: Grep ×5, Read ×2, Edit ×2*
+> *Used tools: Grep Ã—5, Read Ã—2, Edit Ã—2*
 
 ### Claude
 
 Confirmed: the card back takes focus on flip, but a new question takes none. Fixing it by moving focus to the new question card, so Tab lands on the first answer.
 
-> *Used tools: Edit ×5, Read ×1*
+> *Used tools: Edit Ã—5, Read Ã—1*
 
 ### Claude
 
 Replacing the lint-disable comment with a cleaner approach: capture the starting values once, so the effect's dependencies are honest.
 
-> *Used tools: Edit ×1, Write ×1, PowerShell ×1, Bash ×1*
+> *Used tools: Edit Ã—1, Write Ã—1, PowerShell Ã—1, Bash Ã—1*
 
 ### Claude
 
 Let me fix an inaccurate comment, and prove the new focus test would actually catch the original bug by temporarily switching the fix off.
 
-> *Used tools: Read ×1, Edit ×1, Bash ×1, Write ×1, PowerShell ×1*
+> *Used tools: Read Ã—1, Edit Ã—1, Bash Ã—1, Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Test mistake on my side: "Intermediate" is level 3, not 2 (the levels are Beginner, Easy, Intermediate, Advanced). The app recorded the right level, so I'm correcting the expectation.
 
-> *Used tools: Bash ×1*
+> *Used tools: Bash Ã—1*
 
 ### Claude
 
 Now the remaining coverage gaps. Reading the uncovered lines so each new test targets a real behaviour rather than just a number.
 
-> *Used tools: Write ×9, Edit ×6, Read ×5, PowerShell ×4, Bash ×3, Grep ×2*
+> *Used tools: Write Ã—9, Edit Ã—6, Read Ã—5, PowerShell Ã—4, Bash Ã—3, Grep Ã—2*
 
 ### Claude
 
 The guard's regex was matching the `@media (min-width: 700px)` query text, not a declaration. Narrowing it to real declarations.
 
-> *Used tools: Read ×2, Grep ×1, Edit ×1*
+> *Used tools: Read Ã—2, Grep Ã—1, Edit Ã—1*
 
 ### Claude
 
 Now re-applying the card focus tests that were refused earlier because the file had changed.
 
-> *Used tools: Edit ×4, PowerShell ×2, javascript_tool ×2, resize_window ×1, navigate ×1, read_page ×1, Read ×1*
+> *Used tools: Edit Ã—4, PowerShell Ã—2, javascript_tool Ã—2, resize_window Ã—1, navigate Ã—1, read_page Ã—1, Read Ã—1*
 
 ### Claude
 
 Let me verify the README's claims against the actual files, especially the "difficulty boundaries" row, before committing.
 
-> *Used tools: Bash ×1*
+> *Used tools: Bash Ã—1*
 
 ### Claude
 
 All referenced files exist and difficulty boundaries are covered in `operationGenerators.test.ts`. Removing the vague `difficultyRules` entry (a source file, not a test) and committing.
 
-> *Used tools: PowerShell ×2, Read ×1, Edit ×1, Write ×1, tabs_context ×1*
+> *Used tools: PowerShell Ã—2, Read Ã—1, Edit Ã—1, Write Ã—1, tabs_context Ã—1*
 
 ### Claude
 
-Phase 19 is merged and Phase 20 (testing, tasks 79–82) is committed as `a5c32de` on `phase-20-testing`. It is not merged yet.
+Phase 19 is merged and Phase 20 (testing, tasks 79â€“82) is committed as `a5c32de` on `phase-20-testing`. It is not merged yet.
 
 All 1,316 tests pass (87 new), and lint, `tsc`, format and the build are clean. Coverage is 99.2% of statements, 99.1% of branches, 99.5% of functions and 99.8% of lines. What's left is code that can't be reached, such as a server-rendering fallback and a float-rounding guard, so I stopped there instead of writing contrived tests.
 
@@ -2575,7 +2575,7 @@ Both came from the testing itself:
 - **Integration tests (task 81):** `AppRoutes.flows.test.tsx` adds mixed-operation, continuous, wrong answer creating a mistake pattern, persistence after a refresh and statistics reset.
 - **Accessibility (task 82):**
   - **Automated:** axe-core runs over every page and state: both card sides, both confirmation dialogs, the summary, the open menu, the notices and the error message. It found no violations. A deliberately broken page is caught, so a pass means something.
-  - **Real browser:** I also ran axe on all of those at desktop width and at 320px, including the WCAG 2.2 target-size and best-practice rules. No violations. The few "needs review" items are the decorative `✓` and `−` marks, which are hidden from screen readers and can't be measured.
+  - **Real browser:** I also ran axe on all of those at desktop width and at 320px, including the WCAG 2.2 target-size and best-practice rules. No violations. The few "needs review" items are the decorative `âœ“` and `âˆ’` marks, which are hidden from screen readers and can't be measured.
   - **Keyboard:** a whole visit, from setup through the summary to home, using Tab, Space, Enter and arrow keys only.
   - **Reduced motion:** covered by existing tests.
 
@@ -2595,115 +2595,115 @@ Say "move on" and I'll merge Phase 20 into `main` with a descriptive message, pu
 
 Move on
 
-> *Used tools: Write ×1, Read ×1, PowerShell ×1, Bash ×1, navigate ×1, javascript_tool ×1*
+> *Used tools: Write Ã—1, Read Ã—1, PowerShell Ã—1, Bash Ã—1, navigate Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 The full-size history is 2.05 million characters, about 40% of a typical 5-million-character browser quota, and 353 characters per attempt. Now timing the operations a student triggers.
 
-> *Used tools: Grep ×3, Read ×2, javascript_tool ×1*
+> *Used tools: Grep Ã—3, Read Ã—2, javascript_tool Ã—1*
 
 ### Claude
 
 Writing the storage changes now: a single-read `addAttempts`, a smaller detail cap, and an archive of trimmed attempts' totals.
 
-> *Used tools: Edit ×9, Read ×3, Write ×2, PowerShell ×1*
+> *Used tools: Edit Ã—9, Read Ã—3, Write Ã—2, PowerShell Ã—1*
 
 ### Claude
 
 Only the two key-list tests need updating for the new `attemptArchive` key; every other test still passes with the smaller cap. Updating them and adding the archive tests.
 
-> *Used tools: Bash ×2, PowerShell ×2, Read ×2, Write ×1*
+> *Used tools: Bash Ã—2, PowerShell Ã—2, Read Ã—2, Write Ã—1*
 
 ### Claude
 
 The shell and Python see different `/tmp` folders, so the rewrite didn't apply. I'll rewrite the whole test file directly.
 
-> *Used tools: Write ×1, Edit ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 The archive tests pass in under 3 seconds. Now re-measuring in the real browser with the same 5,000-attempt starting history, to see what the change actually bought.
 
-> *Used tools: Edit ×6, Write ×3, Read ×2, navigate ×1, javascript_tool ×1, PowerShell ×1*
+> *Used tools: Edit Ã—6, Write Ã—3, Read Ã—2, navigate Ã—1, javascript_tool Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 That's my test again: with nothing saved the mocked `key()` is never called, so usage was legitimately "0 bytes". Saving something first so the failure path is exercised.
 
-> *Used tools: Edit ×1, PowerShell ×1*
+> *Used tools: Edit Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Storage side done. Now task 83, rendering. First an exploratory measurement with React's Profiler: how many commits does each student action cause on the practice page?
 
-> *Used tools: PowerShell ×3, Read ×2, Edit ×2, Write ×1, Bash ×1, javascript_tool ×1*
+> *Used tools: PowerShell Ã—3, Read Ã—2, Edit Ã—2, Write Ã—1, Bash Ã—1, javascript_tool Ã—1*
 
 ### Claude
 
 The `click()` call only times the synchronous part, and React finishes its render in a microtask afterwards, so 0.2 ms undercounts. Re-measuring until the DOM actually updates.
 
-> *Used tools: Edit ×8, Read ×5, Bash ×2, javascript_tool ×1, Write ×1, PowerShell ×1*
+> *Used tools: Edit Ã—8, Read Ã—5, Bash Ã—2, javascript_tool Ã—1, Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 Existing tests still pass with the new list. The CSS edit was refused (the file changed since I last read it), so re-reading and re-applying.
 
-> *Used tools: Bash ×1, Read ×1, Edit ×1*
+> *Used tools: Bash Ã—1, Read Ã—1, Edit Ã—1*
 
 ### Claude
 
 Re-measuring the same 1,000-mistake page in the browser.
 
-> *Used tools: Write ×3, navigate ×1, javascript_tool ×1, PowerShell ×1*
+> *Used tools: Write Ã—3, navigate Ã—1, javascript_tool Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 All tests pass. Now task 85, loading performance. First, where do the 388 kB actually go? Building with a source map and attributing bytes per package.
 
-> *Used tools: Edit ×8, Write ×6, PowerShell ×4, Read ×3, Bash ×3*
+> *Used tools: Edit Ã—8, Write Ã—6, PowerShell Ã—4, Read Ã—3, Bash Ã—3*
 
 ### Claude
 
 Understood: I'll finish Phase 21, merge it, and carry straight on into Phase 22. First the loading-performance measurements after the code split.
 
-> *Used tools: PowerShell ×3, Write ×2, Bash ×1, Read ×1*
+> *Used tools: PowerShell Ã—3, Write Ã—2, Bash Ã—1, Read Ã—1*
 
 ### Claude
 
 The production preview is up, and the favicon went from 9,522 bytes to 204. Seeding a heavy-user history in this origin and measuring the real production build's page load and key interactions.
 
-> *Used tools: javascript_tool ×5, navigate ×2, PowerShell ×2, Edit ×2, tabs_close ×1, Bash ×1, Read ×1*
+> *Used tools: javascript_tool Ã—5, navigate Ã—2, PowerShell Ã—2, Edit Ã—2, tabs_close Ã—1, Bash Ã—1, Read Ã—1*
 
 ### Claude
 
 All green: 1,376 tests, lint, types and build. Committing Phase 21, then merging it (per your go-ahead) and starting Phase 22.
 
-> *Used tools: Bash ×4, Write ×2, PowerShell ×1, Read ×1*
+> *Used tools: Bash Ã—4, Write Ã—2, PowerShell Ã—1, Read Ã—1*
 
 ### Claude
 
 Writing the Privacy page, footer link, route and base-path support.
 
-> *Used tools: Write ×8, Edit ×8, Read ×4, Bash ×1, PowerShell ×1*
+> *Used tools: Write Ã—8, Edit Ã—8, Read Ã—4, Bash Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 The privacy tests pass. A quick mutation check that the guard actually catches violations (a temporary `fetch` call and a cookie), then I'll remove them.
 
-> *Used tools: javascript_tool ×10, resize_window ×6, PowerShell ×5, Bash ×4, navigate ×3, Read ×2, Edit ×2, Write ×1, preview_start ×1, browser_batch ×1, preview_stop ×1, preview_list ×1*
+> *Used tools: javascript_tool Ã—10, resize_window Ã—6, PowerShell Ã—5, Bash Ã—4, navigate Ã—3, Read Ã—2, Edit Ã—2, Write Ã—1, preview_start Ã—1, browser_batch Ã—1, preview_stop Ã—1, preview_list Ã—1*
 
 ### Claude
 
 Servers are stopped, and the Node version is 24, which I'll use in CI. Now the CI workflow and the release guide.
 
-> *Used tools: Read ×3, Write ×2, Edit ×2, Bash ×1, PowerShell ×1*
+> *Used tools: Read Ã—3, Write Ã—2, Edit Ã—2, Bash Ã—1, PowerShell Ã—1*
 
 ### Claude
 
 `npm run verify` passes end to end: lint, formatting, 1,412 tests and the production build. Committing Phase 22 on its branch (the app folder plus the new CI workflow).
 
-> *Used tools: Write ×1, PowerShell ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1*
 
 ### Claude
 
@@ -2715,7 +2715,7 @@ All 1,412 tests pass, and `npm run verify` is clean (lint, formatting, tests, pr
 
 ## Phase 21: performance and data
 
-I measured in a real browser with a full-size history (1,000 mistakes, thousands of answers). Phones are typically 4–6× slower, and I couldn't throttle the CPU, so those multiples are estimates.
+I measured in a real browser with a full-size history (1,000 mistakes, thousands of answers). Phones are typically 4â€“6Ã— slower, and I couldn't throttle the CPU, so those multiples are estimates.
 
 | What | Before | After |
 |---|---|---|
@@ -2779,22 +2779,127 @@ Make sure these are all done after the commit, merge, and push
 
 I'll merge and push Phase 22 first, then work through each item on that list, starting with a look at what's already in the repo for the report and AI evidence.
 
-> *Used tools: Write ×1, PowerShell ×1, Bash ×1*
+> *Used tools: Write Ã—1, PowerShell Ã—1, Bash Ã—1*
 
 ### Claude
 
 Phase 22 is merged and pushed (`3ad4382`). Now checking the GitHub CLI login and repo visibility, and what the original requirements and existing documents look like.
 
-> *Used tools: PowerShell ×6, Bash ×5, Read ×4, Write ×3, browser_batch ×2, tabs_create ×1*
+> *Used tools: PowerShell Ã—6, Bash Ã—5, Read Ã—4, Write Ã—3, browser_batch Ã—2, tabs_create Ã—1*
 
 ### Claude
 
 Clean: no passwords, keys or emails. Two forward-slash copies of the local username slipped past my redaction, so I'll fix that, re-export, and check the three "token" hits.
 
-> *Used tools: Bash ×1*
+> *Used tools: Bash Ã—1*
 
 ### Claude
 
 The "token" hits are only CSS design tokens, which is harmless. The regex patch didn't apply, so I'm fixing the redaction in the script directly.
 
-> *Used tools: Edit ×2, PowerShell ×1*
+> *Used tools: Edit Ã—2, PowerShell Ã—1, Bash Ã—1*
+
+### Claude
+
+That last hit is only a project-folder slug, which I'll tidy. Gathering accurate figures from git and the code for the development report, so every number in it is real.
+
+> *Used tools: Bash Ã—1, navigate Ã—1, AskUserQuestion Ã—1, PowerShell Ã—1*
+
+### Claude
+
+The CLI isn't logged in yet. That's your step, so I'll keep going with everything that doesn't depend on it and check again at the end. First the README setup instructions, which are the biggest gap.
+
+> *Used tools: Read Ã—3, Edit Ã—2*
+
+### Claude
+
+Now the development report. It's the main written deliverable, so it needs to be accurate and honest, including what went wrong, what was verified and what wasn't.
+
+> *Used tools: Write Ã—1*
+
+### Claude
+
+Fixing one sentence where I overstated what I know: I only know the Cursor PDF's title and size, not its contents, so the report shouldn't characterise it.
+
+> *Used tools: Write Ã—6, PowerShell Ã—3, Read Ã—2, Edit Ã—1*
+
+### Claude
+
+The clone from GitHub worked and has the latest merge. Now following the README exactly: install, verify, and start the dev server.
+
+> *Used tools: PowerShell Ã—4*
+
+### Claude
+
+Everything is merged and pushed (`main` at `6a8d070`), and seven of the nine items are done. Public deployment is the one blocker, and it needs you.
+
+## Your checklist
+
+| Requirement | Status |
+|---|---|
+| Required features implemented | **Done.** All functional requirements in the spec are implemented. The one exception is **sound effects**: the setting is saved, but no sounds play, and the Settings page and report both say so. The requirement-by-requirement table is in the report. |
+| Runs locally | **Done.** I cloned the repo fresh from GitHub and followed the README exactly. Install took 10 s, `npm run verify` passed, and the dev server returned the app. |
+| Tested | **Done.** 1,412 tests pass, about 99% coverage, plus the accessibility and browser checks. Safari, Firefox, Edge, real devices and a real screen reader were not available. This is stated in `RELEASE.md` and the report. |
+| Pushed to GitHub | **Done.** |
+| README includes setup instructions | **Done.** The app README has a Setup section. `Assignment 13/README.md` was empty and now links everything. |
+| Publicly deployed | **Not done**, see below. |
+| Deployed URL works | **Not done**, it depends on the line above. |
+| Development report complete | **Done**, apart from the live address. `Assignment 13/Development-Report.md` has the requirements table, how the AI was used and checked, testing, bugs found and fixed, performance, accessibility and limitations. |
+| AI conversation evidence | **Done.** `AI-Conversation-Evidence/` holds a readable, redacted export of this session, alongside your existing ChatGPT and Cursor transcripts. It is current up to this point, and I'll regenerate it as the last step. |
+
+## What's blocking deployment
+
+- **The GitHub CLI isn't signed in.** You said you'd run `gh auth login` yourself; I checked and it still isn't logged in. I can't sign in for you.
+- **The repo is private.** I confirmed anonymous access is refused. GitHub Pages on a private repo needs a paid plan, such as GitHub Pro (free through the Student Developer Pack). Without it you'd have to make the repo public, which exposes all your other assignments.
+- **A failed run is expected.** The push to `main` triggers the Pages deploy workflow, and it will show a red failure until Pages is switched on. That's expected and harmless.
+
+## What I need from you
+
+Run this in your own terminal, then tell me:
+
+```bash
+gh auth login
+```
+
+Then I'll do the following, asking before each settings change:
+
+1. Check the repo's visibility and plan.
+2. Enable Pages with the "GitHub Actions" source.
+3. Run the deploy workflow.
+4. Open the live address and check every route, persistence and the console.
+5. Put the verified URL in the README and report.
+6. Regenerate the AI-evidence export and make the final commit, merge and push.
+
+If your plan doesn't allow Pages on a private repo, Netlify is the fallback. The `dist` folder from `npm run build` is ready to drag onto netlify.com, and you'd send me the URL to verify. The intended Pages address is `https://antonio-cma.github.io/cse_4095/`, but I haven't confirmed anything is live there.
+
+## Student message 29
+
+*2026-10-21T23:15:15.695Z*
+
+Ran the command and connected
+
+> *Used tools: PowerShell Ã—2*
+
+### Claude
+
+CI passed on GitHub for both pushes (lint, tests and build all green on a clean Linux machine). The deploy run failed, as predicted. Confirming that it failed at the expected step.
+
+> *Used tools: PowerShell Ã—3, AskUserQuestion Ã—2, Bash Ã—1*
+
+### Claude
+
+The repo is public and anonymous access works. Now enabling Pages, which you authorized earlier.
+
+> *Used tools: PowerShell Ã—1*
+
+### Claude
+
+Pages is enabled with the workflow source and HTTPS enforced. Re-running the failed deploy workflow and watching it to completion.
+
+> *Used tools: Edit Ã—7, javascript_tool Ã—5, resize_window Ã—3, Bash Ã—3, PowerShell Ã—2, navigate Ã—2, Read Ã—2, browser_batch Ã—1*
+
+### Claude
+
+Now regenerating the AI-conversation export so it includes everything up to this point, with the sensitive-data scan again, then the final verify.
+
+> *Used tools: PowerShell Ã—1*

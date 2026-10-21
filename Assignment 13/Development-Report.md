@@ -2,7 +2,7 @@
 
 **Course:** CSE 4095, Agentic Learning, Assignment 13
 **Repository:** https://github.com/Antonio-CMA/cse_4095 (the app is in `Assignment 13/math-practice-app`)
-**Live site:** see [section 11](#11-deployment)
+**Live site:** https://antonio-cma.github.io/cse_4095/ (details in [section 11](#11-deployment))
 **Built:** 20–21 October 2026
 
 ## 1. Summary
@@ -218,9 +218,21 @@ GitHub Pages workflow (`.github/workflows/math-practice-deploy.yml`) that tests,
 with the right sub-path and an in-page security policy, and publishes. The Pages build was
 served locally under `/cse_4095/` and checked on every route with a clean console.
 
-**Status of the live site:** see `math-practice-app/README.md`, "Deployment status",
-which is updated when the address has been verified. Publishing needs the repository
-owner to enable GitHub Pages (or to use another host), because it needs their account.
+**The live site is https://antonio-cma.github.io/cse_4095/** (GitHub Pages, deployed by
+that workflow). Getting there took a decision: GitHub Pages is not available for a
+private repository on a free plan, so I chose to make the repository public (it holds
+only this assignment; I checked the history for secrets first). I had the AI do the
+steps, with my explicit approval before each change to my GitHub settings.
+
+Checked on the live address (Chromium): every route opens correctly when loaded
+directly; a full session, its summary and the statistics survive a real reload; there is
+no sideways scrolling and no tap target under 44 px at 320 and 768 px wide; and the
+security policy blocks an injected script and requests to other sites. One trade-off:
+GitHub Pages cannot rewrite addresses, so opening a page other than the home page
+directly is answered with the app's `404.html`. The page works, but the browser console
+shows one "404" line for that first load (in-app links are unaffected). Hosts such as
+Netlify avoid this. The continuous-integration workflow (lint, formatting, tests, build)
+also passes on GitHub's servers.
 
 ## 12. Limitations and future work
 

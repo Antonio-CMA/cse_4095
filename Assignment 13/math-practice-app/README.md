@@ -2,7 +2,7 @@
 
 A React + TypeScript app (built with Vite) for children ages 7–12 to practice addition, subtraction, multiplication, and division with flip-card multiple-choice questions. See `Assignment 13/Project Docs` for the full specification and implementation plan, and `Assignment 13/Development-Report.md` for how it was built.
 
-**Live site:** see [Deployment status](#deployment-status).
+**Live site: https://antonio-cma.github.io/cse_4095/** (see [Deployment status](#deployment-status)).
 
 ## What it does
 
@@ -58,15 +58,35 @@ checked in other browsers are in [`RELEASE.md`](RELEASE.md).
 
 ## Deployment status
 
-The app is built to be hosted as a static site. The intended address is
-**https://antonio-cma.github.io/cse_4095/**, published by the GitHub Actions
-workflow `.github/workflows/math-practice-deploy.yml` (it runs the tests, builds
-with the sub-path and security policy that GitHub Pages needs, and publishes).
+**Live site: https://antonio-cma.github.io/cse_4095/**
 
-**Status: not yet live.** Publishing needs GitHub Pages to be switched on for the
-repository (Settings > Pages > Source: GitHub Actions), which has to be done by
-the repository owner. This section is updated with the verified address once it is
-live.
+It is published by the GitHub Actions workflow
+`.github/workflows/math-practice-deploy.yml`: on every push to `main` that changes the
+app it runs the tests, builds with the sub-path and in-page security policy that
+GitHub Pages needs, and publishes. It can also be run by hand (Actions tab, "Deploy
+Math Practice to GitHub Pages", Run workflow).
+
+**Verified on 21 October 2026** (in Chromium, on the live address):
+
+- every address opens the right page when loaded directly (`/`, `/practice/setup`,
+  `/statistics`, `/settings`, `/privacy`, and an unknown address shows "Page Not
+  Found"; `/practice/session` and `/practice/summary` return to setup with an
+  explanation);
+- a full session, its summary, and the statistics and a changed setting are still
+  there after a real page reload;
+- no sideways scrolling and no tap target under 44 px at 320 px and 768 px wide;
+- the security policy blocks an injected script and requests to other sites.
+
+**Known trade-off of GitHub Pages:** it cannot rewrite addresses, so opening or
+refreshing a page other than the home page (for example `/statistics`) is answered with
+the app's `404.html` (a copy of the app). It works, but the browser console shows one
+"404" line for that first load, and links inside the app are never affected. Netlify,
+Cloudflare Pages and Vercel avoid this (see `RELEASE.md`). Pages also cannot send
+security headers, so the same Content-Security-Policy is placed in the page itself,
+without the `frame-ancestors` rule that only headers can carry.
+
+The repository is public so that GitHub Pages can publish it on a free plan; only
+`Assignment 13` is in it.
 
 ## Testing
 
@@ -118,7 +138,7 @@ src/
 - **Mistake review (Phase 14, done):** the setup page's "Practice my mistakes" option (and the summary's "Practice Mistakes") is available while at least one pattern is not mastered (`useActiveMistakeCount`). A review session (`services/reviewSession.ts`, `utils/mistakeReview.ts`) picks patterns at random weighted by priority (more misses, more recent, less review progress), never the same pattern twice in a row, and avoids repeating recent problems. Each answer is saved with its `mistakePatternId`. A **right** review answer adds one to `similarCorrectCount`; the pattern is **mastered** at `masteryThreshold` (Settings, default 3; the count is also checked against the current setting, so lowering it applies straight away). A **wrong** review answer counts as another miss on the same pattern (progress resets, no new pattern is created for the similar question). Mastered patterns are left out of review and come back after a later mistake. A review session ends early when every mistake is mastered. Its summary shows the operations and the most common level of the mistakes it used.
 - **Mistake statistics (Phase 15, done):** the Statistics page shows how many mistakes need practice or are mastered, the review practice totals, the operation(s) missed most (ties show every tied operation), the five number facts missed most (ties broken by most recent), and every mistake with its review progress. Mastered mistakes sit in a collapsed section of their own. The review totals are part of the running statistics (`statistics.review`), so trimming old attempts does not change them; saved totals without that part are rebuilt from the saved answers. `useStatistics` loads the patterns too, so Reset Statistics clears everything shown.
 - **Saved data (Phase 9):** the browser keeps `mathPractice.version`, `.settings`, `.sessions` and `.attempts`. The `.statistics` and `.mistakePatterns` keys are used from Phases 10 and 12, and `.activeSession` (Phase 18) holds the session in progress. `AppProvider` loads and saves settings, and `clearAllData()` (Settings page) erases every `mathPractice.*` key and restores the defaults.
-- **Release preparation (Phase 22, done except the deployment itself):** see [`RELEASE.md`](RELEASE.md). The app has a plain-language **Privacy page** (`/privacy`, footer link) and `src/utils/privacy.test.ts` keeps its promises true by failing on any network call, cookie, analytics or advertising code, outside link, extra library, or weakened hosting header. The security headers (a strict Content-Security-Policy that allows only the site itself, no referrer, no type guessing) are written once in `public/_headers`, repeated in `vercel.json` (a test checks they match) and sent by `npm run preview`, so the production build can be tried under the real policy. `public/_redirects` and `vercel.json` make every address show the app (a refresh or shared link works). The build's base path is `VITE_BASE` (default `/`) and is also the router's `basename` and the error page's home link. `.github/workflows/math-practice-ci.yml` runs `npm run verify` on every change (it deploys nothing). The production build was checked in Chromium only (all routes, a full session, reload persistence, phone and tablet sizes, CSP enforcement); **Safari, Firefox, Edge, real phones/tablets and a screen reader were not available** and are listed as manual checks. **Nothing has been deployed**: that needs the owner's hosting account.
+- **Release preparation (Phase 22, done):** see [`RELEASE.md`](RELEASE.md). The app has a plain-language **Privacy page** (`/privacy`, footer link) and `src/utils/privacy.test.ts` keeps its promises true by failing on any network call, cookie, analytics or advertising code, outside link, extra library, or weakened hosting header. The security headers (a strict Content-Security-Policy that allows only the site itself, no referrer, no type guessing) are written once in `public/_headers`, repeated in `vercel.json` (a test checks they match) and sent by `npm run preview`, so the production build can be tried under the real policy. `public/_redirects` and `vercel.json` make every address show the app (a refresh or shared link works). The build's base path is `VITE_BASE` (default `/`) and is also the router's `basename` and the error page's home link. `.github/workflows/math-practice-ci.yml` runs `npm run verify` on every change (it deploys nothing). The production build was checked in Chromium only (all routes, a full session, reload persistence, phone and tablet sizes, CSP enforcement); **Safari, Firefox, Edge, real phones/tablets and a screen reader were not available** and are listed as manual checks. The app was then deployed to GitHub Pages and checked on the live address (see Deployment status).
 - **Performance and data management (Phase 21, done):** measured first, then fixed. Numbers are from a desktop browser with a full-size history (200 sessions, 1,000 mistakes, thousands of answers); phones are typically 4–6× slower, and a slow-device test was **not** possible here (no CPU throttling), so those multiples are estimates.
 
   | What                                                   | Before       | After        |

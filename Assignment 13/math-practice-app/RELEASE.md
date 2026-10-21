@@ -71,9 +71,17 @@ Both are already written down:
 If the site lives below a folder (`https://example.com/math/`), build with
 `VITE_BASE=/math/ npm run build`. The router and the "Go Home" link use that base.
 
-Nothing has been deployed: choosing a host and publishing needs an account of
-yours. `.github/workflows/math-practice-ci.yml` only checks (lint, tests, build);
-it deploys nothing.
+**Currently deployed** to GitHub Pages at https://antonio-cma.github.io/cse_4095/ by
+`.github/workflows/math-practice-deploy.yml` (see the README's "Deployment status" for
+what was verified there). That needed the repository to be public, because GitHub Pages
+on a private repository requires a paid plan. `.github/workflows/math-practice-ci.yml`
+only checks (lint, tests, build); it deploys nothing.
+
+On GitHub Pages, opening or refreshing any address other than the home page is
+answered with `404.html` (a copy of the app): the page works, but the browser console
+shows one "404" line for that first load. The other hosts above avoid this. The site's
+browser storage belongs to `antonio-cma.github.io`, shared with any other project pages
+on that account; the app only touches keys starting with `mathPractice.`.
 
 ## After deploying
 
