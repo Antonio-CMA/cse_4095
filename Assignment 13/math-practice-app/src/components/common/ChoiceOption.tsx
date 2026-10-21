@@ -9,6 +9,7 @@ interface ChoiceOptionProps {
   /** Decorative symbol shown beside the label, e.g. "+". */
   symbol?: string
   checked: boolean
+  disabled?: boolean
   onChange: () => void
 }
 
@@ -24,18 +25,20 @@ export function ChoiceOption({
   description,
   symbol,
   checked,
+  disabled = false,
   onChange,
 }: ChoiceOptionProps) {
   const labelId = useId()
   const descriptionId = useId()
 
   return (
-    <label className="choice">
+    <label className={disabled ? 'choice choice--disabled' : 'choice'}>
       <input
         className="choice__input"
         type={type}
         name={name}
         checked={checked}
+        disabled={disabled}
         onChange={onChange}
         aria-labelledby={labelId}
         aria-describedby={description ? descriptionId : undefined}

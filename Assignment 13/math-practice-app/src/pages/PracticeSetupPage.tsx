@@ -3,29 +3,44 @@ import { useNavigate } from 'react-router'
 import { Button } from '../components/common/Button'
 import { DifficultySelector } from '../components/practice/DifficultySelector'
 import { OperationSelector } from '../components/practice/OperationSelector'
+import { ReviewModeSelector } from '../components/practice/ReviewModeSelector'
 import { SessionLengthSelector } from '../components/practice/SessionLengthSelector'
+import { useActiveMistakeCount } from '../hooks/useActiveMistakeCount'
+import { usePracticeDefaults } from '../hooks/usePracticeDefaults'
 import type { DifficultyLevel, MathOperation } from '../types/question'
-import type { PracticeConfig, SessionLength } from '../types/session'
-import {
-  DEFAULT_DIFFICULTY,
-  DEFAULT_SESSION_LENGTH,
-} from '../utils/practiceOptions'
+import type {
+  PracticeConfig,
+  ReviewMode,
+  SessionLength,
+} from '../types/session'
 
 export function PracticeSetupPage() {
   const navigate = useNavigate()
-  const [operations, setOperations] = useState<MathOperation[]>([])
-  const [difficulty, setDifficulty] =
-    useState<DifficultyLevel>(DEFAULT_DIFFICULTY)
-  const [sessionLength, setSessionLength] = useState<SessionLength>(
-    DEFAULT_SESSION_LENGTH,
+  const defaults = usePracticeDefaults()
+  const activeMistakeCount = useActiveMistakeCount()
+
+  const [operations, setOperations] = useState<MathOperation[]>(
+    defaults.operations,
   )
+  const [difficulty, setDifficulty] = useState<DifficultyLevel>(
+    defaults.difficulty,
+  )
+  const [sessionLength, setSessionLength] = useState<SessionLength>(
+    defaults.sessionLength,
+  )
+  const [reviewMode, setReviewMode] = useState<ReviewMode>(defaults.reviewMode)
 
   const canStart = operations.length > 0
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!canStart) return
-    const config: PracticeConfig = { operations, difficulty, sessionLength }
+    const config: PracticeConfig = {
+      operations,
+      difficulty,
+      sessionLength,
+      reviewMode,
+    }
     navigate('/practice/session', { state: config })
   }
 
@@ -39,6 +54,11 @@ export function PracticeSetupPage() {
         <SessionLengthSelector
           value={sessionLength}
           onChange={setSessionLength}
+        />
+        <ReviewModeSelector
+          value={reviewMode}
+          onChange={setReviewMode}
+          activeMistakeCount={activeMistakeCount}
         />
         <div className="setup-form__footer">
           <Button type="submit" disabled={!canStart}>

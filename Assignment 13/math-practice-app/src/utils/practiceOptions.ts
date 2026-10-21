@@ -1,5 +1,5 @@
 import type { DifficultyLevel, MathOperation } from '../types/question'
-import type { SessionLength } from '../types/session'
+import type { ReviewMode, SessionLength } from '../types/session'
 
 export const OPERATION_OPTIONS: ReadonlyArray<{
   value: MathOperation
@@ -49,5 +49,16 @@ export const SESSION_LENGTH_OPTIONS: ReadonlyArray<{
   { value: 'continuous', label: 'Continuous practice' },
 ]
 
+export const REVIEW_MODE_OPTIONS: ReadonlyArray<{
+  value: ReviewMode
+  label: string
+}> = [
+  { value: 'regular', label: 'Regular practice' },
+  { value: 'mistake-review', label: 'Practice my mistakes' },
+]
+
+// Built-in fallbacks. The settings page (Phase 11) will override these.
+export const DEFAULT_OPERATIONS: MathOperation[] = []
 export const DEFAULT_DIFFICULTY: DifficultyLevel = 1
 export const DEFAULT_SESSION_LENGTH: SessionLength = 10
+export const DEFAULT_REVIEW_MODE: ReviewMode = 'regular'
