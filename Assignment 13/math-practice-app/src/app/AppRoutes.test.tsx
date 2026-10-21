@@ -77,6 +77,61 @@ describe('AppRoutes', () => {
     expect(screen.getByText('Question 1 of 5')).toBeInTheDocument()
   })
 
+  it('shows a played session on the statistics page, and can erase it', async () => {
+    const user = userEvent.setup()
+    renderAt('/practice/setup')
+
+    await user.click(screen.getByRole('checkbox', { name: 'Division' }))
+    await user.click(screen.getByRole('radio', { name: '5 questions' }))
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+
+    for (const verdict of [
+      'I Got It Right',
+      'I Got It Right',
+      'I Got It Wrong',
+      'I Got It Right',
+      'I Got It Wrong',
+    ]) {
+      const front = screen.getByRole('region', { name: 'Question' })
+      await user.click(
+        within(front).getAllByRole('button', { pressed: false })[0],
+      )
+      await user.click(screen.getByRole('button', { name: 'Flip Card' }))
+      await user.click(screen.getByRole('button', { name: verdict }))
+    }
+
+    await user.click(screen.getByRole('link', { name: 'View Statistics' }))
+
+    const overall = screen.getByRole('region', { name: 'Overall' })
+    expect(
+      within(overall).getByText('Questions attempted').nextSibling,
+    ).toHaveTextContent('5')
+    expect(within(overall).getByText('Correct').nextSibling).toHaveTextContent(
+      '3',
+    )
+    expect(within(overall).getByText('Accuracy').nextSibling).toHaveTextContent(
+      '60%',
+    )
+
+    const division = within(
+      screen.getByRole('region', { name: 'By operation' }),
+    ).getByRole('article', { name: 'Division' })
+    expect(
+      within(division).getByText('Attempted').nextSibling,
+    ).toHaveTextContent('5')
+
+    const recent = screen.getByRole('region', { name: 'Recent sessions' })
+    expect(within(recent).getAllByRole('listitem')).toHaveLength(1)
+
+    await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
+    await user.click(
+      screen.getByRole('button', { name: 'Yes, Erase Everything' }),
+    )
+    expect(
+      screen.getByRole('heading', { name: 'No practice yet' }),
+    ).toBeInTheDocument()
+  })
+
   it('runs a session started from the setup page', async () => {
     const user = userEvent.setup()
     renderAt('/practice/setup')

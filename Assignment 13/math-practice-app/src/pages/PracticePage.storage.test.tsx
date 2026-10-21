@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 import { loadAttempts, loadSessions } from '../services/practiceHistory'
+import { loadStatistics } from '../services/statisticsService'
 import type { PracticeConfig } from '../types/session'
 import { PracticePage } from './PracticePage'
 
@@ -109,6 +110,33 @@ describe('saving practice history', () => {
       expect(Date.parse(attempt.attemptedAt)).not.toBeNaN()
     }
     expect(new Set(attempts.map((a) => a.questionId)).size).toBe(3)
+  })
+
+  it('keeps the statistics up to date, counting each answer exactly once', async () => {
+    const user = userEvent.setup()
+    renderSession()
+
+    await answer(user, 'right')
+    expect(loadStatistics()).toMatchObject({
+      attempted: 1,
+      correct: 1,
+      incorrect: 0,
+    })
+
+    await answer(user, 'wrong')
+    await answer(user, 'right')
+
+    const stats = loadStatistics()
+    expect(stats).toMatchObject({ attempted: 3, correct: 2, incorrect: 1 })
+    expect(stats.byDifficulty[2]).toEqual({
+      attempted: 3,
+      correct: 2,
+      incorrect: 1,
+    })
+    expect(stats.byDifficulty[1].attempted).toBe(0)
+    const byOperation = Object.values(stats.byOperation)
+    expect(byOperation.reduce((n, b) => n + b.attempted, 0)).toBe(3)
+    expect(stats.byOperation.multiplication.attempted).toBe(0)
   })
 
   it('saves a continuous session ended early', async () => {
