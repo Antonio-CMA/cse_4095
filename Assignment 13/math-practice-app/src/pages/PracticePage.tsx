@@ -242,6 +242,8 @@ function ActiveSession({
           settings.cardAnimationEnabled && !prefersReducedMotion
         }
         shortcutsEnabled={!confirmingEnd && !isLeaving}
+        // After the first answer the previous card is gone, taking focus with it.
+        focusOnShow={session.attempted > 0}
         showExplanation={settings.showExplanations}
         initialProgress={
           resumedCard?.questionId === currentQuestion.id

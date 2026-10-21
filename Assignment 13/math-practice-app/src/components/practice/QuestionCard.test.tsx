@@ -260,6 +260,55 @@ describe('QuestionCard with a new question', () => {
   })
 })
 
+describe('QuestionCard keyboard focus', () => {
+  const front = () => screen.getByRole('region', { name: 'Question' })
+
+  it('leaves focus alone by default, as on the first question of a page', () => {
+    renderCard()
+    expect(front()).not.toHaveFocus()
+  })
+
+  it('takes focus when asked to, so Tab starts at its first answer', async () => {
+    const user = userEvent.setup()
+    renderCard({ focusOnShow: true })
+    expect(front()).toHaveFocus()
+
+    await user.tab()
+    expect(screen.getByRole('button', { name: '48' })).toHaveFocus()
+  })
+
+  it('is focused by the app, but never by tabbing', () => {
+    renderCard()
+    expect(front()).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('takes focus again for each new question', () => {
+    const { rerender, onResult } = renderCard({ focusOnShow: true })
+    ;(document.activeElement as HTMLElement).blur()
+
+    rerender(
+      <QuestionCard
+        question={NEXT_QUESTION}
+        questionNumber={4}
+        totalQuestions={10}
+        focusOnShow
+        onResult={onResult}
+      />,
+    )
+    expect(front()).toHaveFocus()
+  })
+
+  it('focuses the answer side, not the question, when put back already turned', () => {
+    renderCard({
+      focusOnShow: true,
+      initialProgress: { selectedAnswer: 54, flipped: true },
+    })
+    expect(document.activeElement).toBe(
+      document.querySelector('.flip-card__face--back'),
+    )
+  })
+})
+
 describe('QuestionCard progress (for picking up after a refresh)', () => {
   it('reports each change to the picked answer and the side showing', async () => {
     const user = userEvent.setup()

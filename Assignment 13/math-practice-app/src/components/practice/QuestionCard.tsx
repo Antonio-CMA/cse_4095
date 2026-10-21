@@ -22,6 +22,12 @@ interface QuestionCardProps {
   showExplanation?: boolean
   /** Let the number keys 1–4 choose an answer. Turn off while a dialog is open. */
   shortcutsEnabled?: boolean
+  /**
+   * Move keyboard focus to the card when it appears. A question that replaces
+   * an answered one needs this: the card the student was using has just gone,
+   * so focus would otherwise fall back to the top of the page.
+   */
+  focusOnShow?: boolean
   /** Start with this answer picked and/or the card turned (after a refresh). */
   initialProgress?: { selectedAnswer: number | null; flipped: boolean }
   /** Told whenever the picked answer or the side showing changes. */
@@ -48,6 +54,7 @@ function CardState({
   animationEnabled = true,
   showExplanation = false,
   shortcutsEnabled = true,
+  focusOnShow = false,
   initialProgress,
   onProgressChange,
   onResult,
@@ -59,7 +66,15 @@ function CardState({
   const [resultRecorded, setResultRecorded] = useState(false)
   // Spoken aloud by screen readers (it is not shown on screen).
   const [announcement, setAnnouncement] = useState('')
+  const frontRef = useRef<HTMLDivElement>(null)
   const backRef = useRef<HTMLDivElement>(null)
+
+  // Each question gets its own card, so this happens once per question. (A card
+  // that starts turned over focuses its back instead, below.)
+  const [focusFrontOnShow] = useState(focusOnShow && !initialProgress?.flipped)
+  useEffect(() => {
+    if (focusFrontOnShow) frontRef.current?.focus()
+  }, [focusFrontOnShow])
 
   useEffect(() => {
     onProgressChange?.({ selectedAnswer, flipped: isFlipped })
@@ -120,10 +135,12 @@ function CardState({
       </div>
       <div className="flip-card__inner">
         <section
+          ref={frontRef}
           className="flip-card__face flip-card__face--front"
           aria-label="Question"
           aria-hidden={isFlipped}
           inert={isFlipped}
+          tabIndex={-1}
         >
           <CardFront
             question={question}

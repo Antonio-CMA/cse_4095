@@ -170,6 +170,16 @@ describe('generateSimilarQuestionSafely', () => {
     expect(log.mock.calls[0][1]).toMatchObject({ pattern: PATTERN })
   })
 
+  it('turns a crash while building the choices into a clear error', () => {
+    vi.spyOn(answerChoices, 'buildChoices').mockImplementation(() => {
+      throw new RangeError('no distractors')
+    })
+    expect(() => generateSimilarQuestion(PATTERN)).toThrow(
+      // A related problem is chosen, so the exact numbers vary.
+      /Could not build answer choices for \d+ [×÷+−] \d+ = \?: RangeError: no distractors/,
+    )
+  })
+
   it('is used for review sessions, so they never stop on a bad question', () => {
     quietConsole()
     vi.spyOn(answerChoices, 'buildChoices').mockReturnValue(BAD_CHOICES)
