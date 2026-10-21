@@ -23,6 +23,18 @@ export function randomInRange(range: Range, rng: Rng = Math.random) {
   return randomInt(range.min, range.max, rng)
 }
 
+/**
+ * Percent correct as a whole number (0–100), or null when nothing has been
+ * attempted yet so there is nothing to measure (and nothing to divide by).
+ */
+export function calculateAccuracy(
+  correct: number,
+  attempted: number,
+): number | null {
+  if (attempted <= 0) return null
+  return Math.round((correct / attempted) * 100)
+}
+
 export const OPERATION_SYMBOLS: Record<MathOperation, string> = {
   addition: '+',
   subtraction: '−',

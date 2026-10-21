@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Button } from '../components/common/Button'
 import { DifficultySelector } from '../components/practice/DifficultySelector'
 import { OperationSelector } from '../components/practice/OperationSelector'
@@ -13,22 +13,34 @@ import type {
   ReviewMode,
   SessionLength,
 } from '../types/session'
+import { parsePracticeConfig } from '../utils/validation'
 
 export function PracticeSetupPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const defaults = usePracticeDefaults()
   const activeMistakeCount = useActiveMistakeCount()
 
+  // Start from the previous session's choices when arriving from the summary
+  // page ("Change Settings" → "Practice Setup"); otherwise from the defaults.
+  const [initial] = useState<PracticeConfig>(() => {
+    const previous = parsePracticeConfig(location.state)
+    if (!previous) return defaults
+    return activeMistakeCount === 0 && previous.reviewMode === 'mistake-review'
+      ? { ...previous, reviewMode: 'regular' }
+      : previous
+  })
+
   const [operations, setOperations] = useState<MathOperation[]>(
-    defaults.operations,
+    initial.operations,
   )
   const [difficulty, setDifficulty] = useState<DifficultyLevel>(
-    defaults.difficulty,
+    initial.difficulty,
   )
   const [sessionLength, setSessionLength] = useState<SessionLength>(
-    defaults.sessionLength,
+    initial.sessionLength,
   )
-  const [reviewMode, setReviewMode] = useState<ReviewMode>(defaults.reviewMode)
+  const [reviewMode, setReviewMode] = useState<ReviewMode>(initial.reviewMode)
 
   const canStart = operations.length > 0
 
