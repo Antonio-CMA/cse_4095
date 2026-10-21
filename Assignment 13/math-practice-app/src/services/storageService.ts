@@ -5,6 +5,8 @@
  * what happened instead, and the app carries on either way.
  */
 
+import { reportStorageFailure } from './storageFailures'
+
 const KEY_PREFIX = 'mathPractice.'
 
 export const STORAGE_KEYS = {
@@ -99,22 +101,35 @@ export function readItem<T>(
   return value === null ? { status: 'invalid' } : { status: 'ok', value }
 }
 
-/** Saves one item as JSON, reporting (not throwing) if it could not be saved. */
-export function writeItem(key: StorageKey, value: unknown): WriteResult {
+/**
+ * Saves one item as JSON, reporting (not throwing) if it could not be saved. A
+ * failure is also passed on so the student can be told, unless the caller means
+ * to try again and will report it itself if that fails too (`quiet`).
+ */
+export function writeItem(
+  key: StorageKey,
+  value: unknown,
+  { quiet = false }: { quiet?: boolean } = {},
+): WriteResult {
+  const fail = (reason: WriteFailure): WriteResult => {
+    if (!quiet) reportStorageFailure(reason)
+    return { ok: false, reason }
+  }
+
   let json: string
   try {
     json = JSON.stringify(value)
   } catch {
-    return { ok: false, reason: 'error' }
+    return fail('error')
   }
 
   const store = getStore()
-  if (!store) return { ok: false, reason: 'unavailable' }
+  if (!store) return fail('unavailable')
   try {
     store.setItem(key, json)
     return { ok: true }
   } catch (error) {
-    return { ok: false, reason: isQuotaError(error) ? 'quota' : 'unavailable' }
+    return fail(isQuotaError(error) ? 'quota' : 'unavailable')
   }
 }
 

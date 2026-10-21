@@ -7,6 +7,7 @@ import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
 import { getSessionEncouragement } from '../utils/feedback'
 import { calculateAccuracy } from '../utils/math'
+import { setupNoticeState } from '../utils/setupNotice'
 import { parseSessionResult } from '../utils/validation'
 
 export function SessionSummaryPage() {
@@ -19,7 +20,15 @@ export function SessionSummaryPage() {
   )
 
   // Opened directly or refreshed without results: nothing to summarise.
-  if (!result) return <Navigate to="/practice/setup" replace />
+  if (!result) {
+    return (
+      <Navigate
+        to="/practice/setup"
+        replace
+        state={setupNoticeState('no-results')}
+      />
+    )
+  }
 
   const { session } = result
   const encouragement = settings.feedbackEnabled

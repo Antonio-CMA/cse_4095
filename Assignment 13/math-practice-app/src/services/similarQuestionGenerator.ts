@@ -1,8 +1,10 @@
 import type { MistakePattern } from '../types/mistake'
 import type { MathOperation, Question } from '../types/question'
+import { logDevError } from '../utils/devLog'
 import { calculateAnswer, randomInt, type Rng } from '../utils/math'
 import { validateQuestion, validateQuestionDraft } from '../utils/validation'
 import { buildChoices } from './answerChoices'
+import { createFallbackReviewQuestion } from './fallbackQuestions'
 import { buildDraft } from './operationGenerators'
 import { QuestionGenerationError } from './questionGenerator'
 
@@ -256,4 +258,25 @@ export function generateSimilarQuestion(
     )
   }
   return question
+}
+
+/**
+ * Like `generateSimilarQuestion`, but never fails: if a similar question cannot
+ * be made, the problem is logged for developers and the mistake itself is asked
+ * again, still credited to its pattern, so the review session carries on.
+ */
+export function generateSimilarQuestionSafely(
+  pattern: MistakePattern,
+  rng: Rng = Math.random,
+  avoid: readonly string[] = [],
+): Question {
+  try {
+    return generateSimilarQuestion(pattern, rng, avoid)
+  } catch (error) {
+    logDevError(
+      'Could not generate a similar question, so the mistake was asked again.',
+      { pattern, error },
+    )
+    return createFallbackReviewQuestion(pattern)
+  }
 }

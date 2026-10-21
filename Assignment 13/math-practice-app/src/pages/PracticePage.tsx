@@ -13,6 +13,7 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
 import { pickFeedback } from '../utils/feedback'
+import { setupNoticeState } from '../utils/setupNotice'
 import { speakQuestion } from '../utils/speech'
 import { parsePracticeConfig } from '../utils/validation'
 
@@ -27,11 +28,25 @@ export function PracticePage() {
 
   // Opened directly, refreshed without setup data, or given invalid options:
   // there is nothing to practice, so go back and choose.
-  if (!config) return <Navigate to="/practice/setup" replace />
+  if (!config) {
+    return (
+      <Navigate
+        to="/practice/setup"
+        replace
+        state={setupNoticeState('no-session')}
+      />
+    )
+  }
 
   // Review was asked for, but no mistakes need practice any more.
   if (config.reviewMode === 'mistake-review' && activeMistakeCount === 0) {
-    return <Navigate to="/practice/setup" replace />
+    return (
+      <Navigate
+        to="/practice/setup"
+        replace
+        state={setupNoticeState('no-mistakes')}
+      />
+    )
   }
 
   // Keyed by the navigation entry so each fresh start gets a fresh session. The

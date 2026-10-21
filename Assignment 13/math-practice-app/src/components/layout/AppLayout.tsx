@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { getPageTitle } from '../../utils/pageTitles'
+import { DataRepairNotice } from '../common/DataRepairNotice'
+import { ErrorBoundary } from '../common/ErrorBoundary'
+import { StorageWarning } from '../common/StorageWarning'
 import { Header } from './Header'
 import { PageContainer } from './PageContainer'
 
@@ -32,6 +35,7 @@ function useAnnouncePageChange() {
 
 export function AppLayout() {
   useAnnouncePageChange()
+  const { pathname } = useLocation()
 
   return (
     <>
@@ -40,7 +44,12 @@ export function AppLayout() {
       </a>
       <Header />
       <PageContainer>
-        <Outlet />
+        <StorageWarning />
+        <DataRepairNotice />
+        {/* A page that breaks shows a friendly message, and the menu still works. */}
+        <ErrorBoundary resetKey={pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </PageContainer>
     </>
   )
