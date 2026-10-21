@@ -2,11 +2,14 @@ import type { DifficultyLevel, MathOperation, QuestionSource } from './question'
 
 export type SessionLength = number | 'continuous'
 
+export type ReviewMode = 'regular' | 'mistake-review'
+
 /** The options a student picks on the practice setup page. */
 export interface PracticeConfig {
   operations: MathOperation[]
   difficulty: DifficultyLevel
   sessionLength: SessionLength
+  reviewMode: ReviewMode
 }
 
 export interface PracticeAttempt {

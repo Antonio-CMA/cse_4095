@@ -260,6 +260,21 @@ a {
   box-shadow: inset 0 0 0 1px var(--color-primary);
 }
 
+.choice--disabled,
+.choice--disabled .choice__input {
+  cursor: not-allowed;
+}
+
+.choice--disabled .choice__body {
+  background: #eef0f6;
+  border-style: dashed;
+  color: #4a5160;
+}
+
+.choice--disabled:hover .choice__body {
+  background: #eef0f6;
+}
+
 .choice__input:focus-visible + .choice__body {
   outline: 3px solid #f08c00;
   outline-offset: 3px;

@@ -56,6 +56,17 @@ describe('PracticeSetupPage', () => {
       operations: ['multiplication', 'division'],
       difficulty: 3,
       sessionLength: 20,
+      reviewMode: 'regular',
     })
+  })
+
+  it('offers mistake review but keeps it disabled when there is nothing to review', () => {
+    renderSetup()
+    expect(
+      screen.getByRole('radio', { name: 'Regular practice' }),
+    ).toBeChecked()
+    expect(
+      screen.getByRole('radio', { name: 'Practice my mistakes' }),
+    ).toBeDisabled()
   })
 })
