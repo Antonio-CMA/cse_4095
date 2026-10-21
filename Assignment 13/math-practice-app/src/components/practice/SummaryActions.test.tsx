@@ -70,13 +70,49 @@ describe('SummaryActions', () => {
     expect(stateShown()).toEqual(CONFIG)
   })
 
-  it('Change Settings goes to setup carrying the previous choices', async () => {
+  it('keeps the settings choices hidden until Change Settings is opened', async () => {
     const user = userEvent.setup()
     renderActions()
 
-    await user.click(screen.getByRole('link', { name: 'Change Settings' }))
+    const toggle = screen.getByRole('button', { name: 'Change Settings' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(
+      screen.queryByRole('link', { name: 'Practice Setup' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'App Settings' }),
+    ).not.toBeInTheDocument()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('link', { name: 'Practice Setup' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'App Settings' })).toBeVisible()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(
+      screen.queryByRole('link', { name: 'Practice Setup' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('Practice Setup opens setup carrying the previous choices', async () => {
+    const user = userEvent.setup()
+    renderActions()
+
+    await user.click(screen.getByRole('button', { name: 'Change Settings' }))
+    await user.click(screen.getByRole('link', { name: 'Practice Setup' }))
     expect(screen.getByText('setup')).toBeInTheDocument()
     expect(stateShown()).toEqual(CONFIG)
+  })
+
+  it('shows App Settings as not available yet', async () => {
+    const user = userEvent.setup()
+    renderActions()
+
+    await user.click(screen.getByRole('button', { name: 'Change Settings' }))
+    const appSettings = screen.getByRole('button', { name: 'App Settings' })
+    expect(appSettings).toBeDisabled()
+    expect(appSettings).toHaveAccessibleDescription('Coming soon.')
   })
 
   it('View Statistics and Return Home go to their pages', async () => {

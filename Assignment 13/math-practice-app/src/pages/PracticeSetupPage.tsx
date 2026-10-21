@@ -22,7 +22,7 @@ export function PracticeSetupPage() {
   const activeMistakeCount = useActiveMistakeCount()
 
   // Start from the previous session's choices when arriving from the summary
-  // page ("Change Settings"); otherwise from the defaults.
+  // page ("Change Settings" → "Practice Setup"); otherwise from the defaults.
   const [initial] = useState<PracticeConfig>(() => {
     const previous = parsePracticeConfig(location.state)
     if (!previous) return defaults

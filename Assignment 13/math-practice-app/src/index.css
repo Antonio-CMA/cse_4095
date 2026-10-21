@@ -468,6 +468,23 @@ a {
   gap: 0.75rem;
 }
 
+/* The "Change Settings" choices open on their own row. */
+.settings-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-basis: 100%;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.settings-choice[hidden] {
+  display: none;
+}
+
 .summary-actions__unavailable {
   display: grid;
   gap: 0.25rem;
@@ -480,6 +497,7 @@ a {
 
 @media (max-width: 480px) {
   .summary-actions > .btn,
+  .settings-choice > .btn,
   .summary-actions__unavailable,
   .summary-actions__unavailable .btn {
     width: 100%;

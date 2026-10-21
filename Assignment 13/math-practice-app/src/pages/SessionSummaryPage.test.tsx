@@ -83,7 +83,7 @@ describe('SessionSummaryPage', () => {
     })
   })
 
-  it('Change Settings opens setup with the previous choices filled in', async () => {
+  it('Change Settings → Practice Setup opens setup with the previous choices filled in', async () => {
     const user = userEvent.setup()
     renderSummary(
       makeResult([true], {
@@ -93,7 +93,8 @@ describe('SessionSummaryPage', () => {
       }),
     )
 
-    await user.click(screen.getByRole('link', { name: 'Change Settings' }))
+    await user.click(screen.getByRole('button', { name: 'Change Settings' }))
+    await user.click(screen.getByRole('link', { name: 'Practice Setup' }))
 
     expect(screen.getByRole('checkbox', { name: 'Subtraction' })).toBeChecked()
     expect(
