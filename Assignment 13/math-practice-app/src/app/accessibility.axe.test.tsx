@@ -63,6 +63,7 @@ describe('every page, with nothing saved', () => {
     ['practice setup', '/practice/setup'],
     ['statistics', '/statistics'],
     ['settings', '/settings'],
+    ['privacy', '/privacy'],
     ['page not found', '/nowhere'],
   ])('%s has no accessibility problems', async (_name, path) => {
     const { container } = renderApp(path)

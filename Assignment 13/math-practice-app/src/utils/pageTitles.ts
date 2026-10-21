@@ -6,6 +6,7 @@ const PAGE_NAMES: Record<string, string> = {
   '/practice/summary': 'Session Summary',
   '/statistics': 'Statistics',
   '/settings': 'Settings',
+  '/privacy': 'Privacy',
 }
 
 /**

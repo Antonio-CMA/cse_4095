@@ -28,7 +28,7 @@ export function ErrorMessage({
         {title}
       </h1>
       {children}
-      <a className="btn btn--primary" href="/">
+      <a className="btn btn--primary" href={import.meta.env.BASE_URL}>
         Go Home
       </a>
     </section>

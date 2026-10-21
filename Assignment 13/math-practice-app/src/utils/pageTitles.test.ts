@@ -16,6 +16,7 @@ describe('getPageTitle', () => {
     )
     expect(getPageTitle('/statistics')).toBe('Statistics – Math Practice')
     expect(getPageTitle('/settings')).toBe('Settings – Math Practice')
+    expect(getPageTitle('/privacy')).toBe('Privacy – Math Practice')
   })
 
   it('gives every page a different title', () => {
@@ -26,6 +27,7 @@ describe('getPageTitle', () => {
       '/practice/summary',
       '/statistics',
       '/settings',
+      '/privacy',
     ].map(getPageTitle)
     expect(new Set(titles).size).toBe(titles.length)
   })

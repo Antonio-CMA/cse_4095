@@ -4,16 +4,21 @@ A React + TypeScript app (built with Vite) for children ages 7–12 to practice 
 
 ## Scripts
 
-| Command                 | Description                       |
-| ----------------------- | --------------------------------- |
-| `npm run dev`           | Start the development server      |
-| `npm run build`         | Type-check and build for release  |
-| `npm run lint`          | Lint with ESLint                  |
-| `npm run format`        | Format with Prettier              |
-| `npm run format:check`  | Check formatting                  |
-| `npm test`              | Run tests once with Vitest        |
-| `npm run test:watch`    | Run Vitest in watch mode          |
-| `npm run test:coverage` | Run the tests and report coverage |
+| Command                 | Description                                                        |
+| ----------------------- | ------------------------------------------------------------------ |
+| `npm run dev`           | Start the development server                                       |
+| `npm run build`         | Type-check and build for release                                   |
+| `npm run lint`          | Lint with ESLint                                                   |
+| `npm run format`        | Format with Prettier                                               |
+| `npm run format:check`  | Check formatting                                                   |
+| `npm test`              | Run tests once with Vitest                                         |
+| `npm run test:watch`    | Run Vitest in watch mode                                           |
+| `npm run test:coverage` | Run the tests and report coverage                                  |
+| `npm run verify`        | Lint, formatting, all tests and the production build               |
+| `npm run preview`       | Serve the production build locally, with the real security headers |
+
+Putting the app on the web, supported browsers, and what has and has not been
+checked in other browsers are in [`RELEASE.md`](RELEASE.md).
 
 ## Testing
 
@@ -65,6 +70,7 @@ src/
 - **Mistake review (Phase 14, done):** the setup page's "Practice my mistakes" option (and the summary's "Practice Mistakes") is available while at least one pattern is not mastered (`useActiveMistakeCount`). A review session (`services/reviewSession.ts`, `utils/mistakeReview.ts`) picks patterns at random weighted by priority (more misses, more recent, less review progress), never the same pattern twice in a row, and avoids repeating recent problems. Each answer is saved with its `mistakePatternId`. A **right** review answer adds one to `similarCorrectCount`; the pattern is **mastered** at `masteryThreshold` (Settings, default 3; the count is also checked against the current setting, so lowering it applies straight away). A **wrong** review answer counts as another miss on the same pattern (progress resets, no new pattern is created for the similar question). Mastered patterns are left out of review and come back after a later mistake. A review session ends early when every mistake is mastered. Its summary shows the operations and the most common level of the mistakes it used.
 - **Mistake statistics (Phase 15, done):** the Statistics page shows how many mistakes need practice or are mastered, the review practice totals, the operation(s) missed most (ties show every tied operation), the five number facts missed most (ties broken by most recent), and every mistake with its review progress. Mastered mistakes sit in a collapsed section of their own. The review totals are part of the running statistics (`statistics.review`), so trimming old attempts does not change them; saved totals without that part are rebuilt from the saved answers. `useStatistics` loads the patterns too, so Reset Statistics clears everything shown.
 - **Saved data (Phase 9):** the browser keeps `mathPractice.version`, `.settings`, `.sessions` and `.attempts`. The `.statistics` and `.mistakePatterns` keys are used from Phases 10 and 12, and `.activeSession` (Phase 18) holds the session in progress. `AppProvider` loads and saves settings, and `clearAllData()` (Settings page) erases every `mathPractice.*` key and restores the defaults.
+- **Release preparation (Phase 22, done except the deployment itself):** see [`RELEASE.md`](RELEASE.md). The app has a plain-language **Privacy page** (`/privacy`, footer link) and `src/utils/privacy.test.ts` keeps its promises true by failing on any network call, cookie, analytics or advertising code, outside link, extra library, or weakened hosting header. The security headers (a strict Content-Security-Policy that allows only the site itself, no referrer, no type guessing) are written once in `public/_headers`, repeated in `vercel.json` (a test checks they match) and sent by `npm run preview`, so the production build can be tried under the real policy. `public/_redirects` and `vercel.json` make every address show the app (a refresh or shared link works). The build's base path is `VITE_BASE` (default `/`) and is also the router's `basename` and the error page's home link. `.github/workflows/math-practice-ci.yml` runs `npm run verify` on every change (it deploys nothing). The production build was checked in Chromium only (all routes, a full session, reload persistence, phone and tablet sizes, CSP enforcement); **Safari, Firefox, Edge, real phones/tablets and a screen reader were not available** and are listed as manual checks. **Nothing has been deployed**: that needs the owner's hosting account.
 - **Performance and data management (Phase 21, done):** measured first, then fixed. Numbers are from a desktop browser with a full-size history (200 sessions, 1,000 mistakes, thousands of answers); phones are typically 4–6× slower, and a slow-device test was **not** possible here (no CPU throttling), so those multiples are estimates.
 
   | What                                                   | Before       | After        |
