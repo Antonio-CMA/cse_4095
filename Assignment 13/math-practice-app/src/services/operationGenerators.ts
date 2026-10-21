@@ -22,7 +22,8 @@ export type OperationGenerator = (
   rng?: Rng,
 ) => QuestionDraft
 
-function buildDraft(
+/** Builds a question draft for a chosen problem (not a random one). */
+export function buildDraft(
   operation: MathOperation,
   firstOperand: number,
   secondOperand: number,
