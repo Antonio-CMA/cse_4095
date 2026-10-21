@@ -2,7 +2,7 @@ import type { PracticeAttempt } from '../types/session'
 import type { AppStatistics, OperationStatistics } from '../types/statistics'
 import { calculateAccuracy } from '../utils/math'
 import { ALL_DIFFICULTIES, ALL_OPERATIONS } from '../utils/operations'
-import { loadAttempts, saveAttempt } from './practiceHistory'
+import { addAttempts, loadAttempts } from './practiceHistory'
 import {
   readItem,
   STORAGE_KEYS,
@@ -168,31 +168,110 @@ export function saveStatistics(stats: AppStatistics): WriteResult {
   return writeItem(STORAGE_KEYS.statistics, stats)
 }
 
+// ---- Archived totals ----
+
+function addBuckets(
+  a: OperationStatistics,
+  b: OperationStatistics,
+): OperationStatistics {
+  return {
+    attempted: a.attempted + b.attempted,
+    correct: a.correct + b.correct,
+    incorrect: a.incorrect + b.incorrect,
+  }
+}
+
+/** Two sets of totals added together. Neither is changed. */
+export function addStatistics(
+  a: AppStatistics,
+  b: AppStatistics,
+): AppStatistics {
+  const result = createEmptyStatistics()
+  Object.assign(result, addBuckets(a, b))
+  result.review = addBuckets(a.review, b.review)
+  for (const operation of ALL_OPERATIONS) {
+    result.byOperation[operation] = addBuckets(
+      a.byOperation[operation],
+      b.byOperation[operation],
+    )
+  }
+  for (const level of ALL_DIFFICULTIES) {
+    result.byDifficulty[level] = addBuckets(
+      a.byDifficulty[level],
+      b.byDifficulty[level],
+    )
+  }
+  return result
+}
+
+/**
+ * The totals for answers that have been dropped from the detailed list (it only
+ * keeps the newest few). With these, the totals can still be counted again
+ * correctly if they are ever lost or damaged. Empty if there are none.
+ */
+export function loadArchivedStatistics(): AppStatistics {
+  const saved = readItem(STORAGE_KEYS.attemptArchive, parseStoredStatistics)
+  return saved.status === 'ok' ? saved.value : createEmptyStatistics()
+}
+
+/** Folds answers that are about to be forgotten into the archived totals. */
+function archiveAttempts(trimmed: readonly PracticeAttempt[]): WriteResult {
+  return writeItem(
+    STORAGE_KEYS.attemptArchive,
+    addStatistics(loadArchivedStatistics(), statisticsFromAttempts(trimmed)),
+  )
+}
+
+/**
+ * The totals counted again from scratch: everything archived, plus every answer
+ * still saved in detail. Nothing is lost by the detailed list being trimmed.
+ */
+export function rebuildStatistics(): AppStatistics {
+  return addStatistics(
+    loadArchivedStatistics(),
+    statisticsFromAttempts(loadAttempts()),
+  )
+}
+
 /**
  * The saved totals. If none are saved (or they are damaged), they are counted
- * again from the saved answers, so the page is never wrong or empty by
- * mistake.
+ * again from the archive and the saved answers, so the page is never wrong or
+ * empty by mistake.
  */
 export function loadStatistics(): AppStatistics {
   const saved = readItem(STORAGE_KEYS.statistics, parseStoredStatistics)
   if (saved.status === 'ok') return saved.value
-  return statisticsFromAttempts(loadAttempts())
+  return rebuildStatistics()
+}
+
+export interface RecordedAttempt {
+  /** False if this answer had already been recorded, so nothing changed. */
+  isNew: boolean
+  result: WriteResult
 }
 
 /**
- * Saves one answer and counts it in the statistics — exactly once, even if it
- * is passed in again (for example by a repeated update).
+ * Saves one answer and counts it in the statistics, exactly once even if it is
+ * passed in again. Answers pushed out of the detailed list are first added to
+ * the archived totals, so no total is ever lost to trimming.
  */
-export function recordAttempt(attempt: PracticeAttempt): WriteResult {
-  const alreadySaved = loadAttempts().some((a) => a.id === attempt.id)
-  const saved = saveAttempt(attempt)
-  if (!saved.ok || alreadySaved) return saved
+export function recordAttemptOnce(attempt: PracticeAttempt): RecordedAttempt {
+  const { added, trimmed, result } = addAttempts([attempt])
+  if (!result.ok || added === 0) return { isNew: added > 0, result }
+
+  // Archived before anything is counted again, so a recount includes them.
+  if (trimmed.length > 0) archiveAttempts(trimmed)
 
   const stored = readItem(STORAGE_KEYS.statistics, parseStoredStatistics)
   const next =
     stored.status === 'ok'
       ? addAttemptToStatistics(stored.value, attempt)
       : // Nothing usable saved: count everything again, including this answer.
-        statisticsFromAttempts(loadAttempts())
-  return saveStatistics(next)
+        rebuildStatistics()
+  return { isNew: true, result: saveStatistics(next) }
+}
+
+/** `recordAttemptOnce`, for callers that only need to know if it was saved. */
+export function recordAttempt(attempt: PracticeAttempt): WriteResult {
+  return recordAttemptOnce(attempt).result
 }

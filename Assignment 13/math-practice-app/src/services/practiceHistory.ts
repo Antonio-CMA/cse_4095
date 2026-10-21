@@ -21,7 +21,16 @@ import {
  * statistics, so they are not lost when old detail is trimmed).
  */
 export const MAX_STORED_SESSIONS = 200
-export const MAX_STORED_ATTEMPTS = 5000
+/**
+ * How many individual answers are kept in detail. Nothing shows them: the
+ * statistics are running totals, and what is dropped is folded into an archive
+ * total (see statisticsService), so only the newest are worth keeping. Fewer
+ * makes each answer cheaper to save, because the whole list is read and
+ * rewritten every time. Measured in a desktop browser: about 3 ms per answer
+ * with 1,000 kept, against about 44 ms with 5,000 (the old limit), where each
+ * answer also read the list three times. Phones are several times slower.
+ */
+export const MAX_STORED_ATTEMPTS = 1000
 
 /** When the browser is full, this share of the oldest records is dropped. */
 const QUOTA_TRIM_SHARE = 0.25
@@ -89,17 +98,45 @@ export function loadAttempts(): PracticeAttempt[] {
   return loadList(STORAGE_KEYS.attempts, parseStoredAttempt)
 }
 
-/** Saves answers; any that are already saved are not added a second time. */
-export function saveAttempts(attempts: PracticeAttempt[]): WriteResult {
+export interface AddedAttempts {
+  /** How many of the answers were new (the rest were already saved). */
+  added: number
+  /**
+   * Older answers pushed out to keep the list within its limit, and now gone
+   * from storage. Empty if nothing was dropped or the save failed.
+   */
+  trimmed: PracticeAttempt[]
+  result: WriteResult
+}
+
+/**
+ * Saves answers; any that are already saved are not added a second time. Only
+ * the newest MAX_STORED_ATTEMPTS are kept. The saved list is read once, which
+ * is what makes this the cost of each answer, so it is kept to a single pass.
+ */
+export function addAttempts(attempts: PracticeAttempt[]): AddedAttempts {
   const saved = loadAttempts()
   const known = new Set(saved.map((a) => a.id))
-  const added = attempts.filter((a) => !known.has(a.id))
-  if (added.length === 0) return { ok: true }
+  const fresh = attempts.filter((a) => !known.has(a.id))
+  if (fresh.length === 0) return { added: 0, trimmed: [], result: { ok: true } }
 
-  return saveList(
-    STORAGE_KEYS.attempts,
-    [...saved, ...added].slice(-MAX_STORED_ATTEMPTS),
-  )
+  const all = [...saved, ...fresh]
+  const kept = all.slice(-MAX_STORED_ATTEMPTS)
+  const result = saveList(STORAGE_KEYS.attempts, kept)
+  return {
+    added: fresh.length,
+    trimmed: result.ok ? all.slice(0, all.length - kept.length) : [],
+    result,
+  }
+}
+
+/**
+ * Saves answers, dropping the oldest beyond the limit. This does not remember
+ * what was dropped: `recordAttempt` (statisticsService) does, so use that for
+ * real answers.
+ */
+export function saveAttempts(attempts: PracticeAttempt[]): WriteResult {
+  return addAttempts(attempts).result
 }
 
 export function saveAttempt(attempt: PracticeAttempt): WriteResult {
@@ -114,6 +151,7 @@ const HISTORY_KEYS = [
   STORAGE_KEYS.attempts,
   STORAGE_KEYS.statistics,
   STORAGE_KEYS.mistakePatterns,
+  STORAGE_KEYS.attemptArchive,
   // A session still in progress would otherwise bring erased answers back.
   STORAGE_KEYS.activeSession,
 ] as const

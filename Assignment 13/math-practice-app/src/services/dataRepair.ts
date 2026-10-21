@@ -1,5 +1,4 @@
 import { parseActiveSession } from './activeSessionService'
-import { loadAttempts } from './practiceHistory'
 import { DEFAULT_SETTINGS, sanitizeSettings } from './settingsService'
 import {
   parseStoredAttempt,
@@ -16,8 +15,8 @@ import {
 import type { SchemaStatus } from './storageMigrations'
 import {
   parseStoredStatistics,
+  rebuildStatistics,
   saveStatistics,
-  statisticsFromAttempts,
 } from './statisticsService'
 
 /**
@@ -99,11 +98,18 @@ function repairSettings(): DataProblem | null {
   return { category: 'settings', action: 'repaired', dropped: damaged.length }
 }
 
-/** The totals are only a summary of the answers, so they can always be rebuilt. */
+/**
+ * The totals are only a summary of the answers, so they can be rebuilt: from the
+ * archived totals plus the answers still saved. A damaged archive is dropped
+ * first (the running totals, if they are fine, do not need it).
+ */
 function repairStatistics(): void {
+  const archive = readItem(STORAGE_KEYS.attemptArchive, parseStoredStatistics)
+  if (archive.status === 'invalid') removeItem(STORAGE_KEYS.attemptArchive)
+
   const saved = readItem(STORAGE_KEYS.statistics, parseStoredStatistics)
   if (saved.status !== 'invalid') return
-  saveStatistics(statisticsFromAttempts(loadAttempts()))
+  saveStatistics(rebuildStatistics())
 }
 
 function repairActiveSession(): void {

@@ -25,7 +25,7 @@ describe('App', () => {
       .click(within(nav).getByRole('link', { name: 'Settings' }))
     expect(window.location.pathname).toBe('/settings')
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Settings' }),
+      await screen.findByRole('heading', { level: 1, name: 'Settings' }),
     ).toBeInTheDocument()
   })
 })

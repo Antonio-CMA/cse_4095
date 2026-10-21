@@ -22,6 +22,15 @@ export function formatDifficulty(level: DifficultyLevel): string {
   return option ? `Level ${level}: ${option.label}` : `Level ${level}`
 }
 
+/** A small amount of saved data in plain words: "800 bytes", "392 KB", "1.4 MB". */
+export function formatStorageSize(characters: number): string {
+  if (characters < 1024) {
+    return `${characters} ${characters === 1 ? 'byte' : 'bytes'}`
+  }
+  if (characters < 1024 * 1024) return `${Math.round(characters / 1024)} KB`
+  return `${(characters / (1024 * 1024)).toFixed(1)} MB`
+}
+
 /** A date and time in the student's own language and format. */
 export function formatDateTime(iso: string): string {
   return new Date(iso).toLocaleString(undefined, {

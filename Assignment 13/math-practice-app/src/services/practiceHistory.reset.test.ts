@@ -17,6 +17,7 @@ describe('resetPracticeHistory', () => {
     recordAttempt(makeAttempt({ selfReportedCorrect: false }))
     writeItem(STORAGE_KEYS.mistakePatterns, [{ anything: true }])
     writeItem(STORAGE_KEYS.activeSession, { anything: true })
+    writeItem(STORAGE_KEYS.attemptArchive, { anything: true })
     writeItem(STORAGE_KEYS.version, { version: 1 })
     saveSettings({ ...DEFAULT_SETTINGS, soundEnabled: false })
     window.localStorage.setItem('someOtherApp.data', 'keep me')
@@ -31,6 +32,7 @@ describe('resetPracticeHistory', () => {
     expect(loadStatistics().attempted).toBe(0)
     expect(window.localStorage.getItem(STORAGE_KEYS.mistakePatterns)).toBeNull()
     expect(window.localStorage.getItem(STORAGE_KEYS.activeSession)).toBeNull()
+    expect(window.localStorage.getItem(STORAGE_KEYS.attemptArchive)).toBeNull()
   })
 
   it('leaves the settings, the version and unrelated data alone', () => {
@@ -64,6 +66,6 @@ describe('resetPracticeHistory', () => {
       })
 
     expect(resetPracticeHistory()).toBe(false)
-    expect(remove).toHaveBeenCalledTimes(5)
+    expect(remove).toHaveBeenCalledTimes(6)
   })
 })
