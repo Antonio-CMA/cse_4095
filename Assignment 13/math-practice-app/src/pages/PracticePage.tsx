@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router'
+import { Navigate, useBlocker, useLocation, useNavigate } from 'react-router'
 import { Button } from '../components/common/Button'
 import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { ProgressBar } from '../components/practice/ProgressBar'
@@ -34,11 +34,24 @@ export function PracticePage() {
     return <Navigate to="/practice/setup" replace />
   }
 
-  // Keyed by the navigation entry so each fresh start gets a fresh session.
-  return <ActiveSession key={location.key} config={config} />
+  // Keyed by the navigation entry so each fresh start gets a fresh session. The
+  // same entry opened again (a refresh) carries on the session it had.
+  return (
+    <ActiveSession
+      key={location.key}
+      sessionKey={location.key}
+      config={config}
+    />
+  )
 }
 
-function ActiveSession({ config }: { config: PracticeConfig }) {
+function ActiveSession({
+  config,
+  sessionKey,
+}: {
+  config: PracticeConfig
+  sessionKey: string
+}) {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -51,17 +64,38 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
     result,
     recordResult,
     endSession,
+    resumed,
+    resumedCard,
+    rememberCard,
   } = usePracticeSession(config, {
     masteryThreshold: settings.masteryThreshold,
+    resumeKey: sessionKey,
   })
   const [confirmingEnd, setConfirmingEnd] = useState(false)
+  // Shown after a refresh, until the next answer.
+  const [showResumed, setShowResumed] = useState(resumed)
+
+  // Leaving the page by any route (a link, or the browser's Back button) while
+  // the session is running asks first. This must stay above the effect below,
+  // so that when the session finishes by itself the way out is already open.
+  const blocker = useBlocker(!isComplete)
+  const isLeaving = blocker.state === 'blocked'
+  // Set once the student has chosen to end the session and go where they were
+  // heading, so finishing it does not also send them to the summary.
+  const [leaveRequested, setLeaveRequested] = useState(false)
   // A friendly note about the answer just given, if messages are turned on.
   const [feedback, setFeedback] = useState<{
     text: string
     correct: boolean
   } | null>(null)
 
+  const leaveSession = () => {
+    setLeaveRequested(true)
+    endSession()
+  }
+
   const handleResult = (answer: ReportedResult) => {
+    setShowResumed(false)
     recordResult(answer)
     setFeedback(
       settings.feedbackEnabled
@@ -73,12 +107,16 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
     )
   }
 
-  // Once the session is over, hand the results to the summary page.
+  // Once the session is over, hand the results to the summary page, or carry on
+  // to wherever the student was going if they chose to end it and leave.
   useEffect(() => {
-    if (isComplete) {
+    if (!isComplete) return
+    if (!leaveRequested) {
       navigate('/practice/summary', { replace: true, state: result })
+    } else if (isLeaving) {
+      blocker.proceed()
     }
-  }, [isComplete, navigate, result])
+  }, [isComplete, leaveRequested, isLeaving, blocker, navigate, result])
 
   if (isComplete) return null
 
@@ -141,7 +179,30 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         </p>
       )}
 
-      {confirmingEnd && (
+      {showResumed && (
+        <p className="stats-message" role="status">
+          Welcome back! We saved your place, so you can keep going.
+        </p>
+      )}
+
+      {isLeaving && (
+        <ConfirmDialog
+          title="Leave this session?"
+          message={
+            session.attempted === 0
+              ? "You haven't answered any questions yet."
+              : `You've answered ${session.attempted} ${
+                  session.attempted === 1 ? 'question' : 'questions'
+                } so far. If you leave, the session ends and your answers are kept.`
+          }
+          confirmLabel="End Session and Leave"
+          cancelLabel="Keep Practicing"
+          onConfirm={leaveSession}
+          onCancel={() => blocker.reset()}
+        />
+      )}
+
+      {confirmingEnd && !isLeaving && (
         <ConfirmDialog
           title="End this session?"
           message={
@@ -165,8 +226,14 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         animationEnabled={
           settings.cardAnimationEnabled && !prefersReducedMotion
         }
-        shortcutsEnabled={!confirmingEnd}
+        shortcutsEnabled={!confirmingEnd && !isLeaving}
         showExplanation={settings.showExplanations}
+        initialProgress={
+          resumedCard?.questionId === currentQuestion.id
+            ? resumedCard
+            : undefined
+        }
+        onProgressChange={rememberCard}
         onResult={handleResult}
       />
     </section>

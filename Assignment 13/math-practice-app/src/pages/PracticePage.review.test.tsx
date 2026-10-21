@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
+import { Route, Routes, useLocation } from 'react-router'
+import { TestRouter } from '../test/TestRouter'
 import { describe, expect, it } from 'vitest'
 import { AppProvider } from '../app/AppProvider'
 import {
@@ -28,7 +29,7 @@ function SummaryProbe() {
 function renderSession(config: PracticeConfig = REVIEW) {
   return render(
     <AppProvider>
-      <MemoryRouter
+      <TestRouter
         initialEntries={[{ pathname: '/practice/session', state: config }]}
       >
         <Routes>
@@ -36,7 +37,7 @@ function renderSession(config: PracticeConfig = REVIEW) {
           <Route path="/practice/setup" element={<h1>Practice Setup</h1>} />
           <Route path="/practice/summary" element={<SummaryProbe />} />
         </Routes>
-      </MemoryRouter>
+      </TestRouter>
     </AppProvider>,
   )
 }

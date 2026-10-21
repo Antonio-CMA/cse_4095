@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
+import { TestRouter } from '../test/TestRouter'
 import { describe, expect, it } from 'vitest'
 import { AppProvider } from '../app/AppProvider'
 import { DEFAULT_SETTINGS, saveSettings } from '../services/settingsService'
@@ -18,13 +19,13 @@ const CONFIG: PracticeConfig = {
 function renderSession() {
   return render(
     <AppProvider>
-      <MemoryRouter
+      <TestRouter
         initialEntries={[{ pathname: '/practice/session', state: CONFIG }]}
       >
         <Routes>
           <Route path="/practice/session" element={<PracticePage />} />
         </Routes>
-      </MemoryRouter>
+      </TestRouter>
     </AppProvider>,
   )
 }
