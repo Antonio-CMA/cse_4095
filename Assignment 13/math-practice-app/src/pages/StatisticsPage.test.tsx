@@ -2,6 +2,9 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
+import { AppProvider } from '../app/AppProvider'
+import { recordPracticeAttempt } from '../services/attemptRecorder'
+import { loadMistakePatterns } from '../services/mistakeService'
 import {
   loadAttempts,
   loadSessions,
@@ -18,12 +21,14 @@ import { StatisticsPage } from './StatisticsPage'
 
 function renderPage() {
   return render(
-    <MemoryRouter initialEntries={['/statistics']}>
-      <Routes>
-        <Route path="/statistics" element={<StatisticsPage />} />
-        <Route path="/practice/setup" element={<h1>Practice Setup</h1>} />
-      </Routes>
-    </MemoryRouter>,
+    <AppProvider>
+      <MemoryRouter initialEntries={['/statistics']}>
+        <Routes>
+          <Route path="/statistics" element={<StatisticsPage />} />
+          <Route path="/practice/setup" element={<h1>Practice Setup</h1>} />
+        </Routes>
+      </MemoryRouter>
+    </AppProvider>,
   )
 }
 
@@ -201,6 +206,175 @@ describe('StatisticsPage with practice history', () => {
         'Questions attempted',
       ),
     ).toBe('5')
+  })
+})
+
+describe('StatisticsPage mistake sections', () => {
+  function seedMistakes() {
+    recordPracticeAttempt(
+      makeAttempt({
+        operation: 'multiplication',
+        firstOperand: 8,
+        secondOperand: 7,
+        correctAnswer: 56,
+        difficulty: 2,
+        selfReportedCorrect: false,
+      }),
+    )
+    recordPracticeAttempt(
+      makeAttempt({
+        operation: 'multiplication',
+        firstOperand: 8,
+        secondOperand: 7,
+        correctAnswer: 56,
+        difficulty: 2,
+        selfReportedCorrect: false,
+      }),
+    )
+    recordPracticeAttempt(
+      makeAttempt({
+        operation: 'division',
+        firstOperand: 56,
+        secondOperand: 7,
+        correctAnswer: 8,
+        difficulty: 2,
+        selfReportedCorrect: false,
+      }),
+    )
+    const id = 'multiplication:8:7:L2'
+    for (const correct of [true, true]) {
+      recordPracticeAttempt(
+        makeAttempt({
+          source: 'mistake-review',
+          mistakePatternId: id,
+          operation: 'multiplication',
+          firstOperand: 7,
+          secondOperand: 8,
+          correctAnswer: 56,
+          difficulty: 2,
+          selfReportedCorrect: correct,
+        }),
+      )
+    }
+  }
+
+  it('shows the mistake counts and the review practice totals', () => {
+    seedMistakes()
+    renderPage()
+
+    const section = screen.getByRole('region', { name: 'Mistakes' })
+    expect(valueOf(section, 'Mistakes to practise')).toBe('2')
+    expect(valueOf(section, 'Mistakes mastered')).toBe('0')
+    expect(valueOf(section, 'Similar questions practised')).toBe('2')
+    expect(valueOf(section, 'Review questions answered correctly')).toBe('2')
+  })
+
+  it('shows where the student misses most', () => {
+    seedMistakes()
+    renderPage()
+
+    const section = screen.getByRole('region', { name: 'Where you miss most' })
+    // multiplication: 2 misses, division: 1
+    expect(within(section).getByText('Multiplication')).toBeInTheDocument()
+    const facts = within(section).getAllByRole('listitem')
+    expect(facts[0]).toHaveTextContent('8 × 7 = 56')
+    expect(facts[0]).toHaveTextContent('missed 2 times')
+    expect(facts[1]).toHaveTextContent('56 ÷ 7 = 8')
+  })
+
+  it('lists the mistakes with their review progress', () => {
+    seedMistakes()
+    renderPage()
+
+    const list = screen.getByRole('list', { name: 'Mistakes to practise' })
+    const first = within(list).getAllByRole('listitem')[0]
+    expect(first).toHaveTextContent('8 × 7 = 56')
+    expect(first).toHaveTextContent('Missed 2 times')
+    expect(first).toHaveTextContent('2 of 3 right in review')
+  })
+
+  it('moves a mistake to the mastered section after enough review answers', () => {
+    seedMistakes()
+    recordPracticeAttempt(
+      makeAttempt({
+        source: 'mistake-review',
+        mistakePatternId: 'multiplication:8:7:L2',
+        operation: 'multiplication',
+        firstOperand: 6,
+        secondOperand: 8,
+        correctAnswer: 48,
+        difficulty: 2,
+        selfReportedCorrect: true,
+      }),
+    )
+    renderPage()
+
+    expect(
+      valueOf(
+        screen.getByRole('region', { name: 'Mistakes' }),
+        'Mistakes mastered',
+      ),
+    ).toBe('1')
+    expect(screen.getByText('Mastered mistakes (1)')).toBeInTheDocument()
+    expect(
+      within(
+        screen.getByRole('list', { name: 'Mistakes to practise' }),
+      ).getAllByRole('listitem'),
+    ).toHaveLength(1)
+  })
+
+  it('follows the mastery setting from the Settings page', () => {
+    seedMistakes()
+    saveSettings({ ...DEFAULT_SETTINGS, masteryThreshold: 2 })
+    renderPage()
+
+    expect(
+      valueOf(
+        screen.getByRole('region', { name: 'Mistakes' }),
+        'Mistakes mastered',
+      ),
+    ).toBe('1')
+  })
+
+  it('shows friendly messages instead of mistake data when nothing has been missed', () => {
+    recordPracticeAttempt(makeAttempt({ selfReportedCorrect: true }))
+    renderPage()
+
+    const section = screen.getByRole('region', { name: 'Mistakes' })
+    expect(valueOf(section, 'Mistakes to practise')).toBe('0')
+    expect(
+      within(
+        screen.getByRole('region', { name: 'Where you miss most' }),
+      ).getByRole('heading', {
+        name: 'No mistakes yet',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      within(screen.getByRole('region', { name: 'Your mistakes' })).getByText(
+        /No mistakes yet/,
+      ),
+    ).toBeInTheDocument()
+  })
+
+  it('clears the mistake sections when the statistics are reset', async () => {
+    seedMistakes()
+    const user = userEvent.setup()
+    renderPage()
+    expect(
+      screen.getByRole('list', { name: 'Mistakes to practise' }),
+    ).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
+    await user.click(
+      screen.getByRole('button', { name: 'Yes, Erase Everything' }),
+    )
+
+    expect(screen.queryByRole('region', { name: 'Mistakes' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'Your mistakes' })).toBeNull()
+    expect(loadMistakePatterns()).toEqual([])
+    expect(
+      screen.getByRole('heading', { name: 'No practice yet' }),
+    ).toBeInTheDocument()
   })
 })
 

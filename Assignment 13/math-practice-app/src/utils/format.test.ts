@@ -1,5 +1,30 @@
 import { describe, expect, it } from 'vitest'
-import { formatDifficulty, formatList, formatOperations } from './format'
+import {
+  formatDate,
+  formatDateTime,
+  formatDifficulty,
+  formatList,
+  formatOperations,
+} from './format'
+
+describe('formatDate and formatDateTime', () => {
+  const iso = '2026-03-05T14:30:00.000Z'
+
+  it('shows the date, with the year', () => {
+    expect(formatDate(iso)).toMatch(/2026/)
+    expect(formatDate(iso)).toMatch(/5|Mar/)
+  })
+
+  it('shows the time as well for date and time', () => {
+    expect(formatDateTime(iso)).toMatch(/2026/)
+    expect(formatDateTime(iso).length).toBeGreaterThan(formatDate(iso).length)
+  })
+
+  it('does not throw or show "undefined" for a bad date', () => {
+    expect(() => formatDate('not a date')).not.toThrow()
+    expect(formatDate('not a date')).not.toMatch(/undefined/)
+  })
+})
 
 describe('formatList', () => {
   it('joins items the way you would say them', () => {

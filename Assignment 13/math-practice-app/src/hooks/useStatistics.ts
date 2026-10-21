@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { loadMistakePatterns } from '../services/mistakeService'
 import {
   loadRecentSessions,
   resetPracticeHistory,
@@ -12,10 +13,14 @@ function readAll() {
   return {
     statistics: loadStatistics(),
     recentSessions: loadRecentSessions(RECENT_SESSION_COUNT),
+    mistakePatterns: loadMistakePatterns(),
   }
 }
 
-/** The saved statistics and recent sessions, plus a way to erase them. */
+/**
+ * The saved statistics, recent sessions and mistake patterns, plus a way to
+ * erase them all.
+ */
 export function useStatistics() {
   const [data, setData] = useState(readAll)
 

@@ -688,6 +688,134 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+.missed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.75rem;
+}
+
+.missed-card {
+  padding: 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.missed-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.missed-card__main {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.missed-card__note {
+  margin: 0.25rem 0 0;
+}
+
+.missed-facts {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.missed-facts li::marker {
+  font-weight: 700;
+}
+
+.missed-facts__fact {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.missed-facts__count {
+  margin-left: 0.5rem;
+}
+
+.mistake-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mistake-item {
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.mistake-item p {
+  margin: 0;
+}
+
+.mistake-item__fact {
+  font-size: 1.35rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.mistake-item__meta {
+  margin-top: 0.15rem !important;
+  font-size: 0.95rem;
+}
+
+.mistake-item__progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.mistake-item__progress .progress {
+  max-width: 16rem;
+}
+
+.mistake-item__progress-text,
+.mistake-item__mastered {
+  font-weight: 700;
+}
+
+.mistake-item__mastered {
+  margin-top: 0.5rem !important;
+  color: var(--color-primary-dark);
+}
+
+.mistake-mastered {
+  margin-top: 1rem;
+}
+
+.mistake-mastered summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.25rem 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* The default arrow disappears with inline-flex, so draw one. */
+.mistake-mastered summary::before {
+  content: '▸';
+  margin-right: 0.5rem;
+}
+
+.mistake-mastered[open] summary::before {
+  content: '▾';
+}
+
+.mistake-mastered .mistake-list {
+  margin-top: 0.5rem;
+}
+
 .stats-reset .confirm {
   margin-bottom: 0;
 }
