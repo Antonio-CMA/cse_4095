@@ -34,7 +34,9 @@ body {
 }
 
 h1 {
-  font-size: clamp(1.9rem, 5vw, 2.75rem);
+  /* The 11vw cap stops a long word being broken when text is enlarged a lot
+     on a small screen. */
+  font-size: min(clamp(1.9rem, 5vw, 2.75rem), 11vw);
   line-height: 1.2;
   margin: 0 0 0.75rem;
 }
@@ -393,7 +395,9 @@ h1[tabindex='-1']:focus {
 
 .card__problem {
   margin: 0;
-  font-size: clamp(2.5rem, 9vw, 4rem);
+  /* The 14vw cap keeps big text settings from making the problem wider than a
+     small screen. */
+  font-size: min(clamp(2.5rem, 9vw, 4rem), 14vw);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
@@ -408,7 +412,7 @@ h1[tabindex='-1']:focus {
 }
 
 .card__action {
-  min-width: 12rem;
+  min-width: min(12rem, 100%);
 }
 
 .answer-grid {
@@ -425,7 +429,9 @@ h1[tabindex='-1']:focus {
   align-items: center;
   justify-content: center;
   min-height: 64px;
-  padding: 0.5rem 2.25rem;
+  /* Room for the key badge and the tick, but never more than the screen can
+     spare when the text is enlarged. */
+  padding: 0.5rem min(2.25rem, 9vw);
   font: inherit;
   font-size: clamp(1.35rem, 4.5vw, 1.75rem);
   font-weight: 800;
@@ -450,15 +456,15 @@ h1[tabindex='-1']:focus {
 /* The number key that also chooses this answer. */
 .answer-choice__key {
   position: absolute;
-  left: 0.6rem;
+  left: min(0.6rem, 3vw);
   top: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: min(1.5rem, 9vw);
+  height: min(1.5rem, 9vw);
   transform: translateY(-50%);
-  font-size: 0.85rem;
+  font-size: min(0.85rem, 4.5vw);
   font-weight: 700;
   color: var(--color-primary-dark);
   background: var(--color-primary-soft);
@@ -468,9 +474,9 @@ h1[tabindex='-1']:focus {
 
 .answer-choice__check {
   position: absolute;
-  right: 0.9rem;
+  right: min(0.9rem, 3vw);
   visibility: hidden;
-  font-size: 1.25rem;
+  font-size: min(1.25rem, 6vw);
   color: var(--color-primary-dark);
 }
 

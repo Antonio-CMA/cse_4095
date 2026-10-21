@@ -4,15 +4,42 @@ A React + TypeScript app (built with Vite) for children ages 7–12 to practice 
 
 ## Scripts
 
-| Command                | Description                      |
-| ---------------------- | -------------------------------- |
-| `npm run dev`          | Start the development server     |
-| `npm run build`        | Type-check and build for release |
-| `npm run lint`         | Lint with ESLint                 |
-| `npm run format`       | Format with Prettier             |
-| `npm run format:check` | Check formatting                 |
-| `npm test`             | Run tests once with Vitest       |
-| `npm run test:watch`   | Run Vitest in watch mode         |
+| Command                 | Description                       |
+| ----------------------- | --------------------------------- |
+| `npm run dev`           | Start the development server      |
+| `npm run build`         | Type-check and build for release  |
+| `npm run lint`          | Lint with ESLint                  |
+| `npm run format`        | Format with Prettier              |
+| `npm run format:check`  | Check formatting                  |
+| `npm test`              | Run tests once with Vitest        |
+| `npm run test:watch`    | Run Vitest in watch mode          |
+| `npm run test:coverage` | Run the tests and report coverage |
+
+## Testing
+
+Tests sit next to the code they check (`Thing.tsx` / `Thing.test.tsx`; extra files such as `PracticePage.leave.test.tsx` cover one topic). Page and app tests render the real routes with `AppRoutes` inside `TestRouter` (`src/test/`), a data router like the one the app uses, and click through them with Testing Library, so they exercise the same code as a student. `npm run test:coverage` prints the numbers and writes an HTML report to `coverage/` (git-ignored); it is about 99% of statements and branches. What is left is code that cannot be reached, such as a server-rendering fallback and a float-rounding guard.
+
+**Where each part of the plan is tested (Phase 20)**
+
+| Checklist item                         | Where                                                                                                                                                          |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Arithmetic generators, level limits    | `operationGenerators.test.ts`, `questionGenerator*.test.ts`, `validation*.test.ts`                                                                             |
+| Distractors, choice uniqueness         | `distractors.test.ts`, `distractors.limits.test.ts`, `answerChoices.test.ts`, `validation.choices.test.ts`, `fallbackQuestions.test.ts`                        |
+| Statistics calculations                | `statisticsService*.test.ts`, `math.accuracy.test.ts`, `mistakeStats.test.ts`                                                                                  |
+| Mistake patterns, mastery, similar Qs  | `mistakeService*.test.ts`, `mistakes.test.ts`, `mistakeReview.test.ts`, `similarQuestionGenerator.test.ts`, `reviewSession.test.ts`                            |
+| Storage serialization and validation   | `storageService*.test.ts`, `storageSchemas*.test.ts`, `storageMigrations.test.ts`, `dataRepair.test.ts`, `activeSessionService.test.ts`                        |
+| Components (selectors, card, dialogs…) | `components/*/*.test.tsx` (`OperationSelector`, `DifficultySelector`, `QuestionCard`, `ProgressBar`, `ConfirmDialog`, `SessionSummary`, statistics components) |
+| Whole flows                            | `AppRoutes.test.tsx` (addition session, statistics, review and mastery), `AppRoutes.flows.test.tsx` (mixed, continuous, mistake pattern, refresh, reset)       |
+| Accessibility                          | `accessibility.axe.test.tsx`, `AppRoutes.keyboard.test.tsx`, `PracticePage.a11y.test.tsx`, `designContrast.test.ts`, `touchTargets.test.ts`                    |
+
+**Accessibility testing (task 82)**
+
+- _Automated:_ `src/app/accessibility.axe.test.tsx` runs axe-core over every page and state (dialogs, the practice card both sides, the summary, the open menu, notices and the error message) against WCAG 2.0–2.2 A/AA and axe's best-practice rules. jsdom has no layout, so colour contrast and target size are switched off there; `designContrast.test.ts` and `touchTargets.test.ts` cover them by reading `index.css`.
+- _Keyboard only:_ `AppRoutes.keyboard.test.tsx` runs a whole visit (setup, five questions, summary, home) with Tab, Space, Enter and arrow keys only. Writing it found a real problem, now fixed: after a verdict the card was replaced and focus fell back to the top of the page, so every question cost a trip through the header. The new question card now takes focus (`focusOnShow`).
+- _In a real browser:_ axe was run on every page and state at desktop size and at 320px (which is what 400% zoom looks like), including WCAG 2.2 target size and best-practice rules, with no violations. To repeat it, open the dev server, paste the contents of `node_modules/axe-core/axe.min.js` into the console (or `fetch('/node_modules/axe-core/axe.min.js')` and `eval` it), then run `await axe.run()`. The "needs review" items axe reports for colour contrast are the decorative `✓` and `−` marks, which are `aria-hidden` and cannot be measured.
+- _Zoom:_ checked at 320px wide (400% zoom), and at 320px with text enlarged 200% (large system font on a small phone). That last case did overflow on the practice card and heading, because sizes written in rem grew with the text but not the screen; they are now capped by the screen width (`designContrast.test.ts` guards this).
+- _Reduced motion:_ `usePrefersReducedMotion.test.tsx` and `PracticePage.a11y.test.tsx`.
+- **Not done: a real screen reader.** NVDA, JAWS, VoiceOver or TalkBack were not available. What is checked instead is the markup a screen reader works from: roles, names, landmarks, the live announcement that reads questions in words, and the accessibility tree. Someone should still try a session with a screen reader before release.
 
 ## Project structure
 
@@ -25,14 +52,14 @@ src/
 ├── hooks/        Custom React hooks
 ├── types/        Shared TypeScript types
 ├── utils/        Math, shuffle, id, validation helpers
-└── test/         Test setup
+└── test/         Test setup and helpers (TestRouter, axe, fixtures)
 ```
 
 ## Notes for later phases
 
 - **Settings (Phase 11, done):** the Settings page saves automatically through `useSettings().updateSettings`; the session summary's **Change Settings** panel now links to both _Practice Setup_ and _App Settings_. `usePracticeDefaults` reads the saved defaults for the setup page. Card animation and explanations take effect during practice. **Sound effects** is saved but has no effect until sounds are added (no phase covers audio; the spec lists it under future work).
 - **Mistake patterns (Phase 12, done):** every answer the student marks wrong goes through `recordPracticeAttempt` (`services/attemptRecorder.ts`), which saves it, counts it in the statistics and updates the patterns (`recordAnswer`). A pattern's id is `operation:first:second:L<level>` (e.g. `multiplication:8:7:L2`), so the same mistake can never be stored twice; 7 × 8, 8 × 7 and the same fact at another level are different patterns. A repeat miss adds one to `incorrectCount`, updates `lastIncorrectAt`, and **resets** `similarCorrectCount` to 0 and `mastered` to false. Capped at 1,000 (mastered, then least recent, dropped first). `useStatistics` loads them for the Statistics page.
-- **Accessibility (Phase 16, done):** keys 1–4 choose an answer (`useAnswerShortcuts`; ignored in text fields and with Ctrl/Alt/Meta, and off while the End Session dialog is open); answers show their key and carry `aria-keyshortcuts`. Screen readers get polite live announcements: the question and progress on every new question, the chosen answer, and the revealed answer in words (`utils/speech.ts`, never the symbols). After a page change the tab title updates and focus moves to the new heading (`AppLayout`). `usePrefersReducedMotion` plus the card-animation setting decide whether the card flips or just swaps. Colours are checked against WCAG AA by `designContrast.test.ts`, which reads `index.css` — interactive edges use `--color-border-strong` and the focus ring uses `--color-focus`, so don't use the faint `--color-border` for controls. Layout was checked at 320px wide and at 200% text with no sideways scrolling; keep new grids using `minmax(min(Xrem, 100%), 1fr)`. Not covered here: an automated axe check and screen-reader testing (Phase 20, task 82).
+- **Accessibility (Phase 16, done):** keys 1–4 choose an answer (`useAnswerShortcuts`; ignored in text fields and with Ctrl/Alt/Meta, and off while the End Session dialog is open); answers show their key and carry `aria-keyshortcuts`. Screen readers get polite live announcements: the question and progress on every new question, the chosen answer, and the revealed answer in words (`utils/speech.ts`, never the symbols). After a page change the tab title updates and focus moves to the new heading (`AppLayout`). `usePrefersReducedMotion` plus the card-animation setting decide whether the card flips or just swaps. Colours are checked against WCAG AA by `designContrast.test.ts`, which reads `index.css` — interactive edges use `--color-border-strong` and the focus ring uses `--color-focus`, so don't use the faint `--color-border` for controls. Layout was checked at 320px wide and at 200% text with no sideways scrolling; keep new grids using `minmax(min(Xrem, 100%), 1fr)`. The automated axe check and keyboard-only run were added in Phase 20 (see Testing above); a real screen reader has still not been tried.
 - **Responsive design and polish (Phase 17, done):** below 600px the header shows a **Menu** button (`aria-expanded`, `aria-controls`) and the links fold away; wider screens always show them. The menu closes on Escape (focus returns to the button), when a link is chosen, and on any page change (`Header` keeps the path it was opened on, so there is no reset effect). The practice page is centred in `.practice-session` (max 46rem); from 700px up the question and answer tiles are bigger, and `(pointer: coarse)` adds extra room for fingers. `touchTargets.test.ts` reads `index.css` and fails if a control drops under 44px or the menu rules change; phone and tablet sizes (320–414px, 768×1024, 1024×768) were checked in a browser for sideways scrolling and small targets. Encouraging messages are a setting (`feedbackEnabled`, on by default): `utils/feedback.ts` picks a message after each answer (never the same twice in a row, never blame) and a closing message on the summary. The on-screen note is `aria-hidden`; screen readers hear it at the start of the existing live announcement. In CSS, a media-query override must come **after** the base rule it changes (same specificity, last wins).
 - **Similar questions (Phase 13, done):** `generateSimilarQuestion(pattern)` makes a question from a mistake using nearby numbers, reversed operands (addition and multiplication only) or the fact family, always at the pattern's own level, and labels it `mistake-review` with the pattern's id.
 - **Mistake review (Phase 14, done):** the setup page's "Practice my mistakes" option (and the summary's "Practice Mistakes") is available while at least one pattern is not mastered (`useActiveMistakeCount`). A review session (`services/reviewSession.ts`, `utils/mistakeReview.ts`) picks patterns at random weighted by priority (more misses, more recent, less review progress), never the same pattern twice in a row, and avoids repeating recent problems. Each answer is saved with its `mistakePatternId`. A **right** review answer adds one to `similarCorrectCount`; the pattern is **mastered** at `masteryThreshold` (Settings, default 3; the count is also checked against the current setting, so lowering it applies straight away). A **wrong** review answer counts as another miss on the same pattern (progress resets, no new pattern is created for the similar question). Mastered patterns are left out of review and come back after a later mistake. A review session ends early when every mistake is mastered. Its summary shows the operations and the most common level of the mistakes it used.

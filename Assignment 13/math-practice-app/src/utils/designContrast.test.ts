@@ -122,6 +122,39 @@ describe('the layout stays inside a small screen (WCAG reflow)', () => {
     expect(rule('body')).toContain('overflow-wrap: anywhere')
   })
 
+  // Sizes written in rem grow with the student's text-size setting, so on a
+  // small screen they can outgrow it (large text on a 320px phone). Each of
+  // these is capped by the screen width so the card never scrolls sideways.
+  it('caps the big sizes on the practice card by the screen width', () => {
+    expect(rule('h1')).toMatch(/font-size:\s*min\(.+,\s*11vw\)/)
+    expect(rule('.card__problem')).toMatch(/font-size:\s*min\(.+,\s*14vw\)/)
+    expect(rule('.card__action')).toMatch(/min-width:\s*min\(12rem,\s*100%\)/)
+    expect(rule('.answer-choice')).toMatch(
+      /padding:\s*0\.5rem min\(2\.25rem,\s*9vw\)/,
+    )
+    expect(rule('.answer-choice__key')).toMatch(
+      /width:\s*min\(1\.5rem,\s*9vw\)/,
+    )
+  })
+
+  it('has no large fixed minimum width that text enlargement could stretch', () => {
+    // Declarations only (not the `@media (min-width: …)` conditions).
+    const minimums = [
+      ...cssWithoutComments.matchAll(/^\s+min-width:\s*([^;{}]+);/gm),
+    ].map((m) => m[1].trim())
+    expect(minimums.length).toBeGreaterThan(0)
+    for (const minimum of minimums) {
+      const rem = /^([\d.]+)rem$/.exec(minimum)
+      // Capped, zero, a share of the width, or small enough not to matter.
+      expect(
+        minimum.startsWith('min(') ||
+          minimum === '0' ||
+          minimum.endsWith('%') ||
+          (rem !== null && Number(rem[1]) <= 6),
+      ).toBe(true)
+    }
+  })
+
   it('stacks the answers in one column on narrow screens', () => {
     expect(css).toMatch(
       /@media \(max-width: 480px\)\s*\{[^@]*\.answer-grid\s*\{[^}]*grid-template-columns:\s*1fr/,
