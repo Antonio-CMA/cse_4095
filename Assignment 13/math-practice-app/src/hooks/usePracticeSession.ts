@@ -6,19 +6,28 @@ import {
   useRef,
   useState,
 } from 'react'
+import {
+  clearActiveSession,
+  loadActiveSession,
+  saveActiveSession,
+  type CardProgress,
+} from '../services/activeSessionService'
 import { recordPracticeAttempt } from '../services/attemptRecorder'
+import { loadMistakePatterns } from '../services/mistakeService'
 import { saveSession } from '../services/practiceHistory'
 import {
   createSessionState,
   getTotalQuestions,
   isSessionComplete,
   sessionReducer,
+  type SessionState,
 } from '../services/practiceSession'
 import { generateNextQuestion } from '../services/questionGenerator'
 import {
   afterShowing,
   createPracticePlan,
   nextReviewQuestion,
+  type ReviewState,
 } from '../services/reviewSession'
 import { DEFAULT_MASTERY_THRESHOLD } from '../services/settingsService'
 import type { Question } from '../types/question'
@@ -34,6 +43,47 @@ export interface ReportedResult {
 interface Options {
   /** Similar questions needed to master a mistake (review sessions). */
   masteryThreshold?: number
+  /**
+   * The page visit this session belongs to. When given, the session is kept up
+   * to date in storage, and opening the same visit again (a refresh) carries on
+   * where the student was instead of starting over.
+   */
+  resumeKey?: string
+}
+
+interface Start {
+  state: SessionState
+  review: ReviewState | null
+  card: CardProgress | null
+  resumed: boolean
+}
+
+/** Picks up the saved session for this visit, or gets a new one ready. */
+function getStarted(
+  config: PracticeConfig,
+  masteryThreshold: number,
+  resumeKey: string | undefined,
+): Start {
+  const saved = resumeKey ? loadActiveSession(resumeKey) : null
+  if (saved) {
+    return {
+      state: saved.state,
+      // The mistakes were saved answer by answer, so they are up to date.
+      review: saved.review
+        ? { patterns: loadMistakePatterns(), ...saved.review }
+        : null,
+      card: saved.card,
+      resumed: true,
+    }
+  }
+
+  const plan = createPracticePlan(config, masteryThreshold)
+  return {
+    state: createSessionState(plan.config, plan.firstQuestion),
+    review: plan.review,
+    card: null,
+    resumed: false,
+  }
 }
 
 /**
@@ -46,19 +96,57 @@ interface Options {
  */
 export function usePracticeSession(
   config: PracticeConfig,
-  { masteryThreshold = DEFAULT_MASTERY_THRESHOLD }: Options = {},
+  { masteryThreshold = DEFAULT_MASTERY_THRESHOLD, resumeKey }: Options = {},
 ) {
-  const [plan] = useState(() => createPracticePlan(config, masteryThreshold))
-  const [state, dispatch] = useReducer(sessionReducer, plan, (initial) =>
-    createSessionState(initial.config, initial.firstQuestion),
+  const [started] = useState(() =>
+    getStarted(config, masteryThreshold, resumeKey),
   )
+  const [state, dispatch] = useReducer(sessionReducer, started.state)
   const { session, attempts, currentQuestion } = state
-  const { operations, difficulty } = plan.config
+  // A review session's setup describes its mistakes, so use the session's own.
+  const { operations, difficulty } = session
+
+  // What the student has done on the card showing now (answer picked, card
+  // turned), so a refresh can put it back as it was.
+  const [card, setCard] = useState<CardProgress | null>(started.card)
+  const currentQuestionId = currentQuestion.id
+  const rememberCard = useCallback(
+    (progress: Pick<CardProgress, 'selectedAnswer' | 'flipped'>) =>
+      setCard({ questionId: currentQuestionId, ...progress }),
+    [currentQuestionId],
+  )
 
   // The mistakes as this session sees them, kept up to date answer by answer so
   // the next question already reflects the one just answered.
-  const reviewRef = useRef(plan.review)
+  const reviewRef = useRef(started.review)
   const handledQuestionRef = useRef<string | null>(null)
+
+  // Keep a bookmark of the session so a refresh can carry on, and throw it away
+  // when the session is over.
+  useEffect(() => {
+    if (!resumeKey) return
+    if (isSessionComplete(state)) {
+      clearActiveSession()
+      return
+    }
+    const review = reviewRef.current
+    saveActiveSession({
+      key: resumeKey,
+      state,
+      review: review
+        ? { recentKeys: review.recentKeys, lastPatternId: review.lastPatternId }
+        : null,
+      card: card?.questionId === state.currentQuestion.id ? card : null,
+    })
+  }, [state, card, resumeKey])
+
+  // A resumed session may have answers that were never filed away (the page was
+  // closed in between). Filing is by id, so ones already saved are skipped.
+  useEffect(() => {
+    for (const attempt of started.state.attempts) {
+      recordPracticeAttempt(attempt)
+    }
+  }, [started])
 
   // Keep the session and every answer saved as the student goes. A session
   // with no answers yet is not worth keeping. If the browser cannot save
@@ -156,5 +244,11 @@ export function usePracticeSession(
     result,
     recordResult,
     endSession,
+    /** True if this is a session carried on after a refresh. */
+    resumed: started.resumed,
+    /** The card as it was when the page closed; only for the first question shown. */
+    resumedCard: started.card,
+    /** Tell the session what the card is showing, so it can be put back. */
+    rememberCard,
   }
 }

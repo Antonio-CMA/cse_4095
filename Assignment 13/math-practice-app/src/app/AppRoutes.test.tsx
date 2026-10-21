@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router'
+import { TestRouter } from '../test/TestRouter'
 import { describe, expect, it } from 'vitest'
 import { AppProvider } from './AppProvider'
 import { AppRoutes } from './AppRoutes'
@@ -8,9 +8,9 @@ import { AppRoutes } from './AppRoutes'
 function renderAt(path: string) {
   return render(
     <AppProvider>
-      <MemoryRouter initialEntries={[path]}>
+      <TestRouter initialEntries={[path]}>
         <AppRoutes />
-      </MemoryRouter>
+      </TestRouter>
     </AppProvider>,
   )
 }

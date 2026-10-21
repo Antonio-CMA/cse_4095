@@ -13,6 +13,8 @@ export const STORAGE_KEYS = {
   attempts: 'mathPractice.attempts',
   mistakePatterns: 'mathPractice.mistakePatterns',
   statistics: 'mathPractice.statistics',
+  /** The practice session in progress, kept so a refresh can pick it up. */
+  activeSession: 'mathPractice.activeSession',
   version: 'mathPractice.version',
 } as const
 

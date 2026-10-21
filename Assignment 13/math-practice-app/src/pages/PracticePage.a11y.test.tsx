@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
+import { TestRouter } from '../test/TestRouter'
 import { afterEach, describe, expect, it } from 'vitest'
 import { AppProvider } from '../app/AppProvider'
 import { DEFAULT_SETTINGS, saveSettings } from '../services/settingsService'
@@ -19,14 +20,14 @@ const CONTINUOUS: PracticeConfig = { ...FIXED, sessionLength: 'continuous' }
 function renderSession(config: PracticeConfig = FIXED) {
   return render(
     <AppProvider>
-      <MemoryRouter
+      <TestRouter
         initialEntries={[{ pathname: '/practice/session', state: config }]}
       >
         <Routes>
           <Route path="/practice/session" element={<PracticePage />} />
           <Route path="/practice/summary" element={<h1>Summary</h1>} />
         </Routes>
-      </MemoryRouter>
+      </TestRouter>
     </AppProvider>,
   )
 }
@@ -251,11 +252,11 @@ describe('settings page and reduced motion', () => {
   function renderSettings() {
     return render(
       <AppProvider>
-        <MemoryRouter initialEntries={['/settings']}>
+        <TestRouter initialEntries={['/settings']}>
           <Routes>
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
-        </MemoryRouter>
+        </TestRouter>
       </AppProvider>,
     )
   }

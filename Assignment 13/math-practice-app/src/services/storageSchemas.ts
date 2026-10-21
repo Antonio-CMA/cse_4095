@@ -1,5 +1,9 @@
 import type { MistakePattern } from '../types/mistake'
-import type { DifficultyLevel, MathOperation } from '../types/question'
+import type {
+  DifficultyLevel,
+  MathOperation,
+  Question,
+} from '../types/question'
 import type {
   PracticeAttempt,
   PracticeSession,
@@ -8,7 +12,10 @@ import type {
 import { calculateAnswer } from '../utils/math'
 import { getMistakePatternId } from '../utils/mistakes'
 import { ALL_DIFFICULTIES, ALL_OPERATIONS } from '../utils/operations'
-import { MAX_SESSION_LENGTH } from '../utils/validation'
+import {
+  MAX_SESSION_LENGTH,
+  validateQuestionChoices,
+} from '../utils/validation'
 
 /**
  * Checks for data that comes back from storage. Saved data can be damaged or
@@ -88,6 +95,69 @@ export function parseStoredSession(value: unknown): PracticeSession | null {
     attempted,
     correct,
     incorrect,
+  }
+}
+
+/**
+ * A saved question. Only its own facts are checked (whole numbers, the answer
+ * really is the answer, four sensible choices), not the difficulty ranges: the
+ * app made this question itself, and review questions may sit outside them.
+ */
+export function parseStoredQuestion(value: unknown): Question | null {
+  if (!isRecord(value)) return null
+  const {
+    id,
+    operation,
+    firstOperand,
+    secondOperand,
+    displayText,
+    correctAnswer,
+    choices,
+    difficulty,
+    source,
+    mistakePatternId,
+  } = value
+
+  if (typeof id !== 'string' || id === '') return null
+  if (!isOperation(operation) || !isDifficulty(difficulty)) return null
+  if (typeof displayText !== 'string' || displayText === '') return null
+  if (source !== 'regular' && source !== 'mistake-review') return null
+  if (![firstOperand, secondOperand, correctAnswer].every(Number.isInteger)) {
+    return null
+  }
+  if (operation === 'division' && secondOperand === 0) return null
+  if (
+    calculateAnswer(
+      operation,
+      firstOperand as number,
+      secondOperand as number,
+    ) !== correctAnswer
+  ) {
+    return null
+  }
+  if (!Array.isArray(choices)) return null
+  if (
+    validateQuestionChoices({
+      choices: choices as number[],
+      correctAnswer: correctAnswer as number,
+    }).length > 0
+  ) {
+    return null
+  }
+
+  return {
+    id,
+    operation,
+    firstOperand: firstOperand as number,
+    secondOperand: secondOperand as number,
+    displayText,
+    correctAnswer: correctAnswer as number,
+    choices: [...(choices as number[])],
+    difficulty,
+    source,
+    ...(typeof mistakePatternId === 'string' && mistakePatternId !== ''
+      ? { mistakePatternId }
+      : {}),
   }
 }
 

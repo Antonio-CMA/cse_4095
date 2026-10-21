@@ -107,8 +107,9 @@ const HISTORY_KEYS = [
   STORAGE_KEYS.sessions,
   STORAGE_KEYS.attempts,
   STORAGE_KEYS.statistics,
-  // Not used until mistake tracking exists; listed so a reset clears it too.
   STORAGE_KEYS.mistakePatterns,
+  // A session still in progress would otherwise bring erased answers back.
+  STORAGE_KEYS.activeSession,
 ] as const
 
 /**

@@ -259,3 +259,67 @@ describe('QuestionCard with a new question', () => {
     expect(screen.queryByRole('button', { name: 'I Got It Right' })).toBeNull()
   })
 })
+
+describe('QuestionCard progress (for picking up after a refresh)', () => {
+  it('reports each change to the picked answer and the side showing', async () => {
+    const user = userEvent.setup()
+    const onProgressChange = vi.fn()
+    renderCard({ onProgressChange })
+
+    expect(onProgressChange).toHaveBeenLastCalledWith({
+      selectedAnswer: null,
+      flipped: false,
+    })
+    await user.click(screen.getByRole('button', { name: '54' }))
+    expect(onProgressChange).toHaveBeenLastCalledWith({
+      selectedAnswer: 54,
+      flipped: false,
+    })
+    await user.click(screen.getByRole('button', { name: '64' }))
+    expect(onProgressChange).toHaveBeenLastCalledWith({
+      selectedAnswer: 64,
+      flipped: false,
+    })
+    await user.click(flipButton())
+    expect(onProgressChange).toHaveBeenLastCalledWith({
+      selectedAnswer: 64,
+      flipped: true,
+    })
+  })
+
+  it('starts with an answer already picked', () => {
+    renderCard({ initialProgress: { selectedAnswer: 54, flipped: false } })
+    expect(screen.getByRole('button', { name: '54' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(flipButton()).toBeEnabled()
+  })
+
+  it('starts already turned over, showing what was chosen', () => {
+    renderCard({ initialProgress: { selectedAnswer: 54, flipped: true } })
+    expect(screen.getByText('Your answer').nextSibling).toHaveTextContent('54')
+    expect(screen.getByRole('button', { name: 'I Got It Right' })).toBeEnabled()
+    expect(document.activeElement).toBe(
+      document.querySelector('.flip-card__face--back'),
+    )
+  })
+
+  it('can still give a verdict after being put back', async () => {
+    const user = userEvent.setup()
+    const { onResult } = renderCard({
+      initialProgress: { selectedAnswer: 48, flipped: true },
+    })
+    await user.click(screen.getByRole('button', { name: 'I Got It Wrong' }))
+    expect(onResult).toHaveBeenCalledWith({
+      selectedAnswer: 48,
+      correct: false,
+    })
+  })
+
+  it('starts fresh without saved progress', () => {
+    renderCard()
+    expect(flipButton()).toBeDisabled()
+    expect(screen.queryAllByRole('button', { pressed: true })).toHaveLength(0)
+  })
+})

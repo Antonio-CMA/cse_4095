@@ -22,6 +22,13 @@ interface QuestionCardProps {
   showExplanation?: boolean
   /** Let the number keys 1–4 choose an answer. Turn off while a dialog is open. */
   shortcutsEnabled?: boolean
+  /** Start with this answer picked and/or the card turned (after a refresh). */
+  initialProgress?: { selectedAnswer: number | null; flipped: boolean }
+  /** Told whenever the picked answer or the side showing changes. */
+  onProgressChange?: (progress: {
+    selectedAnswer: number | null
+    flipped: boolean
+  }) => void
   onResult: (result: CardResult) => void
 }
 
@@ -41,14 +48,22 @@ function CardState({
   animationEnabled = true,
   showExplanation = false,
   shortcutsEnabled = true,
+  initialProgress,
+  onProgressChange,
   onResult,
 }: QuestionCardProps) {
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
-  const [isFlipped, setIsFlipped] = useState(false)
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(
+    initialProgress?.selectedAnswer ?? null,
+  )
+  const [isFlipped, setIsFlipped] = useState(initialProgress?.flipped ?? false)
   const [resultRecorded, setResultRecorded] = useState(false)
   // Spoken aloud by screen readers (it is not shown on screen).
   const [announcement, setAnnouncement] = useState('')
   const backRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    onProgressChange?.({ selectedAnswer, flipped: isFlipped })
+  }, [selectedAnswer, isFlipped, onProgressChange])
 
   // The front's controls stop being available after the flip, so move focus to
   // the back rather than leaving keyboard users stranded.
