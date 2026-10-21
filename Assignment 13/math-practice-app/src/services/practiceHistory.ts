@@ -25,7 +25,8 @@ export const MAX_STORED_ATTEMPTS = 5000
 /** When the browser is full, this share of the oldest records is dropped. */
 const QUOTA_TRIM_SHARE = 0.25
 
-function loadList<T>(
+/** Reads a saved list, skipping damaged records. Empty if nothing usable. */
+export function loadList<T>(
   key: StorageKey,
   parseItem: (item: unknown) => T | null,
 ): T[] {
@@ -37,7 +38,7 @@ function loadList<T>(
  * Saves a list, and if the browser says it is full, drops some of the oldest
  * records and tries once more so the newest data still gets saved.
  */
-function saveList<T>(key: StorageKey, records: T[]): WriteResult {
+export function saveList<T>(key: StorageKey, records: T[]): WriteResult {
   const first = writeItem(key, records)
   if (first.ok || first.reason !== 'quota') return first
 

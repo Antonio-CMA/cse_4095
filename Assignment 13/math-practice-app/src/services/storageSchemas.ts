@@ -1,9 +1,12 @@
+import type { MistakePattern } from '../types/mistake'
 import type { DifficultyLevel, MathOperation } from '../types/question'
 import type {
   PracticeAttempt,
   PracticeSession,
   SessionLength,
 } from '../types/session'
+import { calculateAnswer } from '../utils/math'
+import { getMistakePatternId } from '../utils/mistakes'
 import { MAX_SESSION_LENGTH } from '../utils/validation'
 
 /**
@@ -136,6 +139,63 @@ export function parseStoredAttempt(value: unknown): PracticeAttempt | null {
     source,
     attemptedAt,
     sessionId,
+  }
+}
+
+export function parseStoredMistakePattern(
+  value: unknown,
+): MistakePattern | null {
+  if (!isRecord(value)) return null
+  const {
+    operation,
+    firstOperand,
+    secondOperand,
+    correctAnswer,
+    difficulty,
+    incorrectCount,
+    similarCorrectCount,
+    lastIncorrectAt,
+    mastered,
+  } = value
+
+  if (!isOperation(operation) || !isDifficulty(difficulty)) return null
+  if (![firstOperand, secondOperand, correctAnswer].every(Number.isInteger)) {
+    return null
+  }
+  // The saved answer has to be the real answer to the saved question.
+  if (
+    calculateAnswer(
+      operation,
+      firstOperand as number,
+      secondOperand as number,
+    ) !== correctAnswer
+  ) {
+    return null
+  }
+  // A pattern exists because of at least one mistake.
+  if (!isCount(incorrectCount) || incorrectCount < 1) return null
+  if (!isCount(similarCorrectCount)) return null
+  if (!isTimestamp(lastIncorrectAt)) return null
+  if (typeof mastered !== 'boolean') return null
+
+  return {
+    // Always rebuilt from the question, so a damaged id cannot cause a
+    // duplicate.
+    id: getMistakePatternId({
+      operation,
+      firstOperand: firstOperand as number,
+      secondOperand: secondOperand as number,
+      difficulty,
+    }),
+    operation,
+    firstOperand: firstOperand as number,
+    secondOperand: secondOperand as number,
+    correctAnswer: correctAnswer as number,
+    difficulty,
+    incorrectCount,
+    similarCorrectCount,
+    lastIncorrectAt,
+    mastered,
   }
 }
 
