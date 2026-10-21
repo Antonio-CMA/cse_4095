@@ -1,6 +1,42 @@
 # Math Practice App
 
-A React + TypeScript app (built with Vite) for children ages 7–12 to practice addition, subtraction, multiplication, and division with flip-card multiple-choice questions. See `Assignment 13/Project Docs` for the full specification and implementation plan.
+A React + TypeScript app (built with Vite) for children ages 7–12 to practice addition, subtraction, multiplication, and division with flip-card multiple-choice questions. See `Assignment 13/Project Docs` for the full specification and implementation plan, and `Assignment 13/Development-Report.md` for how it was built.
+
+**Live site:** see [Deployment status](#deployment-status).
+
+## What it does
+
+- **Practice** addition, subtraction, multiplication and division (or a mix) at four levels, in sessions of 5, 10, 20 or unlimited questions. Each question is a card with four answers; pick one, flip the card to see the solution, then say whether you got it right.
+- **Remembers mistakes** and builds similar questions from them (nearby numbers, reversed operands, the related fact), then marks a mistake mastered after a few right answers.
+- **Statistics**: overall, by operation and by level, recent sessions, the facts you miss most, and progress on each mistake.
+- **Settings**: card animation, explanations, encouraging messages, default session, mastery setting, and erasing everything.
+- **Works for everyone**: keyboard-only use (number keys pick answers), screen-reader announcements, reduced motion, tablets and phones.
+- **Private**: no accounts, no tracking, no network calls. Everything is saved in your own browser. See the in-app Privacy page.
+
+## Setup
+
+You need [Node.js](https://nodejs.org/) 24 (or any recent LTS) and npm 10 or newer. Nothing else is installed or configured.
+
+```bash
+# 1. Get the code
+git clone https://github.com/Antonio-CMA/cse_4095.git
+cd "cse_4095/Assignment 13/math-practice-app"
+
+# 2. Install the dependencies
+npm install        # or `npm ci` for exactly the versions in package-lock.json
+
+# 3. Run it
+npm run dev        # then open the address it prints (http://localhost:5173)
+```
+
+To check everything works on your machine:
+
+```bash
+npm run verify     # lint, formatting, all ~1,400 tests, and the production build
+npm run preview    # serve the production build locally (build first with npm run build)
+```
+
+If a port is busy, Vite picks the next one and prints it. There is no database, server or `.env` file to set up: the app stores its data in the browser.
 
 ## Scripts
 
@@ -19,6 +55,18 @@ A React + TypeScript app (built with Vite) for children ages 7–12 to practice 
 
 Putting the app on the web, supported browsers, and what has and has not been
 checked in other browsers are in [`RELEASE.md`](RELEASE.md).
+
+## Deployment status
+
+The app is built to be hosted as a static site. The intended address is
+**https://antonio-cma.github.io/cse_4095/**, published by the GitHub Actions
+workflow `.github/workflows/math-practice-deploy.yml` (it runs the tests, builds
+with the sub-path and security policy that GitHub Pages needs, and publishes).
+
+**Status: not yet live.** Publishing needs GitHub Pages to be switched on for the
+repository (Settings > Pages > Source: GitHub Actions), which has to be done by
+the repository owner. This section is updated with the verified address once it is
+live.
 
 ## Testing
 
