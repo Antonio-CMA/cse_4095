@@ -1,10 +1,9 @@
 import type { MistakePattern } from '../types/mistake'
 import type { PracticeAttempt } from '../types/session'
-import {
-  mergeDuplicatePatterns,
-  recordMistakeInPatterns,
-} from '../utils/mistakes'
+import { applyAnswerToPatterns } from '../utils/mistakeReview'
+import { mergeDuplicatePatterns } from '../utils/mistakes'
 import { loadList, saveList } from './practiceHistory'
+import { DEFAULT_MASTERY_THRESHOLD } from './settingsService'
 import { parseStoredMistakePattern } from './storageSchemas'
 import { STORAGE_KEYS, type WriteResult } from './storageService'
 
@@ -40,16 +39,20 @@ export function saveMistakePatterns(patterns: MistakePattern[]): WriteResult {
 }
 
 /**
- * Remembers a wrong answer: starts a mistake pattern for a question missed for
- * the first time, or updates the existing one. Answers given correctly are
- * ignored.
+ * Updates the mistake patterns for one answer (see `applyAnswerToPatterns`):
+ * a wrong answer to an ordinary question remembers the mistake; answers to
+ * review questions move the pattern they came from towards mastered, or count
+ * as another miss on it. Nothing is written if nothing changes.
  *
  * This counts the answer it is given, so callers must pass each answer once
  * (see `recordPracticeAttempt`).
  */
-export function recordMistake(attempt: PracticeAttempt): WriteResult {
-  if (attempt.selfReportedCorrect) return { ok: true }
-  return saveMistakePatterns(
-    recordMistakeInPatterns(loadMistakePatterns(), attempt),
-  )
+export function recordAnswer(
+  attempt: PracticeAttempt,
+  masteryThreshold: number = DEFAULT_MASTERY_THRESHOLD,
+): WriteResult {
+  const patterns = loadMistakePatterns()
+  const updated = applyAnswerToPatterns(patterns, attempt, masteryThreshold)
+  if (updated === patterns) return { ok: true }
+  return saveMistakePatterns(updated)
 }

@@ -1,11 +1,15 @@
+import { useState } from 'react'
+import { loadMistakePatterns } from '../services/mistakeService'
+import { getActivePatterns } from '../utils/mistakeReview'
+import { useSettings } from './useSettings'
+
 /**
- * How many mistake patterns are still waiting to be reviewed.
- *
- * Mistakes are now remembered (see `useMistakePatterns`), but this stays at 0
- * on purpose until mistake review itself exists: while it is 0 the app does
- * not offer review sessions it cannot yet run. Phase 14 changes this to count
- * the patterns that are not mastered.
+ * How many mistake patterns still need practice: the saved ones that are not
+ * mastered (using the mastery setting). It is read when the page first appears.
+ * Review sessions are only offered while this is above zero.
  */
 export function useActiveMistakeCount(): number {
-  return 0
+  const { settings } = useSettings()
+  const [patterns] = useState(loadMistakePatterns)
+  return getActivePatterns(patterns, settings.masteryThreshold).length
 }

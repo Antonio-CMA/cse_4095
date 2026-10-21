@@ -4,7 +4,7 @@ import type { MistakePattern } from '../types/mistake'
 import {
   loadMistakePatterns,
   MAX_STORED_MISTAKE_PATTERNS,
-  recordMistake,
+  recordAnswer,
   saveMistakePatterns,
 } from './mistakeService'
 import { STORAGE_KEYS } from './storageService'
@@ -99,9 +99,9 @@ describe('loading mistake patterns', () => {
   })
 })
 
-describe('recordMistake', () => {
+describe('recordAnswer', () => {
   it('stores a new mistake pattern from a wrong answer', () => {
-    expect(recordMistake(miss())).toEqual({ ok: true })
+    expect(recordAnswer(miss())).toEqual({ ok: true })
 
     expect(loadMistakePatterns()).toEqual([
       {
@@ -120,8 +120,8 @@ describe('recordMistake', () => {
   })
 
   it('updates the existing pattern instead of adding another', () => {
-    recordMistake(miss())
-    recordMistake(miss({ attemptedAt: '2026-03-05T08:00:00.000Z' }))
+    recordAnswer(miss())
+    recordAnswer(miss({ attemptedAt: '2026-03-05T08:00:00.000Z' }))
 
     const patterns = loadMistakePatterns()
     expect(patterns).toHaveLength(1)
@@ -132,9 +132,9 @@ describe('recordMistake', () => {
   })
 
   it('keeps different mistakes as separate patterns', () => {
-    recordMistake(miss())
-    recordMistake(miss({ firstOperand: 7, secondOperand: 8 }))
-    recordMistake(
+    recordAnswer(miss())
+    recordAnswer(miss({ firstOperand: 7, secondOperand: 8 }))
+    recordAnswer(
       miss({
         operation: 'division',
         firstOperand: 56,
@@ -158,7 +158,7 @@ describe('recordMistake', () => {
         similarCorrectCount: 3,
       }),
     ])
-    recordMistake(miss())
+    recordAnswer(miss())
 
     expect(loadMistakePatterns()[0]).toMatchObject({
       mastered: false,
@@ -168,7 +168,7 @@ describe('recordMistake', () => {
   })
 
   it('ignores answers that were right', () => {
-    expect(recordMistake(miss({ selfReportedCorrect: true }))).toEqual({
+    expect(recordAnswer(miss({ selfReportedCorrect: true }))).toEqual({
       ok: true,
     })
     expect(loadMistakePatterns()).toEqual([])
@@ -179,12 +179,12 @@ describe('recordMistake', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('denied', 'SecurityError')
     })
-    expect(recordMistake(miss())).toEqual({ ok: false, reason: 'unavailable' })
+    expect(recordAnswer(miss())).toEqual({ ok: false, reason: 'unavailable' })
   })
 
   it('recovers from damaged saved patterns by starting clean', () => {
     window.localStorage.setItem(STORAGE_KEYS.mistakePatterns, '{{{')
-    recordMistake(miss())
+    recordAnswer(miss())
     expect(loadMistakePatterns()).toHaveLength(1)
   })
 })
@@ -233,7 +233,7 @@ describe('saving many mistake patterns', () => {
       original.call(this, key, value)
     })
 
-    const result = recordMistake(miss())
+    const result = recordAnswer(miss())
     expect(result).toEqual({ ok: true })
     const saved = loadMistakePatterns()
     expect(saved.at(-1)?.id).toBe('multiplication:8:7:L2')

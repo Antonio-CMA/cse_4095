@@ -13,6 +13,7 @@ import type {
   ReviewMode,
   SessionLength,
 } from '../types/session'
+import { OPERATION_OPTIONS } from '../utils/practiceOptions'
 import { parsePracticeConfig } from '../utils/validation'
 
 export function PracticeSetupPage() {
@@ -42,13 +43,20 @@ export function PracticeSetupPage() {
   )
   const [reviewMode, setReviewMode] = useState<ReviewMode>(initial.reviewMode)
 
-  const canStart = operations.length > 0
+  const isReview = reviewMode === 'mistake-review'
+
+  // A review session is made from the student's mistakes, so it does not need
+  // operations picked; ordinary practice does.
+  const canStart = isReview ? activeMistakeCount > 0 : operations.length > 0
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!canStart) return
     const config: PracticeConfig = {
-      operations,
+      operations:
+        operations.length > 0
+          ? operations
+          : OPERATION_OPTIONS.map((o) => o.value),
       difficulty,
       sessionLength,
       reviewMode,
@@ -61,16 +69,26 @@ export function PracticeSetupPage() {
       <h1>Practice Setup</h1>
       <p>Choose what you want to practice, then start your session.</p>
       <form className="setup-form" onSubmit={handleSubmit} noValidate>
-        <OperationSelector value={operations} onChange={setOperations} />
-        <DifficultySelector value={difficulty} onChange={setDifficulty} />
-        <SessionLengthSelector
-          value={sessionLength}
-          onChange={setSessionLength}
-        />
         <ReviewModeSelector
           value={reviewMode}
           onChange={setReviewMode}
           activeMistakeCount={activeMistakeCount}
+        />
+        {isReview ? (
+          <p className="setup-form__note">
+            Review practice is made from the questions you missed, so you
+            don&apos;t need to pick operations or a level. The ones you need
+            most come up first.
+          </p>
+        ) : (
+          <>
+            <OperationSelector value={operations} onChange={setOperations} />
+            <DifficultySelector value={difficulty} onChange={setDifficulty} />
+          </>
+        )}
+        <SessionLengthSelector
+          value={sessionLength}
+          onChange={setSessionLength}
         />
         <div className="setup-form__footer">
           <Button type="submit" disabled={!canStart}>
@@ -78,7 +96,9 @@ export function PracticeSetupPage() {
           </Button>
           {!canStart && (
             <p className="setup-form__message" role="status">
-              Pick at least one operation to start.
+              {isReview
+                ? 'There are no mistakes to review yet.'
+                : 'Pick at least one operation to start.'}
             </p>
           )}
         </div>

@@ -135,6 +135,62 @@ describe('AppRoutes', () => {
     ).toBeInTheDocument()
   })
 
+  it('turns missed questions into a review session that can master them', async () => {
+    const user = userEvent.setup()
+    renderAt('/practice/setup')
+
+    // 1. Practice, and get everything wrong.
+    await user.click(screen.getByRole('checkbox', { name: 'Multiplication' }))
+    await user.click(screen.getByRole('radio', { name: '5 questions' }))
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+    const answer = async (verdict: string) => {
+      const front = screen.getByRole('region', { name: 'Question' })
+      await user.click(
+        within(front).getAllByRole('button', { pressed: false })[0],
+      )
+      await user.click(screen.getByRole('button', { name: 'Flip Card' }))
+      await user.click(screen.getByRole('button', { name: verdict }))
+    }
+    for (let i = 0; i < 5; i++) await answer('I Got It Wrong')
+
+    // 2. The summary now offers to practise the mistakes.
+    expect(
+      screen.getByRole('heading', { name: 'Session Summary' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Practice Mistakes' }),
+    ).toBeInTheDocument()
+
+    // 3. Review again and again, answering correctly, until every mistake is
+    //    mastered. (Each review session is 5 questions long, like the first.)
+    let reviewSessions = 0
+    for (let round = 0; round < 10; round++) {
+      const link = screen.queryByRole('link', { name: 'Practice Mistakes' })
+      if (!link) break
+      await user.click(link)
+      reviewSessions++
+      expect(
+        screen.getByRole('heading', { level: 1, name: 'Practice' }),
+      ).toBeInTheDocument()
+      for (let i = 0; i < 10; i++) {
+        if (screen.queryByRole('heading', { name: 'Session Summary' })) break
+        await answer('I Got It Right')
+      }
+    }
+
+    expect(reviewSessions).toBeGreaterThan(0)
+    expect(
+      screen.getByRole('heading', { name: 'Session Summary' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Mistake-review questions').nextSibling,
+    ).not.toHaveTextContent('0')
+    // Everything is mastered now, so there is nothing left to practise.
+    expect(
+      screen.getByRole('button', { name: 'Practice Mistakes' }),
+    ).toBeDisabled()
+  }, 60_000)
+
   it('runs a session started from the setup page', async () => {
     const user = userEvent.setup()
     renderAt('/practice/setup')

@@ -64,6 +64,7 @@ export function parseStoredSession(value: unknown): PracticeSession | null {
     operations,
     difficulty,
     sessionLength,
+    reviewMode,
     attempted,
     correct,
     incorrect,
@@ -87,6 +88,10 @@ export function parseStoredSession(value: unknown): PracticeSession | null {
     operations: [...new Set(operations)],
     difficulty,
     sessionLength,
+    // Sessions saved before review existed have no mode: they were regular.
+    ...(reviewMode === 'regular' || reviewMode === 'mistake-review'
+      ? { reviewMode }
+      : {}),
     attempted,
     correct,
     incorrect,
@@ -106,6 +111,7 @@ export function parseStoredAttempt(value: unknown): PracticeAttempt | null {
     selfReportedCorrect,
     difficulty,
     source,
+    mistakePatternId,
     attemptedAt,
     sessionId,
   } = value
@@ -137,6 +143,9 @@ export function parseStoredAttempt(value: unknown): PracticeAttempt | null {
     selfReportedCorrect,
     difficulty,
     source,
+    ...(typeof mistakePatternId === 'string' && mistakePatternId !== ''
+      ? { mistakePatternId }
+      : {}),
     attemptedAt,
     sessionId,
   }
