@@ -188,6 +188,179 @@ a {
   }
 }
 
+/* ---- Question card ---- */
+.flip-card {
+  max-width: 40rem;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.flip-card__inner {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.flip-card--flipped .flip-card__inner {
+  transform: rotateY(180deg);
+}
+
+/* Both faces share one grid cell, so the card is as tall as the taller one. */
+.flip-card__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  text-align: center;
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  border-radius: calc(var(--radius) + 6px);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card__face--back {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  transform: rotateY(180deg);
+}
+
+.flip-card__face:focus {
+  outline: none;
+}
+
+/* Without animation the card simply swaps sides. */
+.flip-card--static .flip-card__inner {
+  transform: none;
+  transform-style: flat;
+  transition: none;
+}
+
+.flip-card--static .flip-card__face--back {
+  transform: none;
+}
+
+.flip-card--static:not(.flip-card--flipped) .flip-card__face--back,
+.flip-card--static.flip-card--flipped .flip-card__face--front {
+  display: none;
+}
+
+.card__meta {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.card__problem {
+  margin: 0;
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.card__hint,
+.card__prompt {
+  margin: 0;
+}
+
+.card__prompt {
+  font-weight: 700;
+}
+
+.card__action {
+  min-width: 12rem;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.answer-choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 0.5rem 2.25rem;
+  font: inherit;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.answer-choice:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+}
+
+.answer-choice--selected {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.answer-choice__check {
+  position: absolute;
+  right: 0.9rem;
+  visibility: hidden;
+  font-size: 1.25rem;
+  color: var(--color-primary-dark);
+}
+
+.answer-choice--selected .answer-choice__check {
+  visibility: visible;
+}
+
+.card__answers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 2.5rem;
+  margin: 0;
+}
+
+.card__answers div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.card__answers dt {
+  font-size: 0.95rem;
+}
+
+.card__answers dd {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.card__verdict {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .answer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card__action,
+  .card__verdict .btn {
+    width: 100%;
+  }
+}
+
 /* ---- Practice setup ---- */
 .setup-form {
   display: grid;
@@ -340,5 +513,21 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;
+  }
+
+  /* Same as the "animation off" setting: the card just swaps sides. */
+  .flip-card__inner {
+    transform: none;
+    transform-style: flat;
+    transition: none;
+  }
+
+  .flip-card__face--back {
+    transform: none;
+  }
+
+  .flip-card:not(.flip-card--flipped) .flip-card__face--back,
+  .flip-card.flip-card--flipped .flip-card__face--front {
+    display: none;
   }
 }
