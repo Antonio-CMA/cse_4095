@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vitest/config'
+import { defineConfig, type Plugin } from 'vitest/config'
 
 /**
  * The security headers the site is hosted with, as written in `public/_headers`
@@ -20,13 +20,50 @@ function securityHeaders(): Record<string, string> {
   return headers
 }
 
+/**
+ * For a host that cannot send headers (GitHub Pages): build with
+ * VITE_META_CSP=1 and the same Content-Security-Policy and no-referrer rule are
+ * written into the page itself. A page cannot set `frame-ancestors` this way
+ * (browsers ignore it there and complain), so that one directive is left out.
+ */
+function metaSecurity(): Plugin {
+  const headers = securityHeaders()
+  const policy = headers['Content-Security-Policy']
+    .split(';')
+    .map((directive) => directive.trim())
+    .filter(
+      (directive) => directive && !directive.startsWith('frame-ancestors'),
+    )
+    .join('; ')
+  return {
+    name: 'meta-security',
+    apply: 'build',
+    transformIndexHtml: () => [
+      {
+        tag: 'meta',
+        attrs: { 'http-equiv': 'Content-Security-Policy', content: policy },
+        injectTo: 'head-prepend',
+      },
+      {
+        tag: 'meta',
+        attrs: { name: 'referrer', content: 'no-referrer' },
+        injectTo: 'head-prepend',
+      },
+    ],
+  }
+}
+
+const useMetaSecurity = process.env.VITE_META_CSP === '1'
+
 // https://vite.dev/config/
 export default defineConfig({
   // Where the site lives. "/" for a site of its own; set VITE_BASE=/folder/ to
   // host it below one (for example on GitHub Pages).
   base: process.env.VITE_BASE ?? '/',
-  plugins: [react()],
-  preview: { headers: securityHeaders() },
+  plugins: [react(), ...(useMetaSecurity ? [metaSecurity()] : [])],
+  // Without headers when trying the page-embedded version, so that is what is
+  // really being tested.
+  preview: { headers: useMetaSecurity ? {} : securityHeaders() },
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
