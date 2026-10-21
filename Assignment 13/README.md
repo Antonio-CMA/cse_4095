@@ -7,7 +7,7 @@ similar-question review and statistics. Built with React and TypeScript.
 | | |
 |---|---|
 | **The app** | [`math-practice-app/`](math-practice-app/), with its own [README and setup instructions](math-practice-app/README.md) |
-| **Live site** | See "Deployment status" in the [app README](math-practice-app/README.md#deployment-status) |
+| **Live site** | https://antonio-cma.github.io/cse_4095/ ([what was verified](math-practice-app/README.md#deployment-status)) |
 | **Development report** | [`Development-Report.md`](Development-Report.md) |
 | **AI conversation evidence** | [`AI-Conversation-Evidence/`](AI-Conversation-Evidence/README.md) |
 | **Specification and plan** | [`Project Docs/`](Project%20Docs/) |

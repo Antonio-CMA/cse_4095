@@ -23,7 +23,9 @@ is a readable export made from that log by a short script:
 - **redacted:** email addresses, access tokens and the local Windows user name.
 
 The session was continued twice after it grew too long; the automatic summaries that
-carried the work forward are included in collapsed sections of the export.
+carried the work forward are included in collapsed sections of the export. The export
+was made just before the final commit, so it ends at the deployment and verification of
+the live site; the closing summary message is not part of it.
 
 The development report, [`../Development-Report.md`](../Development-Report.md), explains
 how these conversations were used and how the AI's work was checked.
