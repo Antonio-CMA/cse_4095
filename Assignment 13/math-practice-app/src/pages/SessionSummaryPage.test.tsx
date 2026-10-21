@@ -4,6 +4,8 @@ import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { makeResult } from '../test/sessionResult'
 import { AppProvider } from '../app/AppProvider'
+import { saveMistakePatterns } from '../services/mistakeService'
+import { makePattern } from '../test/mistakePatterns'
 import { PracticeSetupPage } from './PracticeSetupPage'
 import { SessionSummaryPage } from './SessionSummaryPage'
 
@@ -32,6 +34,80 @@ function renderSummary(state: unknown) {
     </AppProvider>,
   )
 }
+
+describe('SessionSummaryPage and mistake review', () => {
+  it('offers Practice Mistakes once there are mistakes to review', async () => {
+    saveMistakePatterns([makePattern('multiplication', 8, 7)])
+    const user = userEvent.setup()
+    renderSummary(makeResult([false, true]))
+
+    const link = screen.getByRole('link', { name: 'Practice Mistakes' })
+    await user.click(link)
+
+    expect(
+      JSON.parse(screen.getByTestId('state').textContent ?? ''),
+    ).toMatchObject({
+      reviewMode: 'mistake-review',
+    })
+  })
+
+  it('keeps Practice Mistakes unavailable when every mistake is mastered', () => {
+    saveMistakePatterns([
+      makePattern('multiplication', 8, 7, 2, { mastered: true }),
+    ])
+    renderSummary(makeResult([false]))
+    expect(
+      screen.getByRole('button', { name: 'Practice Mistakes' }),
+    ).toBeDisabled()
+  })
+
+  it('Practice Again after a review session reviews again', async () => {
+    saveMistakePatterns([makePattern('multiplication', 8, 7)])
+    const user = userEvent.setup()
+    renderSummary(makeResult([true], { reviewMode: 'mistake-review' }))
+
+    await user.click(screen.getByRole('link', { name: 'Practice Again' }))
+    expect(
+      JSON.parse(screen.getByTestId('state').textContent ?? ''),
+    ).toMatchObject({
+      reviewMode: 'mistake-review',
+    })
+  })
+
+  it('Practice Again after a regular session stays regular', async () => {
+    const user = userEvent.setup()
+    renderSummary(makeResult([true], { reviewMode: 'regular' }))
+
+    await user.click(screen.getByRole('link', { name: 'Practice Again' }))
+    expect(
+      JSON.parse(screen.getByTestId('state').textContent ?? ''),
+    ).toMatchObject({
+      reviewMode: 'regular',
+    })
+  })
+
+  it('treats a session saved before review existed as regular', async () => {
+    const user = userEvent.setup()
+    renderSummary(makeResult([true]))
+
+    await user.click(screen.getByRole('link', { name: 'Practice Again' }))
+    expect(
+      JSON.parse(screen.getByTestId('state').textContent ?? ''),
+    ).toMatchObject({
+      reviewMode: 'regular',
+    })
+  })
+
+  it('counts the review questions in the summary', () => {
+    const result = makeResult([true, true, false])
+    result.attempts[0] = { ...result.attempts[0], source: 'mistake-review' }
+    result.attempts[1] = { ...result.attempts[1], source: 'mistake-review' }
+    renderSummary(result)
+    expect(
+      screen.getByText('Mistake-review questions').nextSibling,
+    ).toHaveTextContent('2')
+  })
+})
 
 describe('SessionSummaryPage', () => {
   it('shows the results of the session', () => {

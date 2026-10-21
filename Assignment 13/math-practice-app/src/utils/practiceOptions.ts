@@ -61,4 +61,3 @@ export const REVIEW_MODE_OPTIONS: ReadonlyArray<{
 export const DEFAULT_OPERATIONS: MathOperation[] = []
 export const DEFAULT_DIFFICULTY: DifficultyLevel = 1
 export const DEFAULT_SESSION_LENGTH: SessionLength = 10
-export const DEFAULT_REVIEW_MODE: ReviewMode = 'regular'

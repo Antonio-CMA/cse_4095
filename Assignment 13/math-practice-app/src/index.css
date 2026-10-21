@@ -841,6 +841,14 @@ a {
   font-size: 0.95rem;
 }
 
+.setup-form__note {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
 .setup-form__footer {
   display: flex;
   flex-wrap: wrap;

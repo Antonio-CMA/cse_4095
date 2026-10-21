@@ -22,7 +22,8 @@ export function SessionSummaryPage() {
     operations: session.operations,
     difficulty: session.difficulty,
     sessionLength: session.sessionLength,
-    reviewMode: 'regular',
+    // "Practice Again" after a review session reviews again.
+    reviewMode: session.reviewMode ?? 'regular',
   }
 
   return (

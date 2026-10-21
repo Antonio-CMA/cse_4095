@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { recordMistake } from '../services/mistakeService'
+import { recordAnswer } from '../services/mistakeService'
 import { STORAGE_KEYS } from '../services/storageService'
 import { makeAttempt } from '../test/sessionResult'
 import { useMistakePatterns } from './useMistakePatterns'
@@ -12,8 +12,8 @@ describe('useMistakePatterns', () => {
   })
 
   it('loads the saved mistake patterns', () => {
-    recordMistake(makeAttempt({ selfReportedCorrect: false }))
-    recordMistake(
+    recordAnswer(makeAttempt({ selfReportedCorrect: false }))
+    recordAnswer(
       makeAttempt({
         selfReportedCorrect: false,
         operation: 'subtraction',

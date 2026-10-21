@@ -20,6 +20,6 @@ export interface Question {
 
 /**
  * A question before its multiple-choice answers exist. The operation
- * generators produce drafts; choices are added in Phase 5 to make a Question.
+ * generators produce drafts; the answer choices are added to make a Question.
  */
 export type QuestionDraft = Omit<Question, 'choices'>

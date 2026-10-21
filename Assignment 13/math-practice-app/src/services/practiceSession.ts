@@ -24,6 +24,8 @@ export type SessionAction =
       correct: boolean
       /** The question to show next (unused if this ends the session). */
       nextQuestion: Question
+      /** End the session after this answer even if its length is not reached. */
+      finish?: boolean
       at: string
     }
   | { type: 'end'; at: string }
@@ -40,6 +42,7 @@ export function createSessionState(
       operations: [...config.operations],
       difficulty: config.difficulty,
       sessionLength: config.sessionLength,
+      reviewMode: config.reviewMode,
       attempted: 0,
       correct: 0,
       incorrect: 0,
@@ -82,14 +85,18 @@ export function sessionReducer(
         selfReportedCorrect: action.correct,
         difficulty: question.difficulty,
         source: question.source,
+        ...(question.mistakePatternId !== undefined
+          ? { mistakePatternId: question.mistakePatternId }
+          : {}),
         attemptedAt: action.at,
         sessionId: session.id,
       }
 
       const attempted = session.attempted + 1
       const finished =
-        typeof session.sessionLength === 'number' &&
-        attempted >= session.sessionLength
+        action.finish === true ||
+        (typeof session.sessionLength === 'number' &&
+          attempted >= session.sessionLength)
 
       return {
         session: {

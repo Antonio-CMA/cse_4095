@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { AppProvider } from '../app/AppProvider'
+import { saveMistakePatterns } from '../services/mistakeService'
+import { makePattern } from '../test/mistakePatterns'
 import {
   DEFAULT_SETTINGS,
   loadSettings,
@@ -27,6 +29,126 @@ function renderSetup(state?: unknown) {
     </AppProvider>,
   )
 }
+
+describe('PracticeSetupPage review mode', () => {
+  const reviewRadio = () =>
+    screen.getByRole('radio', { name: 'Practice my mistakes' })
+
+  it('offers review, showing how many mistakes there are, when there are some', () => {
+    saveMistakePatterns([
+      makePattern('multiplication', 8, 7),
+      makePattern('addition', 4, 5, 1),
+    ])
+    renderSetup()
+
+    expect(reviewRadio()).toBeEnabled()
+    expect(reviewRadio()).toHaveAccessibleDescription(
+      'Review 2 questions you missed.',
+    )
+  })
+
+  it('does not count mastered mistakes', () => {
+    saveMistakePatterns([
+      makePattern('multiplication', 8, 7),
+      makePattern('addition', 4, 5, 1, { mastered: true }),
+    ])
+    renderSetup()
+    expect(reviewRadio()).toHaveAccessibleDescription(
+      'Review 1 question you missed.',
+    )
+  })
+
+  it('keeps review disabled, and says why, when there is nothing to review', () => {
+    renderSetup()
+    expect(reviewRadio()).toBeDisabled()
+    expect(reviewRadio()).toHaveAccessibleDescription(/nothing to review yet/i)
+  })
+
+  it('keeps review disabled when every mistake is mastered', () => {
+    saveMistakePatterns([
+      makePattern('multiplication', 8, 7, 2, { mastered: true }),
+    ])
+    renderSetup()
+    expect(reviewRadio()).toBeDisabled()
+  })
+
+  it('hides the operation and level pickers when review is chosen, and explains', async () => {
+    saveMistakePatterns([makePattern()])
+    const user = userEvent.setup()
+    renderSetup()
+    expect(
+      screen.getByRole('group', { name: 'Choose your operations' }),
+    ).toBeInTheDocument()
+
+    await user.click(reviewRadio())
+
+    expect(
+      screen.queryByRole('group', { name: 'Choose your operations' }),
+    ).toBeNull()
+    expect(screen.queryByRole('group', { name: 'Choose a level' })).toBeNull()
+    expect(
+      screen.getByText(/made from the questions you missed/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('group', { name: 'How many questions?' }),
+    ).toBeInTheDocument()
+  })
+
+  it('brings the pickers back, with their choices, when going back to regular practice', async () => {
+    saveMistakePatterns([makePattern()])
+    const user = userEvent.setup()
+    renderSetup()
+    await user.click(screen.getByRole('checkbox', { name: 'Division' }))
+
+    await user.click(reviewRadio())
+    await user.click(screen.getByRole('radio', { name: 'Regular practice' }))
+
+    expect(screen.getByRole('checkbox', { name: 'Division' })).toBeChecked()
+  })
+
+  it('lets review start without picking any operation', async () => {
+    saveMistakePatterns([makePattern()])
+    const user = userEvent.setup()
+    renderSetup()
+    const start = screen.getByRole('button', { name: 'Start Session' })
+    expect(start).toBeDisabled()
+
+    await user.click(reviewRadio())
+    expect(start).toBeEnabled()
+    expect(screen.queryByRole('status')).toBeNull()
+  })
+
+  it('starts a review session, passing the review mode and session length along', async () => {
+    saveMistakePatterns([makePattern()])
+    const user = userEvent.setup()
+    renderSetup()
+
+    await user.click(reviewRadio())
+    await user.click(screen.getByRole('radio', { name: '20 questions' }))
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+
+    const config = JSON.parse(screen.getByTestId('config').textContent ?? '')
+    expect(config).toMatchObject({
+      reviewMode: 'mistake-review',
+      sessionLength: 20,
+    })
+    expect(config.operations.length).toBeGreaterThan(0) // a valid setup either way
+  })
+
+  it('requires an operation again for regular practice', async () => {
+    saveMistakePatterns([makePattern()])
+    const user = userEvent.setup()
+    renderSetup()
+
+    await user.click(reviewRadio())
+    await user.click(screen.getByRole('radio', { name: 'Regular practice' }))
+
+    expect(screen.getByRole('button', { name: 'Start Session' })).toBeDisabled()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      /pick at least one operation/i,
+    )
+  })
+})
 
 describe('PracticeSetupPage with saved default settings', () => {
   const saved = {

@@ -23,6 +23,8 @@ export interface PracticeAttempt {
   selfReportedCorrect: boolean
   difficulty: DifficultyLevel
   source: QuestionSource
+  /** For review questions: the mistake pattern the question was made from. */
+  mistakePatternId?: string
   attemptedAt: string
   sessionId: string
 }
@@ -34,6 +36,8 @@ export interface PracticeSession {
   operations: MathOperation[]
   difficulty: DifficultyLevel
   sessionLength: SessionLength
+  /** Regular practice if missing (sessions saved before review existed). */
+  reviewMode?: ReviewMode
   attempted: number
   correct: number
   incorrect: number

@@ -4,7 +4,7 @@ import type { MistakePattern } from '../types/mistake'
 
 /**
  * The saved mistake patterns, loaded (and checked) when the component first
- * appears. Review mode and the mistake statistics (Phases 14–15) build on this.
+ * appears. The mistake statistics (Phase 15) build on this.
  */
 export function useMistakePatterns(): MistakePattern[] {
   const [patterns] = useState(loadMistakePatterns)

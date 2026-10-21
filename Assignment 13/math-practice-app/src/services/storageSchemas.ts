@@ -7,6 +7,7 @@ import type {
 } from '../types/session'
 import { calculateAnswer } from '../utils/math'
 import { getMistakePatternId } from '../utils/mistakes'
+import { ALL_DIFFICULTIES, ALL_OPERATIONS } from '../utils/operations'
 import { MAX_SESSION_LENGTH } from '../utils/validation'
 
 /**
@@ -14,14 +15,6 @@ import { MAX_SESSION_LENGTH } from '../utils/validation'
  * edited by hand, so each record is checked field by field before the app
  * trusts it. A record that fails is dropped; it never crashes the app.
  */
-
-const OPERATIONS: MathOperation[] = [
-  'addition',
-  'subtraction',
-  'multiplication',
-  'division',
-]
-const DIFFICULTIES: DifficultyLevel[] = [1, 2, 3, 4]
 
 type Json = Record<string, unknown>
 
@@ -34,11 +27,11 @@ function isCount(value: unknown): value is number {
 }
 
 export function isOperation(value: unknown): value is MathOperation {
-  return OPERATIONS.includes(value as MathOperation)
+  return ALL_OPERATIONS.includes(value as MathOperation)
 }
 
 export function isDifficulty(value: unknown): value is DifficultyLevel {
-  return DIFFICULTIES.includes(value as DifficultyLevel)
+  return ALL_DIFFICULTIES.includes(value as DifficultyLevel)
 }
 
 export function isSessionLength(value: unknown): value is SessionLength {
@@ -64,6 +57,7 @@ export function parseStoredSession(value: unknown): PracticeSession | null {
     operations,
     difficulty,
     sessionLength,
+    reviewMode,
     attempted,
     correct,
     incorrect,
@@ -87,6 +81,10 @@ export function parseStoredSession(value: unknown): PracticeSession | null {
     operations: [...new Set(operations)],
     difficulty,
     sessionLength,
+    // Sessions saved before review existed have no mode: they were regular.
+    ...(reviewMode === 'regular' || reviewMode === 'mistake-review'
+      ? { reviewMode }
+      : {}),
     attempted,
     correct,
     incorrect,
@@ -106,6 +104,7 @@ export function parseStoredAttempt(value: unknown): PracticeAttempt | null {
     selfReportedCorrect,
     difficulty,
     source,
+    mistakePatternId,
     attemptedAt,
     sessionId,
   } = value
@@ -137,6 +136,9 @@ export function parseStoredAttempt(value: unknown): PracticeAttempt | null {
     selfReportedCorrect,
     difficulty,
     source,
+    ...(typeof mistakePatternId === 'string' && mistakePatternId !== ''
+      ? { mistakePatternId }
+      : {}),
     attemptedAt,
     sessionId,
   }

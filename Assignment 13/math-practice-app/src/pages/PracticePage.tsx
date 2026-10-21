@@ -4,6 +4,7 @@ import { Button } from '../components/common/Button'
 import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { ProgressBar } from '../components/practice/ProgressBar'
 import { QuestionCard } from '../components/practice/QuestionCard'
+import { useActiveMistakeCount } from '../hooks/useActiveMistakeCount'
 import { usePracticeSession } from '../hooks/usePracticeSession'
 import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
@@ -16,9 +17,16 @@ export function PracticePage() {
     [location.state],
   )
 
+  const activeMistakeCount = useActiveMistakeCount()
+
   // Opened directly, refreshed without setup data, or given invalid options:
   // there is nothing to practice, so go back and choose.
   if (!config) return <Navigate to="/practice/setup" replace />
+
+  // Review was asked for, but no mistakes need practice any more.
+  if (config.reviewMode === 'mistake-review' && activeMistakeCount === 0) {
+    return <Navigate to="/practice/setup" replace />
+  }
 
   // Keyed by the navigation entry so each fresh start gets a fresh session.
   return <ActiveSession key={location.key} config={config} />
@@ -26,6 +34,7 @@ export function PracticePage() {
 
 function ActiveSession({ config }: { config: PracticeConfig }) {
   const navigate = useNavigate()
+  const { settings } = useSettings()
   const {
     session,
     currentQuestion,
@@ -35,8 +44,9 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
     result,
     recordResult,
     endSession,
-  } = usePracticeSession(config)
-  const { settings } = useSettings()
+  } = usePracticeSession(config, {
+    masteryThreshold: settings.masteryThreshold,
+  })
   const [confirmingEnd, setConfirmingEnd] = useState(false)
 
   // Once the session is over, hand the results to the summary page.
