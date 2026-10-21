@@ -516,6 +516,67 @@ a {
   border: 0;
 }
 
+/* ---- Settings ---- */
+.settings-status {
+  min-height: 1.5rem;
+  margin: 0.5rem 0 0;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.settings-sections {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.settings-sections h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.settings-group {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.settings-field {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+}
+
+.settings-field label {
+  font-weight: 700;
+}
+
+.settings-field__hint {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.settings-select {
+  min-height: 48px;
+  min-width: 6rem;
+  padding: 0.25rem 0.75rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.settings-danger {
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--color-border);
+}
+
+.settings-danger .confirm {
+  margin-bottom: 0;
+}
+
 /* ---- Statistics ---- */
 .stats-sections {
   display: grid;

@@ -38,6 +38,7 @@ function renderActions(activeMistakeCount = 0) {
         <Route path="/practice/session" element={<Where label="session" />} />
         <Route path="/practice/setup" element={<Where label="setup" />} />
         <Route path="/statistics" element={<Where label="statistics" />} />
+        <Route path="/settings" element={<Where label="settings" />} />
         <Route path="/" element={<Where label="home" />} />
       </Routes>
     </MemoryRouter>,
@@ -80,13 +81,13 @@ describe('SummaryActions', () => {
       screen.queryByRole('link', { name: 'Practice Setup' }),
     ).not.toBeInTheDocument()
     expect(
-      screen.queryByRole('button', { name: 'App Settings' }),
+      screen.queryByRole('link', { name: 'App Settings' }),
     ).not.toBeInTheDocument()
 
     await user.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('link', { name: 'Practice Setup' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'App Settings' })).toBeVisible()
+    expect(screen.getByRole('link', { name: 'App Settings' })).toBeVisible()
 
     await user.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
@@ -105,14 +106,13 @@ describe('SummaryActions', () => {
     expect(stateShown()).toEqual(CONFIG)
   })
 
-  it('shows App Settings as not available yet', async () => {
+  it('App Settings opens the Settings page', async () => {
     const user = userEvent.setup()
     renderActions()
 
     await user.click(screen.getByRole('button', { name: 'Change Settings' }))
-    const appSettings = screen.getByRole('button', { name: 'App Settings' })
-    expect(appSettings).toBeDisabled()
-    expect(appSettings).toHaveAccessibleDescription('Coming soon.')
+    await user.click(screen.getByRole('link', { name: 'App Settings' }))
+    expect(screen.getByText('settings')).toBeInTheDocument()
   })
 
   it('View Statistics and Return Home go to their pages', async () => {

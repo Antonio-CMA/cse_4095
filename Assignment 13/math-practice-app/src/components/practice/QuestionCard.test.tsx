@@ -205,6 +205,35 @@ describe('QuestionCard result', () => {
   })
 })
 
+describe('QuestionCard explanations', () => {
+  async function flipWith(answer: string, props = {}) {
+    const user = userEvent.setup()
+    renderCard(props)
+    await user.click(screen.getByRole('button', { name: answer }))
+    await user.click(flipButton())
+  }
+
+  it('explains the answer after a wrong choice when explanations are on', async () => {
+    await flipWith('54', { showExplanation: true })
+    expect(screen.getByText(/7 groups of 8 make 56/)).toBeInTheDocument()
+  })
+
+  it('does not explain when the right answer was chosen', async () => {
+    await flipWith('56', { showExplanation: true })
+    expect(screen.queryByText(/groups of/)).not.toBeInTheDocument()
+  })
+
+  it('does not explain when explanations are off', async () => {
+    await flipWith('54', { showExplanation: false })
+    expect(screen.queryByText(/groups of/)).not.toBeInTheDocument()
+  })
+
+  it('leaves explanations off unless asked for', async () => {
+    await flipWith('54')
+    expect(screen.queryByText(/groups of/)).not.toBeInTheDocument()
+  })
+})
+
 describe('QuestionCard with a new question', () => {
   it('starts fresh: unflipped with nothing selected', async () => {
     const user = userEvent.setup()

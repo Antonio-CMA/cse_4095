@@ -6,9 +6,16 @@ import { ChoiceOption } from '../common/ChoiceOption'
 interface OperationSelectorProps {
   value: MathOperation[]
   onChange: (operations: MathOperation[]) => void
+  legend?: string
+  hint?: string
 }
 
-export function OperationSelector({ value, onChange }: OperationSelectorProps) {
+export function OperationSelector({
+  value,
+  onChange,
+  legend = 'Choose your operations',
+  hint = 'Pick one or more, or mix them all!',
+}: OperationSelectorProps) {
   const allSelected = value.length === OPERATION_OPTIONS.length
 
   const toggle = (operation: MathOperation) => {
@@ -27,8 +34,8 @@ export function OperationSelector({ value, onChange }: OperationSelectorProps) {
 
   return (
     <fieldset className="selector">
-      <legend className="selector__legend">Choose your operations</legend>
-      <p className="selector__hint">Pick one or more, or mix them all!</p>
+      <legend className="selector__legend">{legend}</legend>
+      <p className="selector__hint">{hint}</p>
       <div className="choice-grid">
         {OPERATION_OPTIONS.map(({ value: operation, label, symbol }) => (
           <ChoiceOption

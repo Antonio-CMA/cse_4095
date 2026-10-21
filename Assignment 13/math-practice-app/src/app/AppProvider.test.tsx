@@ -100,6 +100,92 @@ describe('AppProvider', () => {
   })
 })
 
+describe('AppProvider results', () => {
+  it('reports whether a change was saved', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper })
+
+    let saved
+    act(() => {
+      saved = result.current.updateSettings({ soundEnabled: false })
+    })
+    expect(saved).toEqual({ ok: true })
+  })
+
+  it('reports a failed save, and still applies the change', () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('denied', 'SecurityError')
+    })
+    const { result } = renderHook(() => useSettings(), { wrapper })
+
+    let saved
+    act(() => {
+      saved = result.current.updateSettings({ soundEnabled: false })
+    })
+    expect(saved).toEqual({ ok: false, reason: 'unavailable' })
+    expect(result.current.settings.soundEnabled).toBe(false)
+  })
+
+  it('reports whether the defaults were restored and saved', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper })
+
+    let saved
+    act(() => {
+      saved = result.current.resetSettings()
+    })
+    expect(saved).toEqual({ ok: true })
+  })
+})
+
+describe('AppProvider clearAllData', () => {
+  it('erases the app’s data and goes back to the defaults', () => {
+    window.localStorage.setItem(STORAGE_KEYS.attempts, '[]')
+    window.localStorage.setItem('someOtherApp.data', 'keep me')
+    const { result } = renderHook(() => useSettings(), { wrapper })
+    act(() => {
+      result.current.updateSettings({ soundEnabled: false })
+    })
+
+    let cleared
+    act(() => {
+      cleared = result.current.clearAllData()
+    })
+
+    expect(cleared).toBe(true)
+    expect(result.current.settings).toEqual(DEFAULT_SETTINGS)
+    expect(window.localStorage.getItem(STORAGE_KEYS.settings)).toBeNull()
+    expect(window.localStorage.getItem(STORAGE_KEYS.attempts)).toBeNull()
+    expect(window.localStorage.getItem('someOtherApp.data')).toBe('keep me')
+  })
+
+  it('records the schema version again', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper })
+    act(() => {
+      result.current.clearAllData()
+    })
+    expect(window.localStorage.getItem(STORAGE_KEYS.version)).toBe(
+      '{"version":1}',
+    )
+  })
+
+  it('keeps the current settings if the browser would not erase the data', () => {
+    const { result } = renderHook(() => useSettings(), { wrapper })
+    act(() => {
+      result.current.updateSettings({ soundEnabled: false })
+    })
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
+      throw new DOMException('denied', 'SecurityError')
+    })
+
+    let cleared
+    act(() => {
+      cleared = result.current.clearAllData()
+    })
+
+    expect(cleared).toBe(false)
+    expect(result.current.settings.soundEnabled).toBe(false)
+  })
+})
+
 describe('useSettings', () => {
   it('explains the problem if used outside the provider', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})

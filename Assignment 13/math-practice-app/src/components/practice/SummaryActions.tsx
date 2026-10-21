@@ -15,7 +15,6 @@ export function SummaryActions({
   activeMistakeCount,
 }: SummaryActionsProps) {
   const mistakesHintId = useId()
-  const settingsHintId = useId()
   const settingsPanelId = useId()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const canReviewMistakes = activeMistakeCount > 0
@@ -64,14 +63,7 @@ export function SummaryActions({
         Return Home
       </ButtonLink>
 
-      {/*
-        "Change Settings" offers both kinds of settings. Only the practice
-        setup works today.
-
-        NOTE (Phase 11): when the Settings page is designed, turn the
-        "App Settings" option below into a link to /settings. It belongs in
-        this panel, behind the existing "Change Settings" button.
-      */}
+      {/* "Change Settings" offers both kinds of settings. */}
       <div
         id={settingsPanelId}
         hidden={!settingsOpen}
@@ -80,18 +72,9 @@ export function SummaryActions({
         <ButtonLink to="/practice/setup" state={config}>
           Practice Setup
         </ButtonLink>
-        <div className="summary-actions__unavailable">
-          <Button
-            variant="secondary"
-            disabled
-            aria-describedby={settingsHintId}
-          >
-            App Settings
-          </Button>
-          <p id={settingsHintId} className="summary-actions__hint">
-            Coming soon.
-          </p>
-        </div>
+        <ButtonLink to="/settings" variant="secondary">
+          App Settings
+        </ButtonLink>
       </div>
     </nav>
   )

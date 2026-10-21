@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { loadAttempts, loadSessions } from '../services/practiceHistory'
 import { loadStatistics } from '../services/statisticsService'
 import type { PracticeConfig } from '../types/session'
+import { AppProvider } from '../app/AppProvider'
 import { PracticePage } from './PracticePage'
 
 const CONFIG: PracticeConfig = {
@@ -16,15 +17,17 @@ const CONFIG: PracticeConfig = {
 
 function renderSession(config: PracticeConfig = CONFIG) {
   return render(
-    <MemoryRouter
-      initialEntries={[{ pathname: '/practice/session', state: config }]}
-    >
-      <Routes>
-        <Route path="/practice/session" element={<PracticePage />} />
-        <Route path="/practice/summary" element={<h1>Summary</h1>} />
-        <Route path="/practice/setup" element={<h1>Setup</h1>} />
-      </Routes>
-    </MemoryRouter>,
+    <AppProvider>
+      <MemoryRouter
+        initialEntries={[{ pathname: '/practice/session', state: config }]}
+      >
+        <Routes>
+          <Route path="/practice/session" element={<PracticePage />} />
+          <Route path="/practice/summary" element={<h1>Summary</h1>} />
+          <Route path="/practice/setup" element={<h1>Setup</h1>} />
+        </Routes>
+      </MemoryRouter>
+    </AppProvider>,
   )
 }
 

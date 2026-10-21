@@ -5,15 +5,17 @@ import { ChoiceOption } from '../common/ChoiceOption'
 interface SessionLengthSelectorProps {
   value: SessionLength
   onChange: (length: SessionLength) => void
+  legend?: string
 }
 
 export function SessionLengthSelector({
   value,
   onChange,
+  legend = 'How many questions?',
 }: SessionLengthSelectorProps) {
   return (
     <fieldset className="selector">
-      <legend className="selector__legend">How many questions?</legend>
+      <legend className="selector__legend">{legend}</legend>
       <div className="choice-grid">
         {SESSION_LENGTH_OPTIONS.map(({ value: length, label }) => (
           <ChoiceOption

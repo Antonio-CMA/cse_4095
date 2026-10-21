@@ -1,4 +1,5 @@
 import type { Question } from '../../types/question'
+import { explainSolution } from '../../utils/explanations'
 import { formatSolution } from '../../utils/questionText'
 import { Button } from '../common/Button'
 
@@ -7,6 +8,8 @@ interface CardBackProps {
   selectedAnswer: number | null
   /** True once a verdict has been given; the buttons then stay disabled. */
   resultRecorded: boolean
+  /** Show a short explanation when the chosen answer was not the right one. */
+  showExplanation?: boolean
   onResult: (correct: boolean) => void
 }
 
@@ -14,6 +17,7 @@ export function CardBack({
   question,
   selectedAnswer,
   resultRecorded,
+  showExplanation = false,
   onResult,
 }: CardBackProps) {
   return (
@@ -30,6 +34,9 @@ export function CardBack({
           <dd>{selectedAnswer}</dd>
         </div>
       </dl>
+      {showExplanation && selectedAnswer !== question.correctAnswer && (
+        <p className="card__explanation">{explainSolution(question)}</p>
+      )}
       <p className="card__prompt">Did you get it right?</p>
       <div className="card__verdict">
         <Button disabled={resultRecorded} onClick={() => onResult(true)}>
