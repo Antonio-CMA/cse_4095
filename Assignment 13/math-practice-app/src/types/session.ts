@@ -38,3 +38,9 @@ export interface PracticeSession {
   correct: number
   incorrect: number
 }
+
+/** Everything about a finished session; handed to the summary page. */
+export interface SessionResult {
+  session: PracticeSession
+  attempts: PracticeAttempt[]
+}

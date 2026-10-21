@@ -16,7 +16,6 @@ describe('AppRoutes', () => {
   it.each([
     ['/', 'Welcome to Math Practice!'],
     ['/practice/setup', 'Practice Setup'],
-    ['/practice/session', 'Practice'],
     ['/practice/summary', 'Session Summary'],
     ['/statistics', 'Statistics'],
     ['/settings', 'Settings'],
@@ -24,6 +23,30 @@ describe('AppRoutes', () => {
     renderAt(path)
     expect(
       screen.getByRole('heading', { level: 1, name: heading }),
+    ).toBeInTheDocument()
+  })
+
+  it('sends /practice/session back to setup when there is no session to run', () => {
+    renderAt('/practice/session')
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Practice Setup' }),
+    ).toBeInTheDocument()
+  })
+
+  it('runs a session started from the setup page', async () => {
+    const user = userEvent.setup()
+    renderAt('/practice/setup')
+
+    await user.click(screen.getByRole('checkbox', { name: 'Multiplication' }))
+    await user.click(screen.getByRole('radio', { name: '5 questions' }))
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Practice' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Question 1 of 5')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: /×.*= \?/ }),
     ).toBeInTheDocument()
   })
 
