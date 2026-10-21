@@ -5,6 +5,7 @@ import { ConfirmDialog } from '../components/common/ConfirmDialog'
 import { ProgressBar } from '../components/practice/ProgressBar'
 import { QuestionCard } from '../components/practice/QuestionCard'
 import { usePracticeSession } from '../hooks/usePracticeSession'
+import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
 import { parsePracticeConfig } from '../utils/validation'
 
@@ -35,6 +36,7 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
     recordResult,
     endSession,
   } = usePracticeSession(config)
+  const { settings } = useSettings()
   const [confirmingEnd, setConfirmingEnd] = useState(false)
 
   // Once the session is over, hand the results to the summary page.
@@ -99,6 +101,8 @@ function ActiveSession({ config }: { config: PracticeConfig }) {
         question={currentQuestion}
         questionNumber={questionNumber}
         totalQuestions={totalQuestions}
+        animationEnabled={settings.cardAnimationEnabled}
+        showExplanation={settings.showExplanations}
         onResult={recordResult}
       />
     </section>

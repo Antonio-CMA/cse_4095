@@ -2,6 +2,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
 import { describe, expect, it } from 'vitest'
+import { AppProvider } from '../app/AppProvider'
+import {
+  DEFAULT_SETTINGS,
+  loadSettings,
+  saveSettings,
+} from '../services/settingsService'
 import { PracticeSetupPage } from './PracticeSetupPage'
 
 function SessionProbe() {
@@ -11,14 +17,99 @@ function SessionProbe() {
 
 function renderSetup(state?: unknown) {
   return render(
-    <MemoryRouter initialEntries={[{ pathname: '/practice/setup', state }]}>
-      <Routes>
-        <Route path="/practice/setup" element={<PracticeSetupPage />} />
-        <Route path="/practice/session" element={<SessionProbe />} />
-      </Routes>
-    </MemoryRouter>,
+    <AppProvider>
+      <MemoryRouter initialEntries={[{ pathname: '/practice/setup', state }]}>
+        <Routes>
+          <Route path="/practice/setup" element={<PracticeSetupPage />} />
+          <Route path="/practice/session" element={<SessionProbe />} />
+        </Routes>
+      </MemoryRouter>
+    </AppProvider>,
   )
 }
+
+describe('PracticeSetupPage with saved default settings', () => {
+  const saved = {
+    ...DEFAULT_SETTINGS,
+    defaultOperations: ['multiplication' as const, 'division' as const],
+    defaultDifficulty: 3 as const,
+    defaultSessionLength: 20,
+  }
+
+  it('starts from the default operations, level and session length', () => {
+    saveSettings(saved)
+    renderSetup()
+
+    expect(
+      screen.getByRole('checkbox', { name: 'Multiplication' }),
+    ).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Division' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Addition' })).not.toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Intermediate' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: '20 questions' })).toBeChecked()
+    expect(screen.getByRole('button', { name: 'Start Session' })).toBeEnabled()
+  })
+
+  it('can start a session straight away with the defaults', async () => {
+    saveSettings(saved)
+    const user = userEvent.setup()
+    renderSetup()
+
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+    expect(JSON.parse(screen.getByTestId('config').textContent ?? '')).toEqual({
+      operations: ['multiplication', 'division'],
+      difficulty: 3,
+      sessionLength: 20,
+      reviewMode: 'regular',
+    })
+  })
+
+  it('lets a single session differ without changing the saved defaults', async () => {
+    saveSettings(saved)
+    const user = userEvent.setup()
+    renderSetup()
+
+    await user.click(screen.getByRole('checkbox', { name: 'Division' }))
+    await user.click(screen.getByRole('radio', { name: 'Easy' }))
+    await user.click(screen.getByRole('radio', { name: '5 questions' }))
+    await user.click(screen.getByRole('button', { name: 'Start Session' }))
+
+    expect(JSON.parse(screen.getByTestId('config').textContent ?? '')).toEqual({
+      operations: ['multiplication'],
+      difficulty: 2,
+      sessionLength: 5,
+      reviewMode: 'regular',
+    })
+    expect(loadSettings().settings).toMatchObject({
+      defaultOperations: ['multiplication', 'division'],
+      defaultDifficulty: 3,
+      defaultSessionLength: 20,
+    })
+  })
+
+  it('allows a continuous default', () => {
+    saveSettings({ ...saved, defaultSessionLength: 'continuous' })
+    renderSetup()
+    expect(
+      screen.getByRole('radio', { name: 'Continuous practice' }),
+    ).toBeChecked()
+  })
+
+  it('ignores the defaults when a previous session setup is passed in', () => {
+    saveSettings(saved)
+    renderSetup({
+      operations: ['addition'],
+      difficulty: 1,
+      sessionLength: 5,
+      reviewMode: 'regular',
+    })
+    expect(screen.getByRole('checkbox', { name: 'Addition' })).toBeChecked()
+    expect(
+      screen.getByRole('checkbox', { name: 'Multiplication' }),
+    ).not.toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Beginner' })).toBeChecked()
+  })
+})
 
 describe('PracticeSetupPage starting values', () => {
   it('uses the previous session setup when one is passed in', () => {

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { makeResult } from '../test/sessionResult'
+import { AppProvider } from '../app/AppProvider'
 import { PracticeSetupPage } from './PracticeSetupPage'
 import { SessionSummaryPage } from './SessionSummaryPage'
 
@@ -18,15 +19,17 @@ function SessionProbe() {
 
 function renderSummary(state: unknown) {
   return render(
-    <MemoryRouter initialEntries={[{ pathname: '/practice/summary', state }]}>
-      <Routes>
-        <Route path="/practice/summary" element={<SessionSummaryPage />} />
-        <Route path="/practice/setup" element={<PracticeSetupPage />} />
-        <Route path="/practice/session" element={<SessionProbe />} />
-        <Route path="/statistics" element={<h1>Statistics</h1>} />
-        <Route path="/" element={<h1>Home</h1>} />
-      </Routes>
-    </MemoryRouter>,
+    <AppProvider>
+      <MemoryRouter initialEntries={[{ pathname: '/practice/summary', state }]}>
+        <Routes>
+          <Route path="/practice/summary" element={<SessionSummaryPage />} />
+          <Route path="/practice/setup" element={<PracticeSetupPage />} />
+          <Route path="/practice/session" element={<SessionProbe />} />
+          <Route path="/statistics" element={<h1>Statistics</h1>} />
+          <Route path="/" element={<h1>Home</h1>} />
+        </Routes>
+      </MemoryRouter>
+    </AppProvider>,
   )
 }
 

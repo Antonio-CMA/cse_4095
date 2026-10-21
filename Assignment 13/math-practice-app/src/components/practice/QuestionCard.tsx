@@ -16,6 +16,8 @@ interface QuestionCardProps {
   totalQuestions: number | null
   /** Turn the 3D flip animation off; the card still switches sides. */
   animationEnabled?: boolean
+  /** Explain the answer on the back when the chosen answer was wrong. */
+  showExplanation?: boolean
   onResult: (result: CardResult) => void
 }
 
@@ -33,6 +35,7 @@ function CardState({
   questionNumber,
   totalQuestions,
   animationEnabled = true,
+  showExplanation = false,
   onResult,
 }: QuestionCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -91,6 +94,7 @@ function CardState({
             question={question}
             selectedAnswer={selectedAnswer}
             resultRecorded={resultRecorded}
+            showExplanation={showExplanation}
             onResult={handleResult}
           />
         </section>

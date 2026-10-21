@@ -57,7 +57,7 @@ export const REVIEW_MODE_OPTIONS: ReadonlyArray<{
   { value: 'mistake-review', label: 'Practice my mistakes' },
 ]
 
-// Built-in fallbacks. The settings page (Phase 11) will override these.
+// Built-in starting values. The student's saved settings override these.
 export const DEFAULT_OPERATIONS: MathOperation[] = []
 export const DEFAULT_DIFFICULTY: DifficultyLevel = 1
 export const DEFAULT_SESSION_LENGTH: SessionLength = 10

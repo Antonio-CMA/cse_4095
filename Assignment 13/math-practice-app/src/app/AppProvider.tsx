@@ -5,6 +5,8 @@ import {
   sanitizeSettings,
   saveSettings,
 } from '../services/settingsService'
+import { ensureSchema } from '../services/storageMigrations'
+import { clearAppData } from '../services/storageService'
 import type { AppSettings } from '../types/settings'
 import { SettingsContext, type SettingsContextValue } from './settingsContext'
 
@@ -22,7 +24,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     (changes: Partial<AppSettings>) => {
       const next = sanitizeSettings({ ...settings, ...changes })
       setSettings(next)
-      saveSettings(next)
+      return saveSettings(next)
     },
     [settings],
   )
@@ -30,12 +32,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const resetSettings = useCallback(() => {
     const next = createDefaultSettings()
     setSettings(next)
-    saveSettings(next)
+    return saveSettings(next)
+  }, [])
+
+  const clearAllData = useCallback(() => {
+    const cleared = clearAppData()
+    if (cleared) {
+      // Record the schema version again so the next save starts cleanly. The
+      // defaults are used in memory only; nothing is saved until a change.
+      ensureSchema()
+      setSettings(createDefaultSettings())
+    }
+    return cleared
   }, [])
 
   const value = useMemo<SettingsContextValue>(
-    () => ({ settings, updateSettings, resetSettings }),
-    [settings, updateSettings, resetSettings],
+    () => ({ settings, updateSettings, resetSettings, clearAllData }),
+    [settings, updateSettings, resetSettings, clearAllData],
   )
 
   return <SettingsContext value={value}>{children}</SettingsContext>
