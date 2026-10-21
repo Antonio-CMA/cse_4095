@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAnswerShortcuts } from '../../hooks/useAnswerShortcuts'
 import type { Question } from '../../types/question'
+import { speakSolution } from '../../utils/speech'
 import { CardBack } from './CardBack'
 import { CardFront } from './CardFront'
 
@@ -18,6 +20,8 @@ interface QuestionCardProps {
   animationEnabled?: boolean
   /** Explain the answer on the back when the chosen answer was wrong. */
   showExplanation?: boolean
+  /** Let the number keys 1–4 choose an answer. Turn off while a dialog is open. */
+  shortcutsEnabled?: boolean
   onResult: (result: CardResult) => void
 }
 
@@ -36,11 +40,14 @@ function CardState({
   totalQuestions,
   animationEnabled = true,
   showExplanation = false,
+  shortcutsEnabled = true,
   onResult,
 }: QuestionCardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isFlipped, setIsFlipped] = useState(false)
   const [resultRecorded, setResultRecorded] = useState(false)
+  // Spoken aloud by screen readers (it is not shown on screen).
+  const [announcement, setAnnouncement] = useState('')
   const backRef = useRef<HTMLDivElement>(null)
 
   // The front's controls stop being available after the flip, so move focus to
@@ -48,6 +55,29 @@ function CardState({
   useEffect(() => {
     if (isFlipped) backRef.current?.focus()
   }, [isFlipped])
+
+  const selectAnswer = useCallback((answer: number) => {
+    setSelectedAnswer(answer)
+    setAnnouncement(`Selected ${answer}.`)
+  }, [])
+
+  // The number keys choose an answer, until the card is flipped.
+  const selectByPosition = useCallback(
+    (index: number) => selectAnswer(question.choices[index]),
+    [question.choices, selectAnswer],
+  )
+  useAnswerShortcuts({
+    enabled: shortcutsEnabled && !isFlipped && !resultRecorded,
+    count: question.choices.length,
+    onSelect: selectByPosition,
+  })
+
+  const flip = () => {
+    setIsFlipped(true)
+    setAnnouncement(
+      `Answer revealed. ${speakSolution(question)}. You chose ${selectedAnswer}.`,
+    )
+  }
 
   const handleResult = (correct: boolean) => {
     if (resultRecorded || selectedAnswer === null) return
@@ -65,6 +95,14 @@ function CardState({
 
   return (
     <div className={classes}>
+      <div
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {announcement}
+      </div>
       <div className="flip-card__inner">
         <section
           className="flip-card__face flip-card__face--front"
@@ -78,8 +116,9 @@ function CardState({
             totalQuestions={totalQuestions}
             selectedAnswer={selectedAnswer}
             locked={isFlipped}
-            onSelectAnswer={setSelectedAnswer}
-            onFlip={() => setIsFlipped(true)}
+            showShortcuts={shortcutsEnabled}
+            onSelectAnswer={selectAnswer}
+            onFlip={flip}
           />
         </section>
         <section

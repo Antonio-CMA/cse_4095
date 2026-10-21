@@ -10,6 +10,8 @@ interface CardFrontProps {
   selectedAnswer: number | null
   /** True once the card has been flipped: answers can no longer change. */
   locked: boolean
+  /** Show the number-key hints on the answers. */
+  showShortcuts?: boolean
   onSelectAnswer: (answer: number) => void
   onFlip: () => void
 }
@@ -20,6 +22,7 @@ export function CardFront({
   totalQuestions,
   selectedAnswer,
   locked,
+  showShortcuts = false,
   onSelectAnswer,
   onFlip,
 }: CardFrontProps) {
@@ -32,12 +35,13 @@ export function CardFront({
       </p>
       <h2 className="card__problem">{question.displayText}</h2>
       <div className="answer-grid" role="group" aria-label="Answer choices">
-        {question.choices.map((choice) => (
+        {question.choices.map((choice, index) => (
           <AnswerChoice
             key={choice}
             value={choice}
             selected={selectedAnswer === choice}
             disabled={locked}
+            shortcut={showShortcuts ? index + 1 : undefined}
             onSelect={onSelectAnswer}
           />
         ))}
@@ -50,7 +54,10 @@ export function CardFront({
         Flip Card
       </Button>
       {selectedAnswer === null && !locked && (
-        <p className="card__hint">Pick an answer, then flip the card.</p>
+        <p className="card__hint">
+          Pick an answer, then flip the card.
+          {showShortcuts && ' You can press the keys 1 to 4 to choose.'}
+        </p>
       )}
     </>
   )

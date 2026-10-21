@@ -167,7 +167,9 @@ describe('PracticePage finishing a fixed-length session', () => {
 
     const front = screen.getByRole('region', { name: 'Question' })
     const choice = within(front).getAllByRole('button', { pressed: false })[2]
-    const chosenValue = Number(choice.textContent?.replace('✓', ''))
+    const chosenValue = Number(
+      choice.querySelector('.answer-choice__value')?.textContent,
+    )
     await user.click(choice)
     await user.click(screen.getByRole('button', { name: 'Flip Card' }))
     await user.click(screen.getByRole('button', { name: 'I Got It Wrong' }))
