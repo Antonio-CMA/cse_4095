@@ -14,6 +14,7 @@ import type {
   SessionLength,
 } from '../types/session'
 import { ALL_OPERATIONS } from '../utils/operations'
+import { parseSetupNotice, SETUP_NOTICE_MESSAGES } from '../utils/setupNotice'
 import { parsePracticeConfig } from '../utils/validation'
 
 export function PracticeSetupPage() {
@@ -21,6 +22,8 @@ export function PracticeSetupPage() {
   const location = useLocation()
   const defaults = usePracticeDefaults()
   const activeMistakeCount = useActiveMistakeCount()
+  // Set when another page had nothing to show and sent the student back here.
+  const notice = parseSetupNotice(location.state)
 
   // Start from the previous session's choices when arriving from the summary
   // page ("Change Settings" → "Practice Setup"); otherwise from the defaults.
@@ -64,6 +67,11 @@ export function PracticeSetupPage() {
   return (
     <section className="page-section">
       <h1>Practice Setup</h1>
+      {notice && (
+        <p className="stats-message" role="status">
+          {SETUP_NOTICE_MESSAGES[notice]}
+        </p>
+      )}
       <p>Choose what you want to practice, then start your session.</p>
       <form className="setup-form" onSubmit={handleSubmit} noValidate>
         <ReviewModeSelector

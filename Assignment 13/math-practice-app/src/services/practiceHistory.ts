@@ -1,4 +1,5 @@
 import type { PracticeAttempt, PracticeSession } from '../types/session'
+import { reportStorageFailure } from './storageFailures'
 import {
   parseStoredAttempt,
   parseStoredList,
@@ -39,8 +40,13 @@ export function loadList<T>(
  * records and tries once more so the newest data still gets saved.
  */
 export function saveList<T>(key: StorageKey, records: T[]): WriteResult {
-  const first = writeItem(key, records)
-  if (first.ok || first.reason !== 'quota') return first
+  // Not reported yet: a full browser is often fixed by the trimmed retry below.
+  const first = writeItem(key, records, { quiet: true })
+  if (first.ok) return first
+  if (first.reason !== 'quota') {
+    reportStorageFailure(first.reason)
+    return first
+  }
 
   const keep = records.slice(Math.ceil(records.length * QUOTA_TRIM_SHARE))
   return writeItem(key, keep.length > 0 ? keep : records.slice(-1))

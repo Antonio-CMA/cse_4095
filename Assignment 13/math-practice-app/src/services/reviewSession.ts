@@ -10,7 +10,7 @@ import {
 import { loadMistakePatterns } from './mistakeService'
 import { generateNextQuestion } from './questionGenerator'
 import {
-  generateSimilarQuestion,
+  generateSimilarQuestionSafely,
   getProblemKey,
 } from './similarQuestionGenerator'
 
@@ -48,7 +48,7 @@ export function nextReviewQuestion(
   if (!pattern) return null
 
   return {
-    question: generateSimilarQuestion(pattern, rng, state.recentKeys),
+    question: generateSimilarQuestionSafely(pattern, rng, state.recentKeys),
     patternId: pattern.id,
   }
 }

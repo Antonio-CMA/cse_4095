@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import type { DataProblem } from '../services/dataRepair'
 import {
   createDefaultSettings,
   loadSettings,
@@ -8,16 +9,31 @@ import {
 import { ensureSchema } from '../services/storageMigrations'
 import { clearAppData } from '../services/storageService'
 import type { AppSettings } from '../types/settings'
+import {
+  DataProblemsContext,
+  type DataProblemsContextValue,
+} from './dataProblemsContext'
 import { SettingsContext, type SettingsContextValue } from './settingsContext'
+
+interface AppProviderProps {
+  children: ReactNode
+  /** Saved data that had to be repaired at startup, to tell the student about. */
+  dataProblems?: DataProblem[]
+}
 
 /**
  * Loads the saved settings when the app starts (falling back to defaults) and
  * keeps them saved whenever they change. If saving fails, the new settings
  * still apply for this visit.
  */
-export function AppProvider({ children }: { children: ReactNode }) {
+export function AppProvider({ children, dataProblems = [] }: AppProviderProps) {
   const [settings, setSettings] = useState<AppSettings>(
     () => loadSettings().settings,
+  )
+  const [problems, setProblems] = useState(dataProblems)
+  const dataProblemsValue = useMemo<DataProblemsContextValue>(
+    () => ({ problems, dismiss: () => setProblems([]) }),
+    [problems],
   )
 
   const updateSettings = useCallback(
@@ -51,5 +67,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [settings, updateSettings, resetSettings, clearAllData],
   )
 
-  return <SettingsContext value={value}>{children}</SettingsContext>
+  return (
+    <SettingsContext value={value}>
+      <DataProblemsContext value={dataProblemsValue}>
+        {children}
+      </DataProblemsContext>
+    </SettingsContext>
+  )
 }

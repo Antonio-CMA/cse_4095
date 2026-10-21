@@ -4,9 +4,11 @@ import type {
   Question,
   QuestionDraft,
 } from '../types/question'
+import { logDevError } from '../utils/devLog'
 import { randomInt, type Rng } from '../utils/math'
 import { validateQuestion, validateQuestionDraft } from '../utils/validation'
 import { buildChoices } from './answerChoices'
+import { createFallbackQuestion } from './fallbackQuestions'
 import { OPERATION_GENERATORS } from './operationGenerators'
 
 /** How many times to try again if a generated question fails validation. */
@@ -44,23 +46,68 @@ export function generateQuestionDraft(
 
 /**
  * Generates one complete, validated question: the arithmetic problem plus four
- * shuffled multiple-choice answers.
+ * shuffled multiple-choice answers. A question that fails its checks (a bad
+ * problem, or answer choices that do not work) is thrown away and another is
+ * tried, up to MAX_ATTEMPTS times, before giving up with an error.
  */
 export function generateQuestion(
   operation: MathOperation,
   difficulty: DifficultyLevel,
   rng: Rng = Math.random,
 ): Question {
-  const draft = generateQuestionDraft(operation, difficulty, rng)
-  const question: Question = { ...draft, choices: buildChoices(draft, rng) }
+  let lastError: unknown
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      const draft = generateQuestionDraft(operation, difficulty, rng)
+      const question: Question = { ...draft, choices: buildChoices(draft, rng) }
 
-  const problems = validateQuestion(question)
-  if (problems.length > 0) {
-    throw new QuestionGenerationError(
-      `Generated an invalid ${operation} question: ${problems.join('; ')}`,
-    )
+      const problems = validateQuestion(question)
+      if (problems.length === 0) return question
+      lastError = new QuestionGenerationError(
+        `Generated an invalid ${operation} question: ${problems.join('; ')}`,
+      )
+    } catch (error) {
+      lastError = error
+    }
   }
-  return question
+
+  throw lastError instanceof QuestionGenerationError
+    ? lastError
+    : new QuestionGenerationError(
+        `Could not generate a ${operation} question at level ${difficulty}: ${String(lastError)}`,
+      )
+}
+
+/**
+ * Like `generateQuestion`, but never fails: if a question cannot be made, the
+ * problem is logged for developers and a ready-made question is used instead,
+ * so a session is never interrupted.
+ */
+export function generateQuestionSafely(
+  operation: MathOperation,
+  difficulty: DifficultyLevel,
+  rng: Rng = Math.random,
+): Question {
+  try {
+    return generateQuestion(operation, difficulty, rng)
+  } catch (error) {
+    logDevError('Could not generate a question, so a fallback was used.', {
+      operation,
+      difficulty,
+      error,
+    })
+    return createFallbackQuestion(operation, difficulty)
+  }
+}
+
+function pickOperation(
+  operations: readonly MathOperation[],
+  rng: Rng,
+): MathOperation {
+  if (operations.length === 0) {
+    throw new QuestionGenerationError('Choose at least one operation')
+  }
+  return operations[randomInt(0, operations.length - 1, rng)]
 }
 
 /** Picks one of the enabled operations at random, then generates a question. */
@@ -69,11 +116,7 @@ export function generateRandomQuestion(
   difficulty: DifficultyLevel,
   rng: Rng = Math.random,
 ): Question {
-  if (operations.length === 0) {
-    throw new QuestionGenerationError('Choose at least one operation')
-  }
-  const operation = operations[randomInt(0, operations.length - 1, rng)]
-  return generateQuestion(operation, difficulty, rng)
+  return generateQuestion(pickOperation(operations, rng), difficulty, rng)
 }
 
 /** How many times to re-draw to avoid showing the same problem twice in a row. */
@@ -90,6 +133,7 @@ function isSameProblem(a: Question, b: Question): boolean {
 /**
  * The next question in a session. It avoids repeating the problem that was
  * just shown (unless the level is so small that it keeps drawing the same one).
+ * It always returns a question: if one cannot be made, a fallback is used.
  */
 export function generateNextQuestion(
   operations: readonly MathOperation[],
@@ -97,13 +141,16 @@ export function generateNextQuestion(
   previous?: Question,
   rng: Rng = Math.random,
 ): Question {
-  let question = generateRandomQuestion(operations, difficulty, rng)
+  const draw = () =>
+    generateQuestionSafely(pickOperation(operations, rng), difficulty, rng)
+
+  let question = draw()
   for (
     let retry = 0;
     previous && isSameProblem(question, previous) && retry < MAX_REPEAT_RETRIES;
     retry++
   ) {
-    question = generateRandomQuestion(operations, difficulty, rng)
+    question = draw()
   }
   return question
 }
