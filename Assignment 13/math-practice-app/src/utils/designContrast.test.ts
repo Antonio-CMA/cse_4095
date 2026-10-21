@@ -96,8 +96,8 @@ describe('non-text contrast (WCAG AA, 3:1)', () => {
 
 describe('the layout stays inside a small screen (WCAG reflow)', () => {
   it('caps every grid column minimum at the width available', () => {
-    const minimums = [...css.matchAll(/minmax\(([^,]+),/g)].map((m) =>
-      m[1].trim(),
+    const minimums = [...css.matchAll(/minmax\((min\([^)]*\)|[^,]+),/g)].map(
+      (m) => m[1].trim(),
     )
     expect(minimums.length).toBeGreaterThan(0)
     for (const minimum of minimums) {
