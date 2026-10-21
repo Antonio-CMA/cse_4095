@@ -4,7 +4,11 @@ import {
   MULTIPLICATION_RULES,
   SUBTRACTION_RULES,
 } from '../services/difficultyRules'
-import type { DifficultyLevel, QuestionDraft } from '../types/question'
+import type {
+  DifficultyLevel,
+  Question,
+  QuestionDraft,
+} from '../types/question'
 import { calculateAnswer, type Range } from './math'
 
 const OPERATIONS = ['addition', 'subtraction', 'multiplication', 'division']
@@ -99,4 +103,42 @@ export function validateQuestionDraft(question: QuestionDraft): string[] {
 
 export function isValidQuestionDraft(question: QuestionDraft): boolean {
   return validateQuestionDraft(question).length === 0
+}
+
+/** The number of multiple-choice answers every question must have. */
+export const CHOICE_COUNT = 4
+
+/** Checks the multiple-choice answers of a finished question. */
+export function validateQuestionChoices(
+  question: Pick<Question, 'choices' | 'correctAnswer'>,
+): string[] {
+  const { choices, correctAnswer } = question
+  const problems: string[] = []
+
+  if (choices.length !== CHOICE_COUNT) {
+    problems.push(`There must be exactly ${CHOICE_COUNT} answer choices`)
+  }
+  if (!choices.every((choice) => Number.isInteger(choice) && choice >= 0)) {
+    problems.push('Answer choices must be whole numbers that are not negative')
+  }
+  if (new Set(choices).size !== choices.length) {
+    problems.push('Answer choices must all be different')
+  }
+  if (choices.filter((choice) => choice === correctAnswer).length !== 1) {
+    problems.push('Exactly one answer choice must be the correct answer')
+  }
+
+  return problems
+}
+
+/** Everything wrong with a finished question; empty means it is ready to show. */
+export function validateQuestion(question: Question): string[] {
+  return [
+    ...validateQuestionDraft(question),
+    ...validateQuestionChoices(question),
+  ]
+}
+
+export function isValidQuestion(question: Question): boolean {
+  return validateQuestion(question).length === 0
 }

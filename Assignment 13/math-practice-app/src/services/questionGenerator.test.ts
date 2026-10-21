@@ -5,11 +5,13 @@ import type {
   MathOperation,
   QuestionDraft,
 } from '../types/question'
-import { isValidQuestionDraft } from '../utils/validation'
+import { isValidQuestion, isValidQuestionDraft } from '../utils/validation'
+import * as answerChoices from './answerChoices'
 import { OPERATION_GENERATORS } from './operationGenerators'
 import {
+  generateQuestion,
   generateQuestionDraft,
-  generateRandomQuestionDraft,
+  generateRandomQuestion,
   QuestionGenerationError,
 } from './questionGenerator'
 
@@ -91,13 +93,39 @@ describe('generateQuestionDraft', () => {
   })
 })
 
-describe('generateRandomQuestionDraft', () => {
+describe('generateQuestion', () => {
+  it.each(
+    OPERATIONS.flatMap((op) => LEVELS.map((level) => [op, level] as const)),
+  )(
+    'makes complete %s questions with four choices at level %i',
+    (operation, level) => {
+      const rng = seededRng(level + 100)
+      for (let i = 0; i < 200; i++) {
+        const q = generateQuestion(operation, level, rng)
+        expect(q.operation).toBe(operation)
+        expect(q.choices).toHaveLength(4)
+        expect(new Set(q.choices).size).toBe(4)
+        expect(q.choices).toContain(q.correctAnswer)
+        expect(isValidQuestion(q)).toBe(true)
+      }
+    },
+  )
+
+  it('rejects a question whose choices turn out to be invalid', () => {
+    vi.spyOn(answerChoices, 'buildChoices').mockReturnValue([1, 1, 2, 3])
+    expect(() => generateQuestion('addition', 1)).toThrow(
+      QuestionGenerationError,
+    )
+  })
+})
+
+describe('generateRandomQuestion', () => {
   it('only uses the enabled operations and eventually uses each', () => {
     const rng = seededRng(42)
     const seen = new Set<MathOperation>()
     for (let i = 0; i < 300; i++) {
       seen.add(
-        generateRandomQuestionDraft(['multiplication', 'division'], 2, rng)
+        generateRandomQuestion(['multiplication', 'division'], 2, rng)
           .operation,
       )
     }
@@ -105,14 +133,10 @@ describe('generateRandomQuestionDraft', () => {
   })
 
   it('works with a single operation', () => {
-    expect(generateRandomQuestionDraft(['addition'], 1).operation).toBe(
-      'addition',
-    )
+    expect(generateRandomQuestion(['addition'], 1).operation).toBe('addition')
   })
 
   it('throws when no operation is enabled', () => {
-    expect(() => generateRandomQuestionDraft([], 1)).toThrow(
-      QuestionGenerationError,
-    )
+    expect(() => generateRandomQuestion([], 1)).toThrow(QuestionGenerationError)
   })
 })
