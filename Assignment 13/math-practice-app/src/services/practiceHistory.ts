@@ -6,6 +6,7 @@ import {
 } from './storageSchemas'
 import {
   readItem,
+  removeItem,
   STORAGE_KEYS,
   writeItem,
   type StorageKey,
@@ -96,4 +97,24 @@ export function saveAttempts(attempts: PracticeAttempt[]): WriteResult {
 
 export function saveAttempt(attempt: PracticeAttempt): WriteResult {
   return saveAttempts([attempt])
+}
+
+// ---- Reset ----
+
+/** Everything that makes up the student's practice history. */
+const HISTORY_KEYS = [
+  STORAGE_KEYS.sessions,
+  STORAGE_KEYS.attempts,
+  STORAGE_KEYS.statistics,
+  // Not used until mistake tracking exists; listed so a reset clears it too.
+  STORAGE_KEYS.mistakePatterns,
+] as const
+
+/**
+ * Erases all practice history and statistics. Settings are left as they are.
+ * Returns false if the browser refused to remove any of it.
+ */
+export function resetPracticeHistory(): boolean {
+  // Try every key even if one fails, rather than stopping at the first.
+  return HISTORY_KEYS.map((key) => removeItem(key)).every(Boolean)
 }

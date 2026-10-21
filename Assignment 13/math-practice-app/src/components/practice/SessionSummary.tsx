@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { SessionResult } from '../../types/session'
 import { formatDifficulty, formatOperations } from '../../utils/format'
 import { calculateAccuracy } from '../../utils/math'
+import { AccuracyValue } from '../common/AccuracyValue'
 
 interface SessionSummaryProps {
   result: SessionResult
@@ -20,19 +21,7 @@ export function SessionSummary({ result }: SessionSummaryProps) {
       <Stat label="Questions attempted" value={session.attempted} />
       <Stat label="Correct" value={session.correct} />
       <Stat label="Incorrect" value={session.incorrect} />
-      <Stat
-        label="Accuracy"
-        value={
-          accuracy === null ? (
-            <>
-              <span aria-hidden="true">—</span>
-              <span className="visually-hidden">No questions answered</span>
-            </>
-          ) : (
-            `${accuracy}%`
-          )
-        }
-      />
+      <Stat label="Accuracy" value={<AccuracyValue accuracy={accuracy} />} />
       <Stat label="Mistake-review questions" value={reviewCount} />
       <Stat
         wide
