@@ -9,9 +9,9 @@ function SessionProbe() {
   return <pre data-testid="config">{JSON.stringify(state)}</pre>
 }
 
-function renderSetup() {
+function renderSetup(state?: unknown) {
   return render(
-    <MemoryRouter initialEntries={['/practice/setup']}>
+    <MemoryRouter initialEntries={[{ pathname: '/practice/setup', state }]}>
       <Routes>
         <Route path="/practice/setup" element={<PracticeSetupPage />} />
         <Route path="/practice/session" element={<SessionProbe />} />
@@ -19,6 +19,50 @@ function renderSetup() {
     </MemoryRouter>,
   )
 }
+
+describe('PracticeSetupPage starting values', () => {
+  it('uses the previous session setup when one is passed in', () => {
+    renderSetup({
+      operations: ['subtraction', 'division'],
+      difficulty: 4,
+      sessionLength: 'continuous',
+      reviewMode: 'regular',
+    })
+
+    expect(screen.getByRole('checkbox', { name: 'Subtraction' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Division' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Addition' })).not.toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Advanced' })).toBeChecked()
+    expect(
+      screen.getByRole('radio', { name: 'Continuous practice' }),
+    ).toBeChecked()
+    expect(screen.getByRole('button', { name: 'Start Session' })).toBeEnabled()
+  })
+
+  it('falls back to regular practice if mistake review is not available', () => {
+    renderSetup({
+      operations: ['addition'],
+      difficulty: 1,
+      sessionLength: 10,
+      reviewMode: 'mistake-review',
+    })
+    expect(
+      screen.getByRole('radio', { name: 'Regular practice' }),
+    ).toBeChecked()
+  })
+
+  it('ignores unusable state and uses the defaults', () => {
+    renderSetup({ operations: [], difficulty: 99 })
+
+    expect(
+      screen
+        .getAllByRole('checkbox')
+        .some((c) => (c as HTMLInputElement).checked),
+    ).toBe(false)
+    expect(screen.getByRole('radio', { name: 'Beginner' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: '10 questions' })).toBeChecked()
+  })
+})
 
 describe('PracticeSetupPage', () => {
   it('disables Start Session and explains why until an operation is chosen', async () => {

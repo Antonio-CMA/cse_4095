@@ -10,7 +10,7 @@ import type {
   QuestionDraft,
 } from '../types/question'
 import type { MathOperation } from '../types/question'
-import type { PracticeConfig } from '../types/session'
+import type { PracticeConfig, SessionResult } from '../types/session'
 import { calculateAnswer, type Range } from './math'
 
 const OPERATIONS = ['addition', 'subtraction', 'multiplication', 'division']
@@ -181,4 +181,49 @@ export function parsePracticeConfig(value: unknown): PracticeConfig | null {
     // practice; a missing or unknown mode is treated the same way.
     reviewMode: reviewMode === 'mistake-review' ? 'mistake-review' : 'regular',
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isCount(value: unknown): value is number {
+  return Number.isInteger(value) && (value as number) >= 0
+}
+
+/**
+ * Checks that navigation state really is a finished session (as handed over
+ * by the practice page) before the summary page trusts it. Returns null if the
+ * state is missing or does not add up.
+ */
+export function parseSessionResult(value: unknown): SessionResult | null {
+  if (!isRecord(value)) return null
+  const { session, attempts } = value
+  if (!isRecord(session) || !Array.isArray(attempts)) return null
+
+  const setup = parsePracticeConfig({
+    operations: session.operations,
+    difficulty: session.difficulty,
+    sessionLength: session.sessionLength,
+  })
+  if (!setup) return null
+
+  const { id, startedAt, attempted, correct, incorrect } = session
+  if (typeof id !== 'string' || typeof startedAt !== 'string') return null
+  if (!isCount(attempted) || !isCount(correct) || !isCount(incorrect)) {
+    return null
+  }
+  if (correct + incorrect !== attempted || attempts.length !== attempted) {
+    return null
+  }
+
+  const attemptsOk = attempts.every(
+    (attempt) =>
+      isRecord(attempt) &&
+      typeof attempt.selfReportedCorrect === 'boolean' &&
+      (attempt.source === 'regular' || attempt.source === 'mistake-review'),
+  )
+  if (!attemptsOk) return null
+
+  return value as unknown as SessionResult
 }
