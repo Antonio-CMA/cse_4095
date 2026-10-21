@@ -4,6 +4,7 @@ import { HomePage } from '../pages/HomePage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { PracticePage } from '../pages/PracticePage'
 import { PracticeSetupPage } from '../pages/PracticeSetupPage'
+import { PrivacyPage } from '../pages/PrivacyPage'
 import { SessionSummaryPage } from '../pages/SessionSummaryPage'
 import { SettingsPage, StatisticsPage } from './lazyPages'
 
@@ -17,6 +18,7 @@ export function AppRoutes() {
         <Route path="practice/summary" element={<SessionSummaryPage />} />
         <Route path="statistics" element={<StatisticsPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

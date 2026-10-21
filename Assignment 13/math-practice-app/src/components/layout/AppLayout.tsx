@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useRef } from 'react'
-import { Outlet, useLocation } from 'react-router'
+import { Link, Outlet, useLocation } from 'react-router'
 import { getPageTitle } from '../../utils/pageTitles'
 import { DataRepairNotice } from '../common/DataRepairNotice'
 import { ErrorBoundary } from '../common/ErrorBoundary'
@@ -54,6 +54,9 @@ export function AppLayout() {
           </Suspense>
         </ErrorBoundary>
       </PageContainer>
+      <footer className="app-footer">
+        <Link to="/privacy">Privacy</Link>
+      </footer>
     </>
   )
 }

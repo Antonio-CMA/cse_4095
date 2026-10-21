@@ -47,6 +47,7 @@ describe('touch target sizes', () => {
     '.main-nav__link',
     '.nav-toggle',
     '.app-header__title',
+    '.app-footer a',
     '.answer-choice',
     '.settings-select',
     '.choice__body',

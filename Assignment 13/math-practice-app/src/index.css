@@ -240,6 +240,31 @@ a {
   margin-top: 0.5rem;
 }
 
+/* ---- Footer ---- */
+.app-footer {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2.5rem) 2rem;
+}
+
+.app-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.25rem 0.5rem;
+}
+
+/* The Privacy page: headings with short paragraphs and lists. */
+.privacy h2 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.privacy ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
 /* ---- Page layout ---- */
 .page-container {
   max-width: 60rem;
