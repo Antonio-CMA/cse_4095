@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
+import { recordPracticeAttempt } from '../services/attemptRecorder'
 import { saveSession } from '../services/practiceHistory'
 import {
   createSessionState,
@@ -7,7 +8,6 @@ import {
   sessionReducer,
 } from '../services/practiceSession'
 import { generateNextQuestion } from '../services/questionGenerator'
-import { recordAttempt } from '../services/statisticsService'
 import type { PracticeConfig, SessionResult } from '../types/session'
 
 export interface ReportedResult {
@@ -39,8 +39,9 @@ export function usePracticeSession(config: PracticeConfig) {
 
   useEffect(() => {
     const latest = attempts[attempts.length - 1]
-    // Saves the answer and counts it in the statistics, once.
-    if (latest) recordAttempt(latest)
+    // Saves the answer, counts it in the statistics and, if it was wrong,
+    // remembers the mistake — each exactly once.
+    if (latest) recordPracticeAttempt(latest)
   }, [attempts])
 
   const recordResult = useCallback(

@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
+import { loadMistakePatterns } from '../services/mistakeService'
 import { loadAttempts, loadSessions } from '../services/practiceHistory'
 import { loadStatistics } from '../services/statisticsService'
 import type { PracticeConfig } from '../types/session'
@@ -140,6 +141,53 @@ describe('saving practice history', () => {
     const byOperation = Object.values(stats.byOperation)
     expect(byOperation.reduce((n, b) => n + b.attempted, 0)).toBe(3)
     expect(stats.byOperation.multiplication.attempted).toBe(0)
+  })
+
+  it('remembers questions answered wrong as mistake patterns', async () => {
+    const user = userEvent.setup()
+    renderSession({ ...CONFIG, sessionLength: 4 })
+
+    await answer(user, 'wrong')
+    await answer(user, 'right')
+    await answer(user, 'wrong')
+    await answer(user, 'wrong')
+
+    const attempts = loadAttempts()
+    const wrongAttempts = attempts.filter((a) => !a.selfReportedCorrect)
+    const patterns = loadMistakePatterns()
+
+    // Every wrong answer is counted once; the right answer is not.
+    expect(wrongAttempts).toHaveLength(3)
+    expect(patterns.reduce((n, p) => n + p.incorrectCount, 0)).toBe(3)
+    // No question is stored twice, and each pattern matches a missed question.
+    expect(new Set(patterns.map((p) => p.id)).size).toBe(patterns.length)
+    for (const pattern of patterns) {
+      expect(
+        wrongAttempts.some(
+          (a) =>
+            a.operation === pattern.operation &&
+            a.firstOperand === pattern.firstOperand &&
+            a.secondOperand === pattern.secondOperand &&
+            a.difficulty === pattern.difficulty,
+        ),
+      ).toBe(true)
+      expect(pattern).toMatchObject({
+        similarCorrectCount: 0,
+        mastered: false,
+        difficulty: 2,
+      })
+    }
+  })
+
+  it('does not create mistake patterns when every answer is right', async () => {
+    const user = userEvent.setup()
+    renderSession({ ...CONFIG, sessionLength: 3 })
+
+    await answer(user, 'right')
+    await answer(user, 'right')
+    await answer(user, 'right')
+
+    expect(loadMistakePatterns()).toEqual([])
   })
 
   it('saves a continuous session ended early', async () => {
