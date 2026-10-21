@@ -9,6 +9,8 @@ import { SessionLengthSelector } from '../components/practice/SessionLengthSelec
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useSettings } from '../hooks/useSettings'
 import { MAX_MASTERY_THRESHOLD } from '../services/settingsService'
+import { measureStorageUsage } from '../services/storageService'
+import { formatStorageSize } from '../utils/format'
 import type { AppSettings } from '../types/settings'
 
 type SaveStatus = 'saved' | 'failed' | null
@@ -29,6 +31,8 @@ export function SettingsPage() {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>(null)
   const [confirmingClear, setConfirmingClear] = useState(false)
   const [clearFailed, setClearFailed] = useState(false)
+  // How much room the saved data takes. Read when the page opens.
+  const [usage] = useState(measureStorageUsage)
 
   // Settings are saved automatically the moment they change.
   const change = (changes: Partial<AppSettings>) => {
@@ -182,6 +186,12 @@ export function SettingsPage() {
             Everything is stored only in this browser. Clearing the
             browser&apos;s data also erases your progress.
           </p>
+          {usage && (
+            <p className="settings-field__hint">
+              Saved on this device: about {formatStorageSize(usage.total)}.
+              Browsers usually allow around 5 MB for each site.
+            </p>
+          )}
           {clearFailed && (
             <p className="stats-message" role="alert">
               We couldn&apos;t erase everything. Your browser may be blocking

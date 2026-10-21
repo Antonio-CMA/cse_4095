@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { getPageTitle } from '../../utils/pageTitles'
 import { DataRepairNotice } from '../common/DataRepairNotice'
 import { ErrorBoundary } from '../common/ErrorBoundary'
+import { LoadingMessage } from '../common/LoadingMessage'
 import { StorageWarning } from '../common/StorageWarning'
 import { Header } from './Header'
 import { PageContainer } from './PageContainer'
@@ -48,7 +49,9 @@ export function AppLayout() {
         <DataRepairNotice />
         {/* A page that breaks shows a friendly message, and the menu still works. */}
         <ErrorBoundary resetKey={pathname}>
-          <Outlet />
+          <Suspense fallback={<LoadingMessage />}>
+            <Outlet />
+          </Suspense>
         </ErrorBoundary>
       </PageContainer>
     </>

@@ -66,6 +66,8 @@ describe('every page, with nothing saved', () => {
     ['page not found', '/nowhere'],
   ])('%s has no accessibility problems', async (_name, path) => {
     const { container } = renderApp(path)
+    // Statistics and settings load on demand: wait until the page is there.
+    await screen.findByRole('heading', { level: 1 })
     await expectNoAccessibilityProblems(container)
   })
 })
@@ -74,7 +76,9 @@ describe('pages with saved practice', () => {
   it('statistics, with sessions, totals and mistakes', async () => {
     seedPracticeData()
     const { container } = renderApp('/statistics')
-    expect(screen.getByRole('region', { name: 'Overall' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('region', { name: 'Overall' }),
+    ).toBeInTheDocument()
     await expectNoAccessibilityProblems(container)
   })
 
@@ -82,7 +86,9 @@ describe('pages with saved practice', () => {
     seedPracticeData()
     const user = userEvent.setup()
     const { container } = renderApp('/statistics')
-    await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Reset Statistics' }),
+    )
     expect(screen.getByRole('alertdialog')).toBeInTheDocument()
     await expectNoAccessibilityProblems(container)
   })
@@ -101,7 +107,7 @@ describe('pages with saved practice', () => {
     const user = userEvent.setup()
     const { container } = renderApp('/settings')
     await user.click(
-      screen.getByRole('button', { name: 'Clear All Application Data' }),
+      await screen.findByRole('button', { name: 'Clear All Application Data' }),
     )
     expect(screen.getByRole('alertdialog')).toBeInTheDocument()
     await expectNoAccessibilityProblems(container)

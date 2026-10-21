@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import type { MistakePattern } from '../../types/mistake'
 import type { AppStatistics } from '../../types/statistics'
 import { formatList } from '../../utils/format'
@@ -23,12 +24,16 @@ function times(n: number): string {
 }
 
 /** Where the student misses most: the operation, and the number facts. */
-export function FrequentlyMissed({
+export const FrequentlyMissed = memo(function FrequentlyMissed({
   statistics,
   patterns,
 }: FrequentlyMissedProps) {
-  const operation = getMostMissedOperations(statistics)
-  const facts = getMostMissedFacts(patterns)
+  // Sorting every saved mistake is only redone when the data changes.
+  const operation = useMemo(
+    () => getMostMissedOperations(statistics),
+    [statistics],
+  )
+  const facts = useMemo(() => getMostMissedFacts(patterns), [patterns])
 
   return (
     <section aria-labelledby="frequently-missed-heading">
@@ -78,4 +83,4 @@ export function FrequentlyMissed({
       )}
     </section>
   )
-}
+})

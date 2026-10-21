@@ -1,8 +1,7 @@
 import type { PracticeAttempt } from '../types/session'
 import { recordAnswer } from './mistakeService'
-import { loadAttempts } from './practiceHistory'
 import { loadSettings } from './settingsService'
-import { recordAttempt } from './statisticsService'
+import { recordAttemptOnce } from './statisticsService'
 import type { WriteResult } from './storageService'
 
 /**
@@ -16,13 +15,11 @@ import type { WriteResult } from './storageService'
  * count can be inflated.
  */
 export function recordPracticeAttempt(attempt: PracticeAttempt): WriteResult {
-  const alreadySaved = loadAttempts().some((a) => a.id === attempt.id)
-
-  const saved = recordAttempt(attempt)
-  if (!saved.ok || alreadySaved) return saved
+  const { isNew, result } = recordAttemptOnce(attempt)
+  if (!result.ok || !isNew) return result
 
   // Update the mistakes only once the answer itself has been saved.
   const { masteryThreshold } = loadSettings().settings
   const remembered = recordAnswer(attempt, masteryThreshold)
-  return remembered.ok ? saved : remembered
+  return remembered.ok ? result : remembered
 }

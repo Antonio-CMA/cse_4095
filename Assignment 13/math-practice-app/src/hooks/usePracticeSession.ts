@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
@@ -106,39 +107,58 @@ export function usePracticeSession(
   // A review session's setup describes its mistakes, so use the session's own.
   const { operations, difficulty } = session
 
-  // What the student has done on the card showing now (answer picked, card
-  // turned), so a refresh can put it back as it was.
-  const [card, setCard] = useState<CardProgress | null>(started.card)
-  const currentQuestionId = currentQuestion.id
-  const rememberCard = useCallback(
-    (progress: Pick<CardProgress, 'selectedAnswer' | 'flipped'>) =>
-      setCard({ questionId: currentQuestionId, ...progress }),
-    [currentQuestionId],
-  )
-
   // The mistakes as this session sees them, kept up to date answer by answer so
   // the next question already reflects the one just answered.
   const reviewRef = useRef(started.review)
   const handledQuestionRef = useRef<string | null>(null)
 
+  // The refresh bookmark needs the latest of everything, so it is written from
+  // refs rather than from state: what the student has done on the card showing
+  // now (answer picked, card turned) is not drawn by anything here, so keeping
+  // it in state would only cost an extra redraw of the page on every tap. The
+  // layout effect runs before any other effect, so the card's own effect (which
+  // runs first) already sees the question that is showing.
+  const stateRef = useRef(state)
+  const cardRef = useRef(started.card)
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
+
   // Keep a bookmark of the session so a refresh can carry on, and throw it away
   // when the session is over.
-  useEffect(() => {
+  const saveBookmark = useCallback(() => {
     if (!resumeKey) return
-    if (isSessionComplete(state)) {
+    const current = stateRef.current
+    if (isSessionComplete(current)) {
       clearActiveSession()
       return
     }
     const review = reviewRef.current
+    const card = cardRef.current
     saveActiveSession({
       key: resumeKey,
-      state,
+      state: current,
       review: review
         ? { recentKeys: review.recentKeys, lastPatternId: review.lastPatternId }
         : null,
-      card: card?.questionId === state.currentQuestion.id ? card : null,
+      card: card?.questionId === current.currentQuestion.id ? card : null,
     })
-  }, [state, card, resumeKey])
+  }, [resumeKey])
+
+  useEffect(() => {
+    saveBookmark()
+  }, [state, saveBookmark])
+
+  const rememberCard = useCallback(
+    (progress: Pick<CardProgress, 'selectedAnswer' | 'flipped'>) => {
+      cardRef.current = {
+        questionId: stateRef.current.currentQuestion.id,
+        ...progress,
+      }
+      saveBookmark()
+    },
+    [saveBookmark],
+  )
 
   // A resumed session may have answers that were never filed away (the page was
   // closed in between). Filing is by id, so ones already saved are skipped.

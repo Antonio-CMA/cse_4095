@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import type { MistakePattern } from '../../types/mistake'
 import type { AppStatistics } from '../../types/statistics'
 import { splitByMastery } from '../../utils/mistakeStats'
@@ -10,12 +11,15 @@ interface MistakeStatisticsProps {
 }
 
 /** How many mistakes there are, how many are mastered, and review practice. */
-export function MistakeStatistics({
+export const MistakeStatistics = memo(function MistakeStatistics({
   statistics,
   patterns,
   masteryThreshold,
 }: MistakeStatisticsProps) {
-  const { active, mastered } = splitByMastery(patterns, masteryThreshold)
+  const { active, mastered } = useMemo(
+    () => splitByMastery(patterns, masteryThreshold),
+    [patterns, masteryThreshold],
+  )
 
   return (
     <section aria-labelledby="mistake-stats-heading">
@@ -40,4 +44,4 @@ export function MistakeStatistics({
       </dl>
     </section>
   )
-}
+})

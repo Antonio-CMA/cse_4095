@@ -19,13 +19,14 @@ function quotaError() {
 }
 
 describe('STORAGE_KEYS', () => {
-  it('uses the names from the specification, plus the session bookmark', () => {
+  it('uses the names from the specification, plus the session bookmark and the archive', () => {
     expect(STORAGE_KEYS).toEqual({
       settings: 'mathPractice.settings',
       sessions: 'mathPractice.sessions',
       attempts: 'mathPractice.attempts',
       mistakePatterns: 'mathPractice.mistakePatterns',
       statistics: 'mathPractice.statistics',
+      attemptArchive: 'mathPractice.attemptArchive',
       activeSession: 'mathPractice.activeSession',
       version: 'mathPractice.version',
     })

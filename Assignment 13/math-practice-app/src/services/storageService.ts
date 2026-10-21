@@ -15,6 +15,8 @@ export const STORAGE_KEYS = {
   attempts: 'mathPractice.attempts',
   mistakePatterns: 'mathPractice.mistakePatterns',
   statistics: 'mathPractice.statistics',
+  /** Totals for answers that were dropped from the detailed list to save space. */
+  attemptArchive: 'mathPractice.attemptArchive',
   /** The practice session in progress, kept so a refresh can pick it up. */
   activeSession: 'mathPractice.activeSession',
   version: 'mathPractice.version',
@@ -162,6 +164,35 @@ export function hasAppData(): boolean {
     return appKeys(store).some((key) => key !== STORAGE_KEYS.version)
   } catch {
     return false
+  }
+}
+
+export interface StorageUsage {
+  /** Characters used by everything this app saved (names and contents). */
+  total: number
+  /** The same, for each saved item. */
+  byKey: Record<string, number>
+}
+
+/**
+ * How much room this app's saved data takes up. Browsers limit what a site may
+ * keep (often around 5 million characters), and measure it in characters, so
+ * this counts characters. Returns null if the browser will not say.
+ */
+export function measureStorageUsage(): StorageUsage | null {
+  try {
+    const store = getStore()
+    if (!store) return null
+    const byKey: Record<string, number> = {}
+    let total = 0
+    for (const key of appKeys(store)) {
+      const size = key.length + (store.getItem(key) ?? '').length
+      byKey[key] = size
+      total += size
+    }
+    return { total, byKey }
+  } catch {
+    return null
   }
 }
 

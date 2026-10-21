@@ -10,6 +10,12 @@ import { TestRouter } from '../test/TestRouter'
 import { AppProvider } from './AppProvider'
 import { AppRoutes } from './AppRoutes'
 
+/** Statistics and settings load on demand, so wait for them to appear. */
+const statsReady = () =>
+  screen.findByRole('heading', { level: 1, name: 'Statistics' })
+const settingsReady = () =>
+  screen.findByRole('heading', { level: 1, name: 'Settings' })
+
 type User = ReturnType<typeof userEvent.setup>
 
 /** One run of the app, like opening the site. Unmount it to "close the tab". */
@@ -158,6 +164,7 @@ describe('a wrong answer becomes a mistake to practise', () => {
       screen.getByRole('link', { name: 'Practice Mistakes' }),
     ).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'View Statistics' }))
+    await statsReady()
 
     const list = screen.getByRole('list', { name: 'Mistakes to practise' })
     expect(within(list).getAllByRole('listitem')).toHaveLength(1)
@@ -200,6 +207,8 @@ describe('everything is still there after a browser refresh', () => {
     first.unmount() // the tab is closed...
 
     openApp('/statistics') // ...and the site is opened again.
+
+    await statsReady()
     const overall = screen.getByRole('region', { name: 'Overall' })
     expect(
       within(overall).getByText('Questions attempted').nextSibling,
@@ -224,12 +233,15 @@ describe('everything is still there after a browser refresh', () => {
   it('keeps the settings, and starts setup from them', async () => {
     const user = userEvent.setup()
     const first = openApp('/settings')
+    await settingsReady()
     await user.click(screen.getByRole('checkbox', { name: 'Card animation' }))
     await user.click(screen.getByRole('radio', { name: 'Continuous practice' }))
     await user.click(screen.getByRole('radio', { name: 'Advanced' }))
     first.unmount()
 
     openApp('/settings')
+
+    await settingsReady()
     expect(
       screen.getByRole('checkbox', { name: 'Card animation' }),
     ).not.toBeChecked()
@@ -243,6 +255,7 @@ describe('everything is still there after a browser refresh', () => {
   it('applies a saved setting to the next practice session', async () => {
     const user = userEvent.setup()
     const first = openApp('/settings')
+    await settingsReady()
     await user.click(screen.getByRole('checkbox', { name: 'Card animation' }))
     first.unmount()
 
@@ -259,6 +272,7 @@ describe('resetting statistics', () => {
   it('erases history, totals and mistakes, but not the settings', async () => {
     const user = userEvent.setup()
     const settings = openApp('/settings')
+    await settingsReady()
     await user.click(screen.getByRole('checkbox', { name: 'Sound effects' }))
     settings.unmount()
 
@@ -270,6 +284,8 @@ describe('resetting statistics', () => {
     expect(loadMistakePatterns()).toHaveLength(1)
 
     openApp('/statistics')
+
+    await statsReady()
     await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
     await user.click(
       screen.getByRole('button', { name: 'Yes, Erase Everything' }),
@@ -294,6 +310,8 @@ describe('resetting statistics', () => {
     session.unmount()
 
     const stats = openApp('/statistics')
+
+    await statsReady()
     await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
     await user.click(
       screen.getByRole('button', { name: 'Yes, Erase Everything' }),
@@ -301,6 +319,8 @@ describe('resetting statistics', () => {
     stats.unmount()
 
     openApp('/statistics')
+
+    await statsReady()
     expect(
       screen.getByRole('heading', { name: 'No practice yet' }),
     ).toBeInTheDocument()
@@ -314,6 +334,8 @@ describe('resetting statistics', () => {
     session.unmount()
 
     openApp('/statistics')
+
+    await statsReady()
     await user.click(screen.getByRole('button', { name: 'Reset Statistics' }))
     await user.click(screen.getByRole('button', { name: 'Keep My Statistics' }))
     expect(loadAttempts()).toHaveLength(5)

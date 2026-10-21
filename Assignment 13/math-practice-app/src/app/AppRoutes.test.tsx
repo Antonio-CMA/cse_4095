@@ -21,10 +21,11 @@ describe('AppRoutes', () => {
     ['/practice/setup', 'Practice Setup'],
     ['/statistics', 'Statistics'],
     ['/settings', 'Settings'],
-  ])('renders %s', (path, heading) => {
+  ])('renders %s', async (path, heading) => {
     renderAt(path)
+    // Statistics and settings load on demand, so give them a moment.
     expect(
-      screen.getByRole('heading', { level: 1, name: heading }),
+      await screen.findByRole('heading', { level: 1, name: heading }),
     ).toBeInTheDocument()
   })
 
@@ -105,7 +106,7 @@ describe('AppRoutes', () => {
 
     await user.click(screen.getByRole('link', { name: 'View Statistics' }))
 
-    const overall = screen.getByRole('region', { name: 'Overall' })
+    const overall = await screen.findByRole('region', { name: 'Overall' })
     expect(
       within(overall).getByText('Questions attempted').nextSibling,
     ).toHaveTextContent('5')

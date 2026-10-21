@@ -5,8 +5,7 @@ import { NotFoundPage } from '../pages/NotFoundPage'
 import { PracticePage } from '../pages/PracticePage'
 import { PracticeSetupPage } from '../pages/PracticeSetupPage'
 import { SessionSummaryPage } from '../pages/SessionSummaryPage'
-import { SettingsPage } from '../pages/SettingsPage'
-import { StatisticsPage } from '../pages/StatisticsPage'
+import { SettingsPage, StatisticsPage } from './lazyPages'
 
 export function AppRoutes() {
   return (
