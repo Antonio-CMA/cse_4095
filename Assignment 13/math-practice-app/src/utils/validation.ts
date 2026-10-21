@@ -9,6 +9,8 @@ import type {
   Question,
   QuestionDraft,
 } from '../types/question'
+import type { MathOperation } from '../types/question'
+import type { PracticeConfig } from '../types/session'
 import { calculateAnswer, type Range } from './math'
 
 const OPERATIONS = ['addition', 'subtraction', 'multiplication', 'division']
@@ -141,4 +143,42 @@ export function validateQuestion(question: Question): string[] {
 
 export function isValidQuestion(question: Question): boolean {
   return validateQuestion(question).length === 0
+}
+
+/** The longest fixed-length session the app will accept. */
+export const MAX_SESSION_LENGTH = 100
+
+/**
+ * Turns whatever arrived as navigation state into a usable practice setup, or
+ * null if it is missing or not valid (for example after opening the practice
+ * address directly).
+ */
+export function parsePracticeConfig(value: unknown): PracticeConfig | null {
+  if (typeof value !== 'object' || value === null) return null
+  const { operations, difficulty, sessionLength, reviewMode } = value as Record<
+    string,
+    unknown
+  >
+
+  if (!Array.isArray(operations) || operations.length === 0) return null
+  if (!operations.every((op) => OPERATIONS.includes(op))) return null
+  const uniqueOperations = [...new Set(operations)] as MathOperation[]
+
+  if (!DIFFICULTIES.includes(difficulty as DifficultyLevel)) return null
+
+  const lengthOk =
+    sessionLength === 'continuous' ||
+    (Number.isInteger(sessionLength) &&
+      (sessionLength as number) >= 1 &&
+      (sessionLength as number) <= MAX_SESSION_LENGTH)
+  if (!lengthOk) return null
+
+  return {
+    operations: uniqueOperations,
+    difficulty: difficulty as DifficultyLevel,
+    sessionLength: sessionLength as PracticeConfig['sessionLength'],
+    // Mistake review is not available yet, so everything runs as regular
+    // practice; a missing or unknown mode is treated the same way.
+    reviewMode: reviewMode === 'mistake-review' ? 'mistake-review' : 'regular',
+  }
 }

@@ -75,3 +75,35 @@ export function generateRandomQuestion(
   const operation = operations[randomInt(0, operations.length - 1, rng)]
   return generateQuestion(operation, difficulty, rng)
 }
+
+/** How many times to re-draw to avoid showing the same problem twice in a row. */
+const MAX_REPEAT_RETRIES = 10
+
+function isSameProblem(a: Question, b: Question): boolean {
+  return (
+    a.operation === b.operation &&
+    a.firstOperand === b.firstOperand &&
+    a.secondOperand === b.secondOperand
+  )
+}
+
+/**
+ * The next question in a session. It avoids repeating the problem that was
+ * just shown (unless the level is so small that it keeps drawing the same one).
+ */
+export function generateNextQuestion(
+  operations: readonly MathOperation[],
+  difficulty: DifficultyLevel,
+  previous?: Question,
+  rng: Rng = Math.random,
+): Question {
+  let question = generateRandomQuestion(operations, difficulty, rng)
+  for (
+    let retry = 0;
+    previous && isSameProblem(question, previous) && retry < MAX_REPEAT_RETRIES;
+    retry++
+  ) {
+    question = generateRandomQuestion(operations, difficulty, rng)
+  }
+  return question
+}
