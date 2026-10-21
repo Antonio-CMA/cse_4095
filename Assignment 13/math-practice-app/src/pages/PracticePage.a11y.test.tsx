@@ -73,7 +73,7 @@ describe('practice page announcements', () => {
     await user.click(screen.getByRole('button', { name: 'I Got It Right' }))
 
     expect(progressRegion().textContent).toMatch(
-      /^Question 2 of 5\. .* 1 of 5 answered\.$/,
+      /Question 2 of 5\. .* 1 of 5 answered\.$/,
     )
   })
 
@@ -88,8 +88,9 @@ describe('practice page announcements', () => {
     await user.click(screen.getByRole('button', { name: 'Flip Card' }))
     await user.click(screen.getByRole('button', { name: 'I Got It Wrong' }))
 
+    // A friendly message may come first, so only the end is anchored.
     expect(progressRegion().textContent).toMatch(
-      /^Question 2\. .* 1 answered\.$/,
+      /Question 2\. .* 1 answered\.$/,
     )
   })
 

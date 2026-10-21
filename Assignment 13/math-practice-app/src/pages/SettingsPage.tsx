@@ -113,6 +113,16 @@ export function SettingsPage() {
             />
             <ChoiceOption
               type="checkbox"
+              name="encouraging-messages"
+              label="Encouraging messages"
+              description="Show a friendly message after each answer and at the end of a session."
+              checked={settings.feedbackEnabled}
+              onChange={() =>
+                change({ feedbackEnabled: !settings.feedbackEnabled })
+              }
+            />
+            <ChoiceOption
+              type="checkbox"
               name="sound-effects"
               label="Sound effects"
               description="Sounds aren't added yet, but your choice is saved for when they are."

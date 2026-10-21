@@ -76,6 +76,9 @@ a {
 }
 
 .app-header__title {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--color-primary-dark);
@@ -109,6 +112,97 @@ a {
 .main-nav__link.active {
   background: var(--color-primary);
   color: #ffffff;
+}
+
+/* The Menu button is only for small screens, where the links fold away. */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.25rem 1rem;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nav-toggle:hover,
+.nav-toggle[aria-expanded='true'] {
+  background: var(--color-primary-soft);
+}
+
+/* Three bars: the usual sign for a menu. */
+.nav-toggle__icon,
+.nav-toggle__icon::before,
+.nav-toggle__icon::after {
+  display: block;
+  width: 1.1rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.nav-toggle__icon {
+  position: relative;
+}
+
+.nav-toggle__icon::before,
+.nav-toggle__icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+.nav-toggle__icon::before {
+  top: -6px;
+}
+
+.nav-toggle__icon::after {
+  top: 6px;
+}
+
+@media (max-width: 400px) {
+  /* Keeps the title and the Menu button on one line on the smallest phones. */
+  .app-header {
+    column-gap: 0.75rem;
+  }
+
+  .app-header__title {
+    font-size: 1.25rem;
+  }
+
+  .nav-toggle {
+    padding-inline: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .main-nav {
+    display: none;
+    width: 100%;
+  }
+
+  .main-nav--open {
+    display: block;
+  }
+
+  .main-nav__list {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .main-nav__link {
+    width: 100%;
+    min-height: 48px;
+  }
 }
 
 /* ---- Page layout ---- */
@@ -392,7 +486,30 @@ h1[tabindex='-1']:focus {
   }
 }
 
+/* Tablets and up: a bigger card, easy to read and to tap from a little way off. */
+@media (min-width: 700px) {
+  .card__problem {
+    font-size: 4.5rem;
+  }
+
+  .answer-grid {
+    max-width: 40rem;
+    gap: 1rem;
+  }
+
+  .answer-choice {
+    min-height: 80px;
+    font-size: 2rem;
+  }
+}
+
 /* ---- Practice session ---- */
+/* Keeps the progress bar and the card the same width, centred on wide screens. */
+.practice-session {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
 .session-bar {
   display: flex;
   flex-wrap: wrap;
@@ -427,6 +544,27 @@ h1[tabindex='-1']:focus {
 
 .progress::-moz-progress-bar {
   background: var(--color-primary);
+}
+
+/* ---- Friendly feedback ---- */
+.feedback {
+  margin: 0 0 1rem;
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.feedback__star {
+  color: var(--color-primary);
+}
+
+/* The end-of-session message sits inside the summary panel. */
+.feedback--summary {
+  margin: 0.5rem 0 0;
+  font-size: 1.25rem;
 }
 
 /* ---- Confirmation panel ---- */
@@ -467,6 +605,13 @@ h1[tabindex='-1']:focus {
   margin: 1.5rem 0;
 }
 
+@media (max-width: 480px) {
+  /* Two to a row, so a phone does not need a long scroll for five numbers. */
+  .summary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .summary-stat {
   display: grid;
   gap: 0.15rem;
@@ -489,6 +634,17 @@ h1[tabindex='-1']:focus {
   font-size: 1.5rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  /* Tighter, so a label such as "Questions attempted" wraps between words. */
+  .summary-stat {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .summary-stat dt {
+    font-size: 0.9rem;
+  }
 }
 
 .summary-actions {
@@ -1036,6 +1192,27 @@ h1[tabindex='-1']:focus {
   .setup-form__footer .btn,
   .selector__shortcut {
     width: 100%;
+  }
+}
+
+/* Fingers are bigger than mouse pointers: a little more room to tap, and more
+   space between neighbours so a tap lands on the one that was meant. */
+@media (pointer: coarse) {
+  .main-nav__link,
+  .nav-toggle,
+  .app-header__title {
+    min-height: 48px;
+  }
+
+  .btn {
+    min-height: 56px;
+  }
+
+  .answer-grid,
+  .choice-grid,
+  .card__verdict,
+  .summary-actions {
+    gap: 1rem;
   }
 }
 

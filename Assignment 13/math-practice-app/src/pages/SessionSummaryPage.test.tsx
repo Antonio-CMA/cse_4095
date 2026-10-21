@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { makeResult } from '../test/sessionResult'
 import { AppProvider } from '../app/AppProvider'
 import { saveMistakePatterns } from '../services/mistakeService'
+import { DEFAULT_SETTINGS, saveSettings } from '../services/settingsService'
 import { makePattern } from '../test/mistakePatterns'
 import { PracticeSetupPage } from './PracticeSetupPage'
 import { SessionSummaryPage } from './SessionSummaryPage'
@@ -130,6 +131,27 @@ describe('SessionSummaryPage', () => {
     expect(
       screen.getByText('You ended before answering any questions.'),
     ).toBeInTheDocument()
+  })
+
+  it('encourages the child to match how the session went', () => {
+    const { unmount } = renderSummary(makeResult([true, true, true]))
+    expect(screen.getByText(/Perfect score/)).toHaveClass('feedback')
+    unmount()
+
+    renderSummary(makeResult([false, false]))
+    expect(screen.getByText(/Every try helps you learn/)).toBeInTheDocument()
+  })
+
+  it('has no encouragement when nothing was answered', () => {
+    renderSummary(makeResult([]))
+    expect(document.querySelector('.feedback')).toBeNull()
+  })
+
+  it('leaves out the encouragement when messages are turned off', () => {
+    saveSettings({ ...DEFAULT_SETTINGS, feedbackEnabled: false })
+    renderSummary(makeResult([true, true]))
+    expect(screen.queryByText(/Perfect score/)).not.toBeInTheDocument()
+    expect(document.querySelector('.feedback')).toBeNull()
   })
 
   it.each([

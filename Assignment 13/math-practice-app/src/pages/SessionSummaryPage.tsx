@@ -3,12 +3,16 @@ import { Navigate, useLocation } from 'react-router'
 import { SessionSummary } from '../components/practice/SessionSummary'
 import { SummaryActions } from '../components/practice/SummaryActions'
 import { useActiveMistakeCount } from '../hooks/useActiveMistakeCount'
+import { useSettings } from '../hooks/useSettings'
 import type { PracticeConfig } from '../types/session'
+import { getSessionEncouragement } from '../utils/feedback'
+import { calculateAccuracy } from '../utils/math'
 import { parseSessionResult } from '../utils/validation'
 
 export function SessionSummaryPage() {
   const location = useLocation()
   const activeMistakeCount = useActiveMistakeCount()
+  const { settings } = useSettings()
   const result = useMemo(
     () => parseSessionResult(location.state),
     [location.state],
@@ -18,6 +22,11 @@ export function SessionSummaryPage() {
   if (!result) return <Navigate to="/practice/setup" replace />
 
   const { session } = result
+  const encouragement = settings.feedbackEnabled
+    ? getSessionEncouragement(
+        calculateAccuracy(session.correct, session.attempted),
+      )
+    : null
   const config: PracticeConfig = {
     operations: session.operations,
     difficulty: session.difficulty,
@@ -34,6 +43,9 @@ export function SessionSummaryPage() {
           ? 'You ended before answering any questions.'
           : "Here's how you did."}
       </p>
+      {encouragement && (
+        <p className="feedback feedback--summary">{encouragement}</p>
+      )}
       <SessionSummary result={result} />
       <SummaryActions config={config} activeMistakeCount={activeMistakeCount} />
     </section>
