@@ -188,6 +188,140 @@ a {
   }
 }
 
+/* ---- Practice setup ---- */
+.setup-form {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.selector {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.selector__legend {
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.selector__hint {
+  margin: 0 0 0.75rem;
+}
+
+.selector__shortcut {
+  margin-top: 0.75rem;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+
+.choice {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+/* Visually hidden, but still focusable and announced by screen readers. */
+.choice__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.choice__body {
+  display: block;
+  height: 100%;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.choice:hover .choice__body {
+  background: var(--color-primary-soft);
+}
+
+.choice__input:checked + .choice__body {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.choice__input:focus-visible + .choice__body {
+  outline: 3px solid #f08c00;
+  outline-offset: 3px;
+}
+
+.choice__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.choice__symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.choice__label {
+  flex: 1;
+  font-weight: 700;
+}
+
+.choice__check {
+  visibility: hidden;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.choice__input:checked + .choice__body .choice__check {
+  visibility: visible;
+}
+
+.choice__description {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.setup-form__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.setup-form__message {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .setup-form__footer .btn,
+  .selector__shortcut {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;
