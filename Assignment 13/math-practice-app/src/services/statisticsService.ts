@@ -1,7 +1,7 @@
-import type { DifficultyLevel, MathOperation } from '../types/question'
 import type { PracticeAttempt } from '../types/session'
 import type { AppStatistics, OperationStatistics } from '../types/statistics'
 import { calculateAccuracy } from '../utils/math'
+import { ALL_DIFFICULTIES, ALL_OPERATIONS } from '../utils/operations'
 import { loadAttempts, saveAttempt } from './practiceHistory'
 import {
   readItem,
@@ -15,14 +15,6 @@ import {
  * at a time (rather than recounted from the saved answers) so they stay right
  * even after old detailed records have been trimmed to save space.
  */
-
-export const OPERATIONS: readonly MathOperation[] = [
-  'addition',
-  'subtraction',
-  'multiplication',
-  'division',
-]
-export const DIFFICULTY_LEVELS: readonly DifficultyLevel[] = [1, 2, 3, 4]
 
 function emptyBucket(): OperationStatistics {
   return { attempted: 0, correct: 0, incorrect: 0 }
@@ -140,12 +132,12 @@ export function parseStoredStatistics(value: unknown): AppStatistics | null {
   result.correct = total.correct
   result.incorrect = total.incorrect
 
-  for (const operation of OPERATIONS) {
+  for (const operation of ALL_OPERATIONS) {
     const bucket = parseBucket(byOperationSaved[operation])
     if (!bucket) return null
     result.byOperation[operation] = bucket
   }
-  for (const level of DIFFICULTY_LEVELS) {
+  for (const level of ALL_DIFFICULTIES) {
     const bucket = parseBucket(byDifficultySaved[level])
     if (!bucket) return null
     result.byDifficulty[level] = bucket

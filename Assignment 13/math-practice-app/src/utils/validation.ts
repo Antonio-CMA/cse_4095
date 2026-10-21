@@ -12,9 +12,7 @@ import type {
 import type { MathOperation } from '../types/question'
 import type { PracticeConfig, SessionResult } from '../types/session'
 import { calculateAnswer, type Range } from './math'
-
-const OPERATIONS = ['addition', 'subtraction', 'multiplication', 'division']
-const DIFFICULTIES: DifficultyLevel[] = [1, 2, 3, 4]
+import { ALL_DIFFICULTIES, ALL_OPERATIONS } from './operations'
 
 function inRange(n: number, range: Range): boolean {
   return n >= range.min && n <= range.max
@@ -33,10 +31,10 @@ export function validateQuestionDraft(question: QuestionDraft): string[] {
   } = question
   const difficulty = question.difficulty
 
-  if (!OPERATIONS.includes(operation)) {
+  if (!ALL_OPERATIONS.includes(operation)) {
     return [`Unsupported operation: ${operation}`]
   }
-  if (!DIFFICULTIES.includes(difficulty)) {
+  if (!ALL_DIFFICULTIES.includes(difficulty)) {
     return [`Unsupported difficulty: ${difficulty}`]
   }
 
@@ -161,10 +159,10 @@ export function parsePracticeConfig(value: unknown): PracticeConfig | null {
   >
 
   if (!Array.isArray(operations) || operations.length === 0) return null
-  if (!operations.every((op) => OPERATIONS.includes(op))) return null
+  if (!operations.every((op) => ALL_OPERATIONS.includes(op))) return null
   const uniqueOperations = [...new Set(operations)] as MathOperation[]
 
-  if (!DIFFICULTIES.includes(difficulty as DifficultyLevel)) return null
+  if (!ALL_DIFFICULTIES.includes(difficulty as DifficultyLevel)) return null
 
   const lengthOk =
     sessionLength === 'continuous' ||

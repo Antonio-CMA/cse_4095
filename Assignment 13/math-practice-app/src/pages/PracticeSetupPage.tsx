@@ -13,7 +13,7 @@ import type {
   ReviewMode,
   SessionLength,
 } from '../types/session'
-import { OPERATION_OPTIONS } from '../utils/practiceOptions'
+import { ALL_OPERATIONS } from '../utils/operations'
 import { parsePracticeConfig } from '../utils/validation'
 
 export function PracticeSetupPage() {
@@ -53,10 +53,7 @@ export function PracticeSetupPage() {
     event.preventDefault()
     if (!canStart) return
     const config: PracticeConfig = {
-      operations:
-        operations.length > 0
-          ? operations
-          : OPERATION_OPTIONS.map((o) => o.value),
+      operations: operations.length > 0 ? operations : [...ALL_OPERATIONS],
       difficulty,
       sessionLength,
       reviewMode,

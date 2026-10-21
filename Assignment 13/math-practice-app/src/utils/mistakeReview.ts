@@ -3,6 +3,7 @@ import type { DifficultyLevel, MathOperation } from '../types/question'
 import type { PracticeAttempt } from '../types/session'
 import type { Rng } from './math'
 import { recordMistakeInPatterns } from './mistakes'
+import { ALL_OPERATIONS } from './operations'
 
 /**
  * The rules for reviewing mistakes: which patterns still need practice, which
@@ -102,13 +103,6 @@ export function pickPatternForReview(
 
 // ---- Describing a review session ----
 
-const OPERATION_ORDER: readonly MathOperation[] = [
-  'addition',
-  'subtraction',
-  'multiplication',
-  'division',
-]
-
 /**
  * The operations and level to show for a review session made from these
  * patterns: every operation involved, and the level most of them are at (the
@@ -118,7 +112,7 @@ export function describeReviewSession(patterns: readonly MistakePattern[]): {
   operations: MathOperation[]
   difficulty: DifficultyLevel
 } {
-  const operations = OPERATION_ORDER.filter((op) =>
+  const operations = ALL_OPERATIONS.filter((op) =>
     patterns.some((pattern) => pattern.operation === op),
   )
 
@@ -131,7 +125,7 @@ export function describeReviewSession(patterns: readonly MistakePattern[]): {
   )
 
   return {
-    operations: operations.length > 0 ? operations : [...OPERATION_ORDER],
+    operations: operations.length > 0 ? operations : [...ALL_OPERATIONS],
     difficulty: levels[0]?.[0] ?? 1,
   }
 }
