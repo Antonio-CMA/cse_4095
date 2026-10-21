@@ -1,10 +1,12 @@
 import type {
   DifficultyLevel,
   MathOperation,
+  Question,
   QuestionDraft,
 } from '../types/question'
 import { randomInt, type Rng } from '../utils/math'
-import { validateQuestionDraft } from '../utils/validation'
+import { validateQuestion, validateQuestionDraft } from '../utils/validation'
+import { buildChoices } from './answerChoices'
 import { OPERATION_GENERATORS } from './operationGenerators'
 
 /** How many times to try again if a generated question fails validation. */
@@ -17,10 +19,7 @@ export class QuestionGenerationError extends Error {
   }
 }
 
-/**
- * Generates one validated question for the given operation and difficulty.
- * Multiple-choice answers are added in Phase 5.
- */
+/** Generates one validated question without its multiple-choice answers. */
 export function generateQuestionDraft(
   operation: MathOperation,
   difficulty: DifficultyLevel,
@@ -43,15 +42,36 @@ export function generateQuestionDraft(
   )
 }
 
+/**
+ * Generates one complete, validated question: the arithmetic problem plus four
+ * shuffled multiple-choice answers.
+ */
+export function generateQuestion(
+  operation: MathOperation,
+  difficulty: DifficultyLevel,
+  rng: Rng = Math.random,
+): Question {
+  const draft = generateQuestionDraft(operation, difficulty, rng)
+  const question: Question = { ...draft, choices: buildChoices(draft, rng) }
+
+  const problems = validateQuestion(question)
+  if (problems.length > 0) {
+    throw new QuestionGenerationError(
+      `Generated an invalid ${operation} question: ${problems.join('; ')}`,
+    )
+  }
+  return question
+}
+
 /** Picks one of the enabled operations at random, then generates a question. */
-export function generateRandomQuestionDraft(
+export function generateRandomQuestion(
   operations: readonly MathOperation[],
   difficulty: DifficultyLevel,
   rng: Rng = Math.random,
-): QuestionDraft {
+): Question {
   if (operations.length === 0) {
     throw new QuestionGenerationError('Choose at least one operation')
   }
   const operation = operations[randomInt(0, operations.length - 1, rng)]
-  return generateQuestionDraft(operation, difficulty, rng)
+  return generateQuestion(operation, difficulty, rng)
 }
