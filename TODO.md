@@ -34,17 +34,17 @@ in `docs/Original_Specification.md`.
 
 Replaces original phases 1 and 2. Files: `game.py`, `words/`, `tests/test_game.py`, `tests/test_words.py`.
 
-- [ ] Project skeleton: `game.py`, `words/easy.txt|medium.txt|hard.txt`, `tests/`, `requirements.txt`, `.gitignore`
-- [ ] Word loader: read a list, lowercase, keep only alphabetic words, drop duplicates
-- [ ] Random word by difficulty (`easy` / `medium` / `hard`); clear error for an unknown difficulty
-- [ ] `HangmanGame` class holding the hidden word, guessed letters, incorrect letters, 6-guess limit
-- [ ] Guess validation: exactly one letter a–z (case-insensitive), otherwise rejected
-- [ ] Duplicate guesses rejected (and do not change state)
-- [ ] Masked pattern such as `_ a _ _ e` (letters separated by spaces)
-- [ ] Win detection, loss detection, `status` = `playing` / `won` / `lost`
-- [ ] No guesses accepted after the game has ended
-- [ ] `to_dict()` client-safe state; includes `word` only once the game is over
-- [ ] pytest: all three difficulties, correct/incorrect/repeated/invalid guesses, win path, loss path, no guess after end, word hidden while playing
+- [x] Project skeleton: `game.py`, `words/easy.txt|medium.txt|hard.txt`, `tests/`, `requirements.txt`, `.gitignore`
+- [x] Word loader: read a list, lowercase, keep only alphabetic words, drop duplicates
+- [x] Random word by difficulty (`easy` / `medium` / `hard`); clear error for an unknown difficulty
+- [x] `HangmanGame` class holding the hidden word, guessed letters, incorrect letters, 6-guess limit
+- [x] Guess validation: exactly one letter a–z (case-insensitive), otherwise rejected
+- [x] Duplicate guesses rejected (and do not change state)
+- [x] Masked pattern such as `_ a _ _ e` (letters separated by spaces)
+- [x] Win detection, loss detection, `status` = `playing` / `won` / `lost`
+- [x] No guesses accepted after the game has ended
+- [x] `to_dict()` client-safe state; includes `word` only once the game is over
+- [x] pytest: all three difficulties, correct/incorrect/repeated/invalid guesses, win path, loss path, no guess after end, word hidden while playing
 
 **Done when:** a whole game can be played in a Python shell or unit test with no web server.
 
