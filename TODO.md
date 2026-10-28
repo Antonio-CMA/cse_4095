@@ -104,10 +104,11 @@ Replaces original phase 14 (required parts only) plus the Render deployment.
 - [x] README: local run instructions, API documentation, deployment notes, known limitations
 - [x] Copy of the original specification included in the repo (`Specification.md`)
 - [x] `.gitignore`; check that there are no secrets
-- [ ] Repository layout prepared for GitHub (`Web Based Hangman/` folder in `Antonio-CMA/cse_4095`) — **not pushed until confirmed**
+- [x] Repository layout prepared: local branch `web-hangman` of `Antonio-CMA/cse_4095` holds the project under `Web Based Hangman/` (full phase history) — **not pushed until confirmed**
 - [ ] Public Render HTTPS service created and verified (done by the student, then smoke-tested)
 - [ ] Deployed site verified: page loads, a game can be played, `/api/games` returns JSON over HTTPS
-- [x] Development report (1–2 pages, PDF) with student-written reflection sections
+- [x] Development report drafted (`docs/Development_Report.md`, 2-page PDF via `docs/build_report_pdf.py`)
+- [ ] Student reviews/rewrites the marked reflection/challenge/prompt sections and regenerates the PDF
 - [x] Demo-video checklist/script for the student
 
 **Done when:** the repository contains everything required, and the Render URL serves a playable game.
