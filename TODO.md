@@ -3,7 +3,7 @@
 Revised plan for the **web-based Hangman** assignment. The original 14-phase plan
 (`docs/Original_TODO.md`) covers a much larger system. This file keeps only the
 required features and groups them into five phases. The authoritative requirements are
-in `docs/Original_Specification.md`.
+in `Specification.md`.
 
 ## Implementation rules
 
@@ -99,16 +99,16 @@ Replaces original phase 13 (required parts only).
 
 Replaces original phase 14 (required parts only) plus the Render deployment.
 
-- [ ] `requirements.txt` with `flask` and `gunicorn`
-- [ ] Render start command `gunicorn --bind 0.0.0.0:$PORT --workers 1 server:app` (workers must be 1: games live in memory)
-- [ ] README: local run instructions, API documentation, deployment notes, known limitations
-- [ ] Copy of the original specification included in the repo (`docs/Original_Specification.md`)
-- [ ] `.gitignore`; check that there are no secrets
+- [x] `requirements.txt` with `flask` and `gunicorn`
+- [x] Render start command `gunicorn --bind 0.0.0.0:$PORT --workers 1 server:app` (workers must be 1: games live in memory)
+- [x] README: local run instructions, API documentation, deployment notes, known limitations
+- [x] Copy of the original specification included in the repo (`Specification.md`)
+- [x] `.gitignore`; check that there are no secrets
 - [ ] Repository layout prepared for GitHub (`Web Based Hangman/` folder in `Antonio-CMA/cse_4095`) — **not pushed until confirmed**
 - [ ] Public Render HTTPS service created and verified (done by the student, then smoke-tested)
 - [ ] Deployed site verified: page loads, a game can be played, `/api/games` returns JSON over HTTPS
-- [ ] Development report (1–2 pages, PDF) with student-written reflection sections
-- [ ] Demo-video checklist/script for the student
+- [x] Development report (1–2 pages, PDF) with student-written reflection sections
+- [x] Demo-video checklist/script for the student
 
 **Done when:** the repository contains everything required, and the Render URL serves a playable game.
 

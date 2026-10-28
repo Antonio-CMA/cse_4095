@@ -27,5 +27,5 @@ Run `python -m pytest -q` from the project root. Current result: **85 passed**.
 
 1. **Cosmetic:** the stats panel showed "6 OF 6" and "NONE" because of a blanket `text-transform: uppercase`. Fixed: only letters are upper-cased (in JS).
 2. **Stale game after a server restart:** after stopping and restarting the server, a guess in an open page returned the raw message "unknown game". Fixed: the page now says the game no longer exists and tells the player to press New Game. (Render's free tier also restarts and forgets games, so this can really happen.)
-3. **Lost keystrokes / ordering risk:** typing quickly could fire overlapping requests. Fixed by queueing guesses so they are sent and rendered in order.
+3. **Design hardening (not an observed failure):** fast typing could in principle fire overlapping requests whose responses arrive out of order. The client therefore queues guesses so they are sent and rendered in order, and drops queued guesses if a new game starts.
 4. **Usability:** after a loss the board only showed the word in the message. Now the missing letters are also drawn in red in the word slots.
