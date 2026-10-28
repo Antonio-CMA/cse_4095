@@ -69,17 +69,17 @@ Replaces original phase 3. Files: `server.py`, `tests/test_api.py`.
 
 Replaces original phase 5. Files: `static/index.html`, `static/style.css`, `static/app.js`.
 
-- [ ] Page layout and difficulty selector (Easy / Medium / Hard)
-- [ ] **New Game** button using `fetch()` (no page reload)
-- [ ] Masked word, guessed letters, incorrect letters, remaining guesses
-- [ ] On-screen A–Z keyboard; guessed letters become disabled and colored right/wrong
-- [ ] Physical keyboard input (letters only)
-- [ ] SVG hangman drawing that adds one part per wrong guess (6 parts)
-- [ ] Win and loss messages; the word is shown only at the end; New Game works afterwards
-- [ ] Error handling for server/network errors (visible message, no crash)
-- [ ] Works at phone and desktop widths; accessible labels and live status text
-- [ ] No game logic and no word list in the JavaScript
-- [ ] Verified by driving the running app in a browser and inspecting a guess request and its JSON response
+- [x] Page layout and difficulty selector (Easy / Medium / Hard)
+- [x] **New Game** button using `fetch()` (no page reload)
+- [x] Masked word, guessed letters, incorrect letters, remaining guesses
+- [x] On-screen A–Z keyboard; guessed letters become disabled and colored right/wrong
+- [x] Physical keyboard input (letters only)
+- [x] SVG hangman drawing that adds one part per wrong guess (6 parts)
+- [x] Win and loss messages; the word is shown only at the end; New Game works afterwards
+- [x] Error handling for server/network errors (visible message, no crash)
+- [x] Works at phone and desktop widths; accessible labels and live status text
+- [x] No game logic and no word list in the JavaScript
+- [x] Verified by driving the running app in a browser and inspecting a guess request and its JSON response
 
 **Done when:** a person can play complete games in the browser against the Flask server.
 
