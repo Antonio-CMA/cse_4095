@@ -87,11 +87,11 @@ Replaces original phase 5. Files: `static/index.html`, `static/style.css`, `stat
 
 Replaces original phase 13 (required parts only).
 
-- [ ] Full `pytest` run is green; note the test count in the README
-- [ ] Browser walkthrough: win game, loss game, new game after each, keyboard + mouse input, wrong-guess drawing sequence
-- [ ] Edge cases checked in the browser: duplicate key press, non-letter keys, server stopped mid-game
-- [ ] Bugs found during testing are written down (feeds the development report) and fixed with a regression test where possible
-- [ ] Confirm over the real HTTP interface that `word` never appears while `status` is `playing`
+- [x] Full `pytest` run is green; note the test count in the README
+- [x] Browser walkthrough: win game, loss game, new game after each, keyboard + mouse input, wrong-guess drawing sequence
+- [x] Edge cases checked in the browser: duplicate key press, non-letter keys, server stopped mid-game
+- [x] Bugs found during testing are written down (feeds the development report) and fixed with a regression test where possible
+- [x] Confirm over the real HTTP interface that `word` never appears while `status` is `playing`
 
 **Done when:** automated tests pass and the manual browser checklist has been completed.
 

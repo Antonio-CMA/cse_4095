@@ -247,3 +247,29 @@ def test_index_page_is_served(client):
     assert response.status_code == 200
     assert b"<html" in response.data.lower() or b"<!doctype" in response.data.lower()
     response.close()
+
+
+# --- whole games ------------------------------------------------------------
+
+@pytest.mark.parametrize("difficulty", DIFFICULTIES)
+def test_complete_random_games_follow_the_rules(client, difficulty):
+    """Play 20 games per difficulty with letters in random order, checking every response."""
+    import random
+    import string
+
+    for _ in range(20):
+        data = new_game(client, difficulty)
+        game_id = data["game_id"]
+        letters = random.sample(string.ascii_lowercase, 26)
+        for letter in letters:
+            assert "word" not in data  # still playing, so the answer must be hidden
+            data = guess(client, game_id, letter).get_json()
+            if data["status"] != "playing":
+                break
+        assert data["status"] in ("won", "lost")
+        if data["status"] == "won":
+            assert data["pattern"] == " ".join(data["word"])
+        assert len(data["incorrect_letters"]) <= 6
+        # Once over, further guesses are rejected and the state stays as it was.
+        assert guess(client, game_id, "a").status_code == 400
+        assert client.get(f"/api/games/{game_id}").get_json() == data

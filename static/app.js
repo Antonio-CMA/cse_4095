@@ -40,7 +40,9 @@ async function api(method, path, body) {
     // Not JSON: handled below.
   }
   if (!response.ok) {
-    throw new Error((data && data.error) || `Server error (${response.status}).`);
+    const error = new Error((data && data.error) || `Server error (${response.status}).`);
+    error.status = response.status;
+    throw error;
   }
   return data;
 }
@@ -76,7 +78,11 @@ async function sendGuess(id, letter) {
     const data = await api("POST", `/api/games/${id}/guess`, { letter });
     if (id === gameId) render(data);
   } catch (err) {
-    setMessage(err.message, "error");
+    // 404 means the server no longer knows this game (for example it restarted).
+    const text = err.status === 404
+      ? "This game no longer exists on the server. Press New Game to start again."
+      : err.message;
+    setMessage(text, "error");
   }
 }
 
