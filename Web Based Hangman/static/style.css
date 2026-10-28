@@ -1,0 +1,173 @@
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1d2433;
+  --muted: #5b667a;
+  --accent: #2f6fed;
+  --accent-text: #ffffff;
+  --good: #1f8f4d;
+  --good-bg: #dff5e7;
+  --bad: #c0392b;
+  --bad-bg: #fbe3e0;
+  --line: #cfd6e4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1 { text-align: center; margin: 8px 0 16px; letter-spacing: 1px; }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+select, button { font: inherit; }
+
+select {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+}
+
+button.primary {
+  padding: 8px 18px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+:focus-visible { outline: 3px solid #f0a500; outline-offset: 2px; }
+
+.board {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+#drawing { width: 200px; height: 240px; flex: none; }
+
+#drawing line, #drawing circle {
+  stroke: var(--text);
+  stroke-width: 5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.gallows line { stroke: var(--muted); }
+
+/* A body part is hidden until the script adds the "shown" class. */
+.part { opacity: 0; transition: opacity 0.3s; }
+.part.shown { opacity: 1; }
+
+.info { flex: 1; min-width: 0; }
+
+.word {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 52px;
+}
+
+.slot {
+  width: 34px;
+  height: 46px;
+  border-bottom: 4px solid var(--text);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 46px;
+  text-transform: uppercase;
+}
+
+.slot.missed { color: var(--bad); }
+
+.message {
+  min-height: 1.5em;
+  margin: 12px 0;
+  font-weight: 600;
+}
+.message.won { color: var(--good); }
+.message.lost, .message.error { color: var(--bad); }
+
+.stats { margin: 0; }
+.stats div { display: flex; gap: 8px; margin-bottom: 4px; }
+.stats dt { color: var(--muted); min-width: 120px; }
+.stats dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.key {
+  width: 44px;
+  height: 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.key:hover:not(:disabled) { border-color: var(--accent); }
+.key:disabled { cursor: not-allowed; }
+.key.correct { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+.key.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+
+.hint { text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161f;
+    --card: #1c2230;
+    --text: #e8ecf4;
+    --muted: #9aa5ba;
+    --line: #3a4358;
+    --good: #5fd48b;
+    --good-bg: #17382a;
+    --bad: #ff8a7d;
+    --bad-bg: #44211d;
+  }
+}
+
+/* Phones: stack the drawing above the word and use smaller keys. */
+@media (max-width: 560px) {
+  .board { flex-direction: column; }
+  #drawing { width: 160px; height: 192px; }
+  .info { width: 100%; }
+  .slot { width: 26px; height: 40px; font-size: 1.6rem; line-height: 40px; }
+  .key { width: 38px; height: 44px; }
+  .keyboard { gap: 6px; }
+}
