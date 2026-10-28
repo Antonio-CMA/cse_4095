@@ -52,16 +52,16 @@ Replaces original phases 1 and 2. Files: `game.py`, `words/`, `tests/test_game.p
 
 Replaces original phase 3. Files: `server.py`, `tests/test_api.py`.
 
-- [ ] Flask app object `app` in `server.py`, in-memory dict of games
-- [ ] Unique, unguessable game ids (`secrets.token_hex`)
-- [ ] `POST /api/games` → 201 with `game_id`, `pattern`, `remaining_guesses`, `status`
-- [ ] `GET /api/games/<id>` → 200 with full client-safe state
-- [ ] `POST /api/games/<id>/guess` → 200 with updated state
-- [ ] Request validation: bad/missing JSON, non-object body, bad difficulty, bad letter → 400 `{"error": ...}`
-- [ ] Unknown game id → 404 `{"error": ...}`; unknown API route and wrong method return JSON errors too
-- [ ] Serve `static/index.html` at `/` (and the other static files)
-- [ ] pytest (Flask test client): create for each difficulty, guess flow, win, loss, new game after finishing, bad JSON, bad difficulty, unknown id, bad letter, duplicate guess, word hidden during play and shown after the end
-- [ ] Manually play a full game with `curl`
+- [x] Flask app object `app` in `server.py`, in-memory dict of games
+- [x] Unique, unguessable game ids (`secrets.token_hex`)
+- [x] `POST /api/games` → 201 with `game_id`, `pattern`, `remaining_guesses`, `status`
+- [x] `GET /api/games/<id>` → 200 with full client-safe state
+- [x] `POST /api/games/<id>/guess` → 200 with updated state
+- [x] Request validation: bad/missing JSON, non-object body, bad difficulty, bad letter → 400 `{"error": ...}`
+- [x] Unknown game id → 404 `{"error": ...}`; unknown API route and wrong method return JSON errors too
+- [x] Serve `static/index.html` at `/` (and the other static files)
+- [x] pytest (Flask test client): create for each difficulty, guess flow, win, loss, new game after finishing, bad JSON, bad difficulty, unknown id, bad letter, duplicate guess, word hidden during play and shown after the end
+- [x] Manually play a full game with `curl`
 
 **Done when:** a full game can be played using only `curl`.
 
