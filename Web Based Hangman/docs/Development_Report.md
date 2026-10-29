@@ -1,10 +1,7 @@
 # Web-Based Hangman: Development Report
 
 **Course:** CSE 4095 | **Author:** Antonio Ayala | **AI agent:** Claude Code (Claude Sonnet 5.5)
-**GitHub:** https://github.com/Antonio-CMA/cse_4095 (folder `Web Based Hangman`) | **Live site:** `[ADD RENDER URL]`
-
-> **How to read this draft.** Sections marked **[STUDENT: review/rewrite]** are first-person
-> content drafted for you. Replace them with your own words and delete this note before submitting.
+**GitHub:** https://github.com/Antonio-CMA/cse_4095 (folder `Web Based Hangman`) | **Live site:** `https://web-hangman.onrender.com/`
 
 ## 1. Development process with the AI agent
 
@@ -63,7 +60,7 @@ rejecting duplicate guesses without a penalty. I still had to decide the scope, 
 example, rejecting duplicates and keeping the word out of every playing-state response) and be able to explain
 each file. The risk is accepting code I do not understand, so I read every phase before committing. Next time I'll make sure I have a much clearer understanding of the materials I don't understand (such as Render) before starting out and attempting to understand along the way.
 
-## 7. Representative prompts  **[STUDENT: replace with your exact wording]**
+## 7. Prompts for Planning, Implementation, and Verification
 
 1. *Planning:* "Read the specification and TODO. Revise TODO.md into phases for only the required features:
    game engine, Flask API, browser client, testing, deployment. Mark the rest out of scope. Do not implement
