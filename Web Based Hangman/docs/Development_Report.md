@@ -9,7 +9,7 @@
 ## 1. Development process with the AI agent
 
 I treated the agent as a pair programmer working to a written plan. I gave it the specification and
-the original 14-phase TODO and asked it to **plan first and not implement yet**. It produced a revised
+the original 14-phase TODO and asked it to plan first and not implement yet. It produced a revised
 `TODO.md` with five phases (engine and words, Flask API, browser client, testing and debugging,
 deployment). Items from the original plan outside this assignment (terminal client, bots, evaluation,
 scoring, leaderboard, replay) were kept in an "out of scope" table instead of being silently deleted.
@@ -48,27 +48,20 @@ when `status` was `won` or `lost`).
 The app runs on a Render Web Service from the GitHub repository (root directory `Web Based Hangman`). Build
 command `pip install -r requirements.txt`; start command
 `gunicorn --bind 0.0.0.0:$PORT --workers 1 server:app`. One worker is required because games are stored in
-memory inside the process. No secrets or environment variables are needed. **[ADD: date deployed and what you
-checked on the live URL.]**
+memory inside the process. No secrets or environment variables are needed. This was deployed on October 28th, 2026. I tested the deployment by going onto the site and playing games on different difficulty settings to see what would happen.
 
-## 5. A challenge and how it was resolved  **[STUDENT: review/rewrite]**
+## 5. A challenge and how it was resolved
 
-*Draft:* The hardest design issue was keeping the game state on the server. Games live in a Python dict, so
-the server forgets them when it restarts, and with more than one gunicorn worker a guess can be routed to a
-process that never saw the game. When I restarted the local server with the page still open, a guess returned a
-confusing "unknown game" error. I resolved it in two ways: the deployment uses exactly one worker (and the
-README explains why), and the browser now recognises the 404 and tells the player to press New Game. I added
-this as a documented limitation rather than adding a database, which was out of scope.
+A big challenge I faced in this project was getting the rendering set up on Render. I went through the process of creating the account and getting the website initialized. I messed up on not setting the root directory, so when I tried to deploy the website it failed. I had help from the AI Agent by going through the setup with me again so I could fix my mistake. The build worked after fixing the root directory, which allowed the starting command that installed everything from requirements.txt to run properly.
 
-## 6. Reflection on AI-assisted development  **[STUDENT: review/rewrite]**
+## 6. Reflection on AI-assisted development
 
-*Draft:* Planning first made the AI much more useful: a short, approved plan kept it from building features the
+Planning first made the AI much more useful. A short, approved plan kept it from building features the
 assignment did not ask for, and verifying before ticking a box meant the TODO file stayed trustworthy. The agent
 was fastest at boilerplate (tests, validation, CSS) and at checking edge cases I would have missed, such as
 rejecting duplicate guesses without a penalty. I still had to decide the scope, review the design choices (for
 example, rejecting duplicates and keeping the word out of every playing-state response) and be able to explain
-each file. The risk is accepting code I do not understand, so I read every phase before committing. **[ADD: what
-you would do differently next time.]**
+each file. The risk is accepting code I do not understand, so I read every phase before committing. Next time I'll make sure I have a much clearer understanding of the materials I don't understand (such as Render) before starting out and attempting to understand along the way.
 
 ## 7. Representative prompts  **[STUDENT: replace with your exact wording]**
 
