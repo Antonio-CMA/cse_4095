@@ -6,7 +6,7 @@ results come in.
 
 - **Frontend:** React + TypeScript + Vite + Tailwind CSS, React Router, Recharts, `qrcode`
 - **Backend / database:** Supabase (PostgreSQL, Auth, Row Level Security, RPC functions)
-- **Hosting:** Cloudflare Pages (static site) — database stays on Supabase
+- **Hosting:** Cloudflare (static assets) — database stays on Supabase
 
 Specifications that drove the build: [`Classroom_Survey_Web_App_Specification.md`](Classroom_Survey_Web_App_Specification.md),
 [`DATABASE.md`](DATABASE.md), [`API.md`](API.md), [`UI.md`](UI.md), [`TODO.md`](TODO.md).
@@ -80,19 +80,30 @@ Useful scripts: `npm run build`, `npm run lint`, `npm test`, `npm run format`.
 To test the student flow on a phone during development, run `npm run dev -- --host` and open the
 LAN address, or just use the deployed site.
 
-## Deployment (Cloudflare Pages)
+## Deployment (Cloudflare)
 
-1. Push this repo to GitHub.
-2. Cloudflare dashboard → *Workers & Pages → Create → Pages → Connect to Git* → pick the repo.
-3. Build settings:
-   - **Root directory:** `Classroom Web Survey App` (the folder containing `package.json`)
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Environment variable (Production):** `NODE_VERSION=22`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
-4. Deploy. [`public/_redirects`](public/_redirects) makes every path fall back to `index.html`, so
-   deep links such as `/s/ab12cd34` (the QR-code URLs) work.
-5. QR codes use `window.location.origin`, so they automatically point at the production URL when the
-   instructor presents from the deployed site (override with `VITE_PUBLIC_BASE_URL` if needed).
+Live app: **https://classroom-survey.classroom-survey.workers.dev**
+(Cloudflare static-asset hosting; the database stays on Supabase.)
+
+**Deploy from the command line** (what was used for the submission):
+
+```bash
+npx wrangler login      # one-time, opens a browser to authorize your Cloudflare account
+npm run deploy          # = npm run build && npx wrangler deploy
+```
+
+`npm run build` bakes `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` from `.env.local` into the bundle
+(both are public, browser-safe values). [`wrangler.jsonc`](wrangler.jsonc) serves `dist/` and sets
+`not_found_handling: single-page-application`, so deep links such as `/s/ab12cd34` (the QR-code URLs)
+load the app instead of a 404. No `_redirects` file is needed (and Cloudflare rejects the usual
+`/* /index.html 200` rule as a redirect loop).
+
+**Alternative: Git-connected builds.** Cloudflare dashboard → *Workers & Pages → Create → Connect to Git*,
+pick the repo, then set *Root directory* `Classroom Web Survey App`, *Build command* `npm run build`,
+*Output directory* `dist`, and the two `VITE_SUPABASE_*` environment variables.
+
+QR codes use `window.location.origin`, so they automatically point at the production URL when the
+instructor presents from the deployed site (override with `VITE_PUBLIC_BASE_URL` if needed).
 
 ## Giving the grader instructor access (without committing credentials)
 

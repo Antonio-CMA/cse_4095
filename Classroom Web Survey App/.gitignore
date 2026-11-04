@@ -8,3 +8,6 @@ dist
 .DS_Store
 *.tsbuildinfo
 .claude
+
+.dev.vars*
+!.dev.vars.example

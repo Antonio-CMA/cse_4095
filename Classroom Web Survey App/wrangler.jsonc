@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "classroom-survey",
+  "compatibility_date": "2026-11-03",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "./dist",
+    // Unknown paths (e.g. /s/abcd1234 QR links) fall back to index.html so React Router can handle them.
+    "not_found_handling": "single-page-application"
+  }
+}

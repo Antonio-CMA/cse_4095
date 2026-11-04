@@ -219,11 +219,11 @@ This roadmap breaks the implementation into small, testable phases ordered from 
 
 # Phase 15 — Deployment
 
-- [ ] Push the project to GitHub.
-- [ ] Create the Cloudflare Pages site.
-- [ ] Connect Cloudflare Pages to the GitHub repository.
-- [ ] Configure production environment variables.
-- [ ] Deploy the application.
+- [x] Push the project to GitHub.
+- [x] Create the Cloudflare Pages site. _Cloudflare static-asset hosting, project `classroom-survey`_
+- [ ] Connect Cloudflare Pages to the GitHub repository. _not used: deployed via `wrangler deploy` (README documents the Git-connected alternative)_
+- [x] Configure production environment variables. _VITE_* values baked in at build time from .env.local (public anon key only)_
+- [x] Deploy the application. _https://classroom-survey.classroom-survey.workers.dev_
 - [x] Configure SPA routing. _public/_redirects_
 - [ ] Verify production login.
 - [ ] Verify QR codes point to the production URL.
