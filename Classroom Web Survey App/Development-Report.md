@@ -78,7 +78,10 @@ fake question) rejected by the database; closing makes submissions fail and show
 only one active survey (activating a second closes the first); duplicate and delete with stronger
 warning when responses exist; results counts/percentages and CSV content match the submitted data;
 anonymous reads of `responses`, `answers`, direct inserts and instructor RPCs are all denied.
-Not yet done: scanning the QR code with a physical phone, opening the CSV in Excel, a screen-reader pass.
+On the deployed site I then logged in as the instructor, activated the survey, scanned its QR code with
+a phone, submitted from the phone (the row appears in `responses`, see `docs/screenshots/`), and viewed
+the results as the instructor. Not yet done: opening the exported CSV in Excel/Google Sheets and a
+screen-reader / full keyboard accessibility pass.
 
 ## 7. Deployment
 
@@ -92,8 +95,7 @@ Two deployment problems: wrangler rejected the usual `_redirects` rule (`/* /ind
 redirect loop, so I deleted the file and relied on the SPA fallback setting; and the first HTTPS request
 to the new hostname failed its TLS handshake until the certificate finished provisioning (about a minute).
 The GitHub repository is not connected to Cloudflare, so redeploys are manual (`npm run deploy`);
-the README documents the Git-connected alternative. Production end-to-end testing is listed above as
-not yet done.
+the README documents the Git-connected alternative. Production end-to-end testing is described in section 6.
 
 ## 8. What I learned
 

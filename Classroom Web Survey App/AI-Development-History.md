@@ -77,6 +77,13 @@ certificate was provisioned (agent polled until HTTP 200, and checked `/`, `/log
 checks were limited to HTTP status; the full production walk-through was left to the user.
 Live URL: https://classroom-survey.classroom-survey.workers.dev
 
-## 9. Still open at the time of writing
-Production end-to-end test (login, activate, QR scan from a phone, submit, results), Supabase Table
-Editor screenshots, and a grader account note in the HuskyCT submission.
+## 9. Production verification and evidence
+The user ran the production walkthrough themself (the agent's browser pane could not open the host):
+logged in on the deployed site, activated the survey, scanned the QR code with a phone, submitted, and
+checked results. They supplied phone screenshots and four Supabase Table Editor screenshots; the agent
+reviewed each image for secrets before adding them to `docs/screenshots/` with an index
+(`docs/screenshots/README.md`) and renamed them. TODO.md was updated to tick only the production items
+the user confirmed; Excel CSV opening and an accessibility pass remain unticked.
+
+## 10. Still open
+Opening the CSV in a spreadsheet application, screen-reader/keyboard accessibility pass.

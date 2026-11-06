@@ -205,13 +205,13 @@ This roadmap breaks the implementation into small, testable phases ordered from 
 - [x] Test survey editing. _tested live against Supabase_
 - [x] Test activation. _tested live against Supabase_
 - [x] Test closing surveys. _tested live against Supabase_
-- [ ] Test QR-code links. _QR renders the correct URL; not yet scanned with a phone_
+- [x] Test QR-code links. _scanned with a phone; opened the deployed survey_
 - [x] Test student submissions. _tested live against Supabase_
 - [x] Test duplicate-submission prevention. _tested live against Supabase_
 - [x] Test results calculations. _tested live against Supabase_
 - [x] Test CSV export. _content verified in-page; see note under Phase 11_
-- [ ] Test mobile layout. _checked at ~600px width only; real-phone test pending_
-- [ ] Test with at least two browsers. _two origins in one browser engine only_
+- [x] Test mobile layout. _tested on a real phone against the deployed site (see docs/screenshots)_
+- [x] Test with at least two browsers. _phone browser + desktop browser_
 - [x] Test unauthorized access attempts. _tested live against Supabase_
 - [x] Test database Row Level Security. _tested live against Supabase_
 
@@ -225,10 +225,10 @@ This roadmap breaks the implementation into small, testable phases ordered from 
 - [x] Configure production environment variables. _VITE_* values baked in at build time from .env.local (public anon key only)_
 - [x] Deploy the application. _https://classroom-survey.classroom-survey.workers.dev_
 - [x] Configure SPA routing. _public/_redirects_
-- [ ] Verify production login.
-- [ ] Verify QR codes point to the production URL.
-- [ ] Test student submissions in production.
-- [ ] Test instructor results in production.
+- [x] Verify production login. _confirmed by owner_
+- [x] Verify QR codes point to the production URL. _phone opened classroom-survey.classroom-survey.workers.dev from the QR_
+- [x] Test student submissions in production. _phone submission stored in Supabase (docs/screenshots/db-responses-table.png)_
+- [x] Test instructor results in production. _confirmed by owner_
 
 ---
 
